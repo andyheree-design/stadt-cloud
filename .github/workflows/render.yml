@@ -37,7 +37,9 @@ jobs:
           sudo apt-get install -y -qq libnss3 libdbus-1-3 libatk1.0-0 libgbm-dev libasound2t64 libxrandr2 libxkbcommon-dev libxfixes3 libxcomposite1 libxdamage1 libatk-bridge2.0-0 libpango-1.0-0 libcairo2 libcups2
       - run: npm ci --no-audit --no-fund
       - uses: actions/cache@v4
-        with: { path: node_modules/.remotion, key: remotion-browser-${{ hashFiles('package-lock.json') }} }
+        with:
+          path: node_modules/.remotion
+          key: "remotion-browser-${{ hashFiles('package-lock.json') }}"
       - run: npx remotion browser ensure
       - name: Bundle (raz, współdzielony przez wszystkie kawałki)
         run: npx remotion bundle $REMOTION_ENTRY --out-dir=build
@@ -64,7 +66,9 @@ jobs:
           sudo apt-get install -y -qq libnss3 libdbus-1-3 libatk1.0-0 libgbm-dev libasound2t64 libxrandr2 libxkbcommon-dev libxfixes3 libxcomposite1 libxdamage1 libatk-bridge2.0-0 libpango-1.0-0 libcairo2 libcups2
       - run: npm ci --no-audit --no-fund
       - uses: actions/cache@v4
-        with: { path: node_modules/.remotion, key: remotion-browser-${{ hashFiles('package-lock.json') }} }
+        with:
+          path: node_modules/.remotion
+          key: "remotion-browser-${{ hashFiles('package-lock.json') }}"
       - run: npx remotion browser ensure
       - uses: actions/download-artifact@v4
         with: { name: bundle, path: build }
