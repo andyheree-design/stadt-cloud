@@ -19,7 +19,8 @@ PUB = HOME.joinpath(".ssh", "upcloud_ed25519.pub").read_text().strip()
 STATE = HOME / ".upcloud_servers.json"
 API = "https://api.upcloud.com/1.3"
 GPU_PLAN, GPU_ZONE = "GPU-8xCPU-64GB-1xL40S", "fi-hel2"
-CPU_PLAN, CPU_ZONE = "HICPU-64xCPU-128GB", "de-fra1"
+CPU_PLAN, CPU_ZONE = "HICPU-32xCPU-64GB", "de-fra1"  # limit konta 32 rdz; po podniesieniu limitu -> HICPU-64xCPU-128GB
+# GPU: L40S = najlepsza karta do grafiki (WebGL/R3F); H100 to karta obliczeniowa, w rasteryzacji słabsza.
 SCRIPT = "https://raw.githubusercontent.com/andyheree-design/stadt-cloud/main/cloud/pod_start.sh"
 
 
