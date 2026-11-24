@@ -65,10 +65,25 @@ const Years: React.FC<{ at: number }> = ({ at }) => {
       ⏳ {y}<div style={{ fontSize: 38, color: "#ffd23f" }}>{y - 1998} Jahre gewartet</div></div></div>;
 };
 
+/** ujęcie z lotu ptaka (klatka 0 i ostatnia → pętla) i zbliżenie twarzy „ich” (jak pc() z fov 32) */
+const BIRD = { p: [ICH_X + 7, 72, ZI + 27] as V3, l: [-1.5, 0, 12] as V3, fov: 50 };
+const FACE = { p: [ICH_X + 0.1, PH + 0.88, ZI + 2.05] as V3, l: [ICH_X, PH + 0.7, ZI] as V3, fov: 32 };
+const lerp3 = (a: V3, b: V3, k: number): V3 => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
+/** lot w dół: start bardzo szybki, hamowanie przy twarzy; wysokość spada później niż poziom → łuk, nie prosta */
+const dive = (u: number) => { const e = 1 - Math.pow(1 - u, 3.2), ey = 1 - Math.pow(1 - u, 2.4), el = 1 - Math.pow(1 - u, 4.5);
+  const p = lerp3(BIRD.p, FACE.p, e); p[1] = BIRD.p[1] + (FACE.p[1] - BIRD.p[1]) * ey;
+  return { p, l: lerp3(BIRD.l, FACE.l, el), fov: BIRD.fov + (FACE.fov - BIRD.fov) * e }; };
+/** finał: twarz (zbliża się) do ostatniego „Huss”, potem odlot w górę do kadru klatki 0 */
+const OUT_AT = 0.38, FKEY: [number, number, number, number, number] = [ICH_X + 0.5, PH + 1.18, ZI + 1.6, 2.5, 4];
+const outro = (u: number) => { if (u < OUT_AT) { const k = u / OUT_AT, z = 1 - 0.22 * (k * k * (3 - 2 * k)); return { ...FACE, fov: FACE.fov * z }; }
+  const k = Math.pow((u - OUT_AT) / (1 - OUT_AT), 2.2), d = dive(1 - k); return { ...d, fov: d.fov * (0.78 + 0.22 * Math.min(1, k / 0.05)) }; };
+
 export const SHOTS_E02: Record<string, SpecE02> = {
   // 1 — In dieser Stadt ist die Bahn noch nie pünktlich gekommen.
-  // HOOK (klatka 0) — kadr jak w ostatnim ujęciu hussPoint (fov 32×0.78 ≈ 25) → płynna pętla; potem odjazd kamery
-  stationWide: dusk({ fx: "close", ...pc("ich", ICH_X, { r: 0, face: "angry", pose: { cross: 1, talk: 1, shake: 0.3 }, fov: 25, zoom: 1.5, mv: [0.4, 0.25, 1.4], shake: 0.004 }),
+  // HOOK (klatka 0) — nagłe przybliżenie z lotu ptaka: miasto + dworzec z ~70 m → twarz „ich” na peronie (pętla z hussOutro)
+  stationWide: dusk({ fx: "close", fxo: { bokeh: 0.9, sat: 0.3 }, cam: { p: BIRD.p, l: BIRD.l, fov: 50, focus: (u) => dive(u).l, fn: dive, shake: 0.002 }, key: FKEY,
+    town: { center: [0, 16], wide: true, fog: (u) => { const k = Math.pow(1 - u, 2); return [40 + 170 * k, 160 + 360 * k]; } },
+    acts: [{ c: "ich", face: "angry", pose: { cross: 1, talk: 1, shake: 0.3 }, p: [ICH_X, PH, ZI], r: 0.15 }, ...waiting("angry")],
     props: (u, t) => deco(t) }),
   boardDelay: { fx: "close", cam: { p: [-2.4, PH + 1.55, 35.4], l: [-3, PH + 1.95, 33.6], fov: 38, zoom: 0.75, fast: true, focus: BOARD },
     acts: [{ c: "extra2", face: "angry", pose: { point: 1, shake: 0.5 }, p: [-2.6, PH, 34.3], r: PI + 0.3 }], props: (u, t) => deco(t), key: [-2, PH + 1.6, 35.2, 2, 5] },
@@ -165,5 +180,8 @@ export const SHOTS_E02: Record<string, SpecE02> = {
   hussGrind: dusk({ fx: "close", ...pc("ich", ICH_X, { r: 0.35, face: "angry", pose: { shake: 1, talk: 1 }, zoom: 0.85, shake: 0.006 }) }),
   hussFast: dusk({ fx: "close", ...pc("ich", ICH_X, { r: -0.35, face: "smile", pose: { wave: 1, shake: 0.5 }, zoom: 0.72, fast: true, shake: 0.008 }) }),
   hussPoint: dusk({ fx: "close", ...pc("ich", ICH_X, { r: 0, face: "grin", pose: { point: 1, shake: 0.6 }, zoom: 0.78, shake: 0.007 }) }),
+  hussOutro: dusk({ fx: "close", fxo: { bokeh: 0.9, sat: 0.3 }, cam: { p: FACE.p, l: FACE.l, fov: 32, fn: outro, focus: (u) => outro(u).l, shake: 0.003 }, key: FKEY,
+    town: { center: [0, 16], wide: true, fog: (u) => { const k = Math.pow(Math.max(0, (u - OUT_AT) / (1 - OUT_AT)), 2); return [40 + 170 * k, 160 + 360 * k]; } },
+    acts: [{ c: "ich", face: "grin", pose: { point: 1, shake: 0.6 }, p: [ICH_X, PH, ZI], r: 0.15 }, ...waiting("angry")] }),
 };
 export type { Spec };

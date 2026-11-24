@@ -7,7 +7,8 @@ import { NightWindow, Table, Toaster, Clock, MirrorFrame, StringLights, PovHands
 import { SHOTS, Spec, Cam, close, crowd, walkers, PARKCAM, PI, PK, ROOMWIDE } from "./e01Shots";
 
 type V3 = [number, number, number];
-export type SpecV3 = Omit<Spec, "light"> & { light?: "day" | "dusk" | "night"; pov?: "thumbs" | "wave" | "point" | "type"; open?: boolean };
+export type SpecV3 = Omit<Spec, "light"> & { light?: "day" | "dusk" | "night"; pov?: "thumbs" | "wave" | "point" | "type"; open?: boolean;
+  /** nadpisania miasta: środek cieni, mgła zależna od u, szerokie cienie (ujęcia z lotu ptaka) */ town?: { center?: [number, number]; fog?: (u: number) => [number, number]; wide?: boolean } };
 
 /** pokój nocą: OTWARTE okno, za nim prawdziwa impreza 3D (tłum w czapeczkach, lampiony, konfetti, miasteczko w tle);
  *  przed bohaterem stół z rekwizytami (telefon z miłym komentarzem, kartki, kubek, budzik) — odpowiednik stołu z burgerami we wzorze */

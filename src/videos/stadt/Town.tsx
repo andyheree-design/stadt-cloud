@@ -348,20 +348,20 @@ const LIGHT: Record<LightPreset, { hemi: [string, string, number]; sun: [string,
 };
 
 /** całe miasto + światło. Kamera i postacie z zewnątrz. */
-export const Town: React.FC<{ kit?: TownKit; light?: LightPreset; center?: [number, number] }> = ({ light = "day", center = [0, -12] }) => {
+export const Town: React.FC<{ kit?: TownKit; light?: LightPreset; center?: [number, number]; fog?: [number, number]; wide?: boolean }> = ({ light = "day", center = [0, -12], fog, wide }) => {
   const L = LIGHT[light], sky = SKIES[light];
   const town = useMemo(() => buildTown(light), [light]);
   const sun = useMemo(() => {
     const d = new THREE.DirectionalLight(L.sun[0], L.sun[1]); d.position.set(L.sunPos[0] + center[0], L.sunPos[1], L.sunPos[2] + center[1]); d.castShadow = true;
     d.shadow.mapSize.set(4096, 4096); const c = d.shadow.camera as THREE.OrthographicCamera;
-    c.left = -30; c.right = 30; c.top = 30; c.bottom = -30; c.near = 1; c.far = 100; d.shadow.bias = -0.0004; d.shadow.normalBias = 0.03;
+    const R = wide ? 60 : 30; c.left = -R; c.right = R; c.top = R; c.bottom = -R; c.near = 1; c.far = wide ? 160 : 100; d.shadow.bias = -0.0004; d.shadow.normalBias = 0.03;
     d.target.position.set(center[0], 0, center[1]); return d;
-  }, [light, center[0], center[1]]);
+  }, [light, center[0], center[1], wide]);
   const bg = useMemo(() => skyTex(sky.top, sky.mid, sky.horizon, light === "night" ? 0 : 1), [light]);
   return (
     <>
       <primitive attach="background" object={bg} />
-      <fog attach="fog" args={[sky.horizon, L.fog[0], L.fog[1]]} />
+      <fog attach="fog" args={[sky.horizon, fog?.[0] ?? L.fog[0], fog?.[1] ?? L.fog[1]]} />
       <hemisphereLight args={L.hemi} />
       <directionalLight color={L.rim[0]} intensity={L.rim[1]} position={[-6, 8, -14]} />
       <primitive object={sun} />

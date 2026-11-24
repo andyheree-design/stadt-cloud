@@ -10,7 +10,6 @@ import { Town, TownKit, loadTown } from "./Town";
 import { Room } from "./Room";
 import { Fx } from "./Fx";
 import { Caption, Word } from "./Caption";
-import { HookText } from "./Overlays";
 import { FX, Cam, Act, COP } from "./e01Shots";
 import { SHOTS_E02, ActE02 } from "./e02Shots";
 import { Bahnhof } from "./PropsE02";
@@ -19,12 +18,15 @@ import TL from "../../../public/stadt/e02/timeline.json";
 
 const { fontFamily } = loadFont("normal", { weights: ["700"] });
 export const STADT_E02_FRAMES = TL.frames;
-const WORDS: Word[] = TL.lines.flatMap((l: any) => l.words.map((w: any) => ({ t: w.t, s: w.s, e: w.e })));
+// v3: hook (lot z góry, kl. 0–46) bez napisów — czysty obraz
+const WORDS: Word[] = TL.lines.flatMap((l: any) => l.words.map((w: any) => ({ t: w.t, s: w.s, e: w.e }))).filter((w: Word) => w.s >= 46);
 const ease = (u: number) => u * u * (3 - 2 * u);
 
 const CamRig: React.FC<{ c: Cam; u: number; t: number }> = ({ c, u, t }) => {
   const cam = useThree((s) => s.camera) as THREE.PerspectiveCamera, gl = useThree((s) => s.gl);
   gl.toneMappingExposure = 1.1;
+  if (c.fn) { const k = c.fn(u), sh = c.shake ?? 0; cam.position.set(k.p[0] + Math.sin(t * 37) * sh, k.p[1] + Math.sin(t * 29 + 1) * sh, k.p[2]); cam.fov = k.fov;
+    cam.updateProjectionMatrix(); cam.lookAt(k.l[0], k.l[1], k.l[2]); cam.updateMatrixWorld(); return null; }
   const m = c.mv ?? [0, 0, 0], e = c.fast ? 1 - Math.pow(1 - u, 4) : ease(u), sh = c.shake ?? 0;
   cam.position.set(c.p[0] + m[0] * e + Math.sin(t * 37) * sh, c.p[1] + m[1] * e + Math.sin(t * 29 + 1) * sh, c.p[2] + m[2] * e);
   cam.fov = c.fov * (1 + ((c.zoom ?? 1) - 1) * e); cam.updateProjectionMatrix();
@@ -52,7 +54,7 @@ export const StadtE02: React.FC = () => {
     <AbsoluteFill style={{ background: "#000" }}>
       {kit && <ThreeCanvas width={1080} height={1920} shadows gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1 }} camera={{ fov: 50, near: 0.05, far: 320 }}>
         <CamRig c={S.cam} u={u} t={t} />
-        {S.room ? <>{<Room night open={S.open} />}{S.open && <PartyOutside t={t} />}</> : <><Town kit={kit} light={S.light ?? "day"} center={[S.cam.l[0], S.cam.l[2]]} /><Bahnhof light={S.light ?? "day"} /></>}
+        {S.room ? <>{<Room night open={S.open} />}{S.open && <PartyOutside t={t} />}</> : <><Town kit={kit} light={S.light ?? "day"} center={S.town?.center ?? [S.cam.l[0], S.cam.l[2]]} fog={S.town?.fog?.(u)} wide={S.town?.wide} /><Bahnhof light={S.light ?? "day"} /></>}
         <Fx focus={focus} bokeh={focus ? fx.bokeh ?? 2 : 0} aoRadius={S.room ? 0.5 : 1.0} ao={(fx as any).ao ?? (S.room ? 1.1 : 2.2)} bright={fx.bright ?? 0} contrast={fx.contrast ?? 0} sat={fx.sat ?? 0} />
         {S.key && <pointLight position={[S.key[0], S.key[1], S.key[2]]} intensity={S.key[3]} distance={S.key[4]} decay={1.5} />}
         {(S.acts ?? []).map((a, k) => <Actor key={k} a={a} t={t} u={u} />)}
@@ -60,7 +62,6 @@ export const StadtE02: React.FC = () => {
         {S.pov && <PovHands t={t} mode={S.pov} />}
       </ThreeCanvas>}
       {S.ui?.(sh.s, sh.e)}
-      <HookText lines={["Was passiert, wenn", "die Bahn EINMAL", "pünktlich ist?"]} until={138} font={fontFamily} />
       <Caption words={WORDS} y={0.6} size={96} color="#ffe23a" font={fontFamily} stroke={9} big={/^huss/i} />
       <Audio src={staticFile(TL.audio)} />
     </AbsoluteFill>

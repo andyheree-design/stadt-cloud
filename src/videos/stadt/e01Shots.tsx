@@ -7,7 +7,8 @@ import { DoenerProp, Board, Router, Paper, Splash } from "./Props";
 import { Counter, VideoUI, PostCard, Comments, Note, Flash } from "./Overlays";
 
 type V3 = [number, number, number];
-export type Cam = { p: V3; l: V3; fov: number; mv?: V3; zoom?: number; fast?: boolean; shake?: number; focus?: V3 | ((u: number) => V3) };
+export type Cam = { p: V3; l: V3; fov: number; mv?: V3; zoom?: number; fast?: boolean; shake?: number; focus?: V3 | ((u: number) => V3);
+  /** pełna ścieżka kamery (nadpisuje p/l/mv/zoom) */ fn?: (u: number) => { p: V3; l: V3; fov: number } };
 export type Act = { c: string; face?: Face; look?: Partial<R6Look>; pose?: R6Pose; p: V3; r: number; mv?: [number, number]; dt?: number };
 export type Key = [number, number, number, number, number]; // x y z intensity distance
 export type Spec = {
