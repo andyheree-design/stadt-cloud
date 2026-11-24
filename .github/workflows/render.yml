@@ -15,9 +15,11 @@ on:
         description: "Test: renderuj tylko pierwsze N klatek (0 = całość)"
         default: "0"
         required: false
+  push:
+    branches: [main]
+    paths: [render.json]
 
 env:
-  COMP: ${{ inputs.composition }}
   REMOTION_ENTRY: cloud/index.ts
 
 jobs:
@@ -27,8 +29,20 @@ jobs:
     outputs:
       matrix: ${{ steps.plan.outputs.matrix }}
       frames: ${{ steps.plan.outputs.frames }}
+      comp: ${{ steps.params.outputs.comp }}
     steps:
       - uses: actions/checkout@v4
+      - id: params
+        name: Parametry (inputs albo render.json)
+        env:
+          IN_COMP: ${{ inputs.composition }}
+          IN_CHUNKS: ${{ inputs.chunks }}
+          IN_LIMIT: ${{ inputs.limit }}
+        run: |
+          if [ -n "$IN_COMP" ]; then c="$IN_COMP"; k="$IN_CHUNKS"; l="${IN_LIMIT:-0}";
+          else c=$(jq -r .composition render.json); k=$(jq -r '.chunks // 20' render.json); l=$(jq -r '.limit // 0' render.json); fi
+          echo "comp=$c" >> "$GITHUB_OUTPUT"; echo "chunks=$k" >> "$GITHUB_OUTPUT"; echo "limit=$l" >> "$GITHUB_OUTPUT"
+          echo "Kompozycja $c, kawałki $k, limit $l"
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - name: Biblioteki systemowe Chrome
@@ -44,7 +58,7 @@ jobs:
       - name: Bundle (raz, współdzielony przez wszystkie kawałki)
         run: npx remotion bundle $REMOTION_ENTRY --out-dir=build
       - id: plan
-        run: node tools/plan.mjs build "$COMP" "${{ inputs.chunks }}" "${{ inputs.limit }}"
+        run: node tools/plan.mjs build "${{ steps.params.outputs.comp }}" "${{ steps.params.outputs.chunks }}" "${{ steps.params.outputs.limit }}"
       - uses: actions/upload-artifact@v4
         with: { name: bundle, path: build, retention-days: 1 }
 
@@ -52,6 +66,8 @@ jobs:
     needs: plan
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    env:
+      COMP: ${{ needs.plan.outputs.comp }}
     strategy:
       fail-fast: false
       max-parallel: 20
@@ -114,7 +130,7 @@ jobs:
           if [ "$got" != "$expected" ]; then echo "::error::Liczba klatek $got != $expected"; exit 1; fi
       - uses: actions/upload-artifact@v4
         with:
-          name: full_${{ inputs.composition }}
+          name: full_${{ needs.plan.outputs.comp }}
           path: full.mp4
           retention-days: 7
           compression-level: 0
