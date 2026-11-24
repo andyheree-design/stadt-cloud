@@ -60,9 +60,9 @@ const TRAIN_IN = (u: number) => 26 * Math.pow(1 - u, 2.2) - 4; // czoło pociąg
 const Years: React.FC<{ at: number }> = ({ at }) => {
   const f = useCurrentFrame() - at, { fps } = useVideoConfig(), pop = spring({ frame: f, fps, config: { damping: 9, stiffness: 220 } });
   const y = Math.round(interpolate(f, [8, 70], [1998, 2026], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }));
-  return <div style={{ position: "absolute", top: 240, left: 0, right: 0, display: "flex", justifyContent: "center", transform: `scale(${0.6 + 0.4 * pop})` }}>
-    <div style={{ background: "rgba(0,0,0,.75)", border: "5px solid #fff", borderRadius: 40, padding: "10px 34px", fontFamily: "Fredoka, sans-serif", fontWeight: 700, color: "#fff", fontSize: 76, textAlign: "center", lineHeight: 1.05 }}>
-      ⏳ {y}<div style={{ fontSize: 44, color: "#ffd23f" }}>{y - 1998} Jahre gewartet</div></div></div>;
+  return <div style={{ position: "absolute", top: 110, left: 0, right: 0, display: "flex", justifyContent: "center", transform: `scale(${0.6 + 0.4 * pop})` }}>
+    <div style={{ background: "rgba(0,0,0,.75)", border: "5px solid #fff", borderRadius: 40, padding: "6px 28px", fontFamily: "Fredoka, sans-serif", fontWeight: 700, color: "#fff", fontSize: 62, textAlign: "center", lineHeight: 1.05 }}>
+      ⏳ {y}<div style={{ fontSize: 38, color: "#ffd23f" }}>{y - 1998} Jahre gewartet</div></div></div>;
 };
 
 export const SHOTS_E02: Record<string, SpecE02> = {
@@ -134,8 +134,8 @@ export const SHOTS_E02: Record<string, SpecE02> = {
   trainWait: { fx: "park", fxo: { bokeh: 1.2 }, cam: { p: [-6.8, PH + 1.0, 34.2], l: [-3.2, PH + 1.2, 36.0], fov: 44, mv: [0.4, 0, 0.1], focus: [-4.6, 1.2, 35.6] },
     props: (u, t) => <><Train x={-4} />{deco(t, "PÜNKTLICH", false)}</> },
   // 11 — Der Bürgermeister macht eine Krisensitzung. Die Bahn muss sich offiziell entschuldigen!
-  mayorDesk: { fx: "close", ...close("mayor", RH.x + 0.2, RH.z, { r: PI / 2, face: "angry", pose: { point: 1, shake: 1, talk: 1 }, zoom: 0.8, shake: 0.006, fov: 36 }),
-    props: (u, t) => <MayorDesk position={[RH.x + 0.75, 0.12, RH.z]} rotY={PI / 2} t={t} /> },
+  mayorDesk: { fx: "close", ...close("mayor", -1.6, -24.4, { face: "angry", pose: { point: 1, shake: 1, talk: 1 }, zoom: 0.8, shake: 0.006, fov: 36 }),
+    props: (u, t) => <MayorDesk position={[-1.6, 0.12, -24.4 + 0.6]} t={t} /> },
   bahnSorry: { fx: "park", cam: { p: [ICH_X + 0.4, PH + 1.15, 36.4], l: [ICH_X, PH + 1.0, 32.6], fov: 46, mv: [0, 0, -0.4], focus: [ICH_X, PH + 1.0, 33] },
     acts: [{ c: "post", look: BAHNER, face: "sad", pose: { facepalm: 1 }, p: [ICH_X + 0.75, PH, 33.1], r: 0.1 }, { c: "post", look: BAHNER, face: "cry", pose: { talk: 1 }, p: [ICH_X - 0.75, PH, 33.1], r: -0.1, dt: 0.5 }, ...waiting("angry", [{ point: 1 }, { cross: 1 }, { point: 1, shake: 1 }, { cross: 1 }, { facepalm: 1 }, { point: 1 }])],
     props: (u, t) => <><SorryBanner position={[ICH_X, PH, 32.85]} t={t} />{deco(t)}</> },

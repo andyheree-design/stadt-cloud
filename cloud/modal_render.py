@@ -47,11 +47,15 @@ def render_cpu(comp: str, a: int, b: int):
     return _render(comp, a, b, "swangle", [])
 
 
-@app.function(gpu="T4", cpu=4, memory=12288, timeout=3600, retries=1)
-def render_gpu(comp: str, a: int, b: int):
-    subprocess.run(["nvidia-smi"], check=False)
-    return _render(comp, a, b, "angle-egl",
-                   ["--chrome-mode=chrome-for-testing", "--enable-multiprocess-on-linux"])
+# GPU wymaga karty płatniczej w Modal — rejestrujemy funkcję tylko przy STADT_GPU=1,
+# inaczej Modal odrzuca całą aplikację („Please add a payment method to use T4 GPU functions”).
+render_gpu = None
+if os.environ.get("STADT_GPU") == "1":
+    @app.function(gpu="T4", cpu=4, memory=12288, timeout=3600, retries=1)
+    def render_gpu(comp: str, a: int, b: int):
+        subprocess.run(["nvidia-smi"], check=False)
+        return _render(comp, a, b, "angle-egl",
+                       ["--chrome-mode=chrome-for-testing", "--enable-multiprocess-on-linux"])
 
 
 @app.function(timeout=300)
@@ -69,6 +73,8 @@ def main(comp: str, chunks: int = 60, limit: int = 0, gpu: bool = False):
     size = -(-n // chunks)
     ranges = [(i, min(i + size, n) - 1) for i in range(0, n, size)]
     print(f"{comp}: {n} klatek, {len(ranges)} kawałków po ~{size}, {'GPU T4' if gpu else 'CPU 8 rdzeni'}")
+    if gpu and render_gpu is None:
+        raise SystemExit("GPU: uruchom z STADT_GPU=1 (wymaga karty w Modal)")
     fn = render_gpu if gpu else render_cpu
     t0 = time.time()
     outdir = ROOT / "out" / comp
