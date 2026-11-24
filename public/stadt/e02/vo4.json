@@ -1,0 +1,1004 @@
+[
+ {
+  "line": 1,
+  "text": "In dieser Stadt ist die Bahn noch nie pünktlich gekommen.",
+  "file": "stadt/e02/vo4/l01.wav",
+  "dur": 2.23,
+  "gap": 0.38,
+  "words": [
+   {
+    "w": "In",
+    "s": 0.0,
+    "e": 0.08
+   },
+   {
+    "w": "dieser",
+    "s": 0.08,
+    "e": 0.24
+   },
+   {
+    "w": "Stadt",
+    "s": 0.24,
+    "e": 0.48
+   },
+   {
+    "w": "ist",
+    "s": 0.48,
+    "e": 0.64
+   },
+   {
+    "w": "die",
+    "s": 0.64,
+    "e": 0.76
+   },
+   {
+    "w": "Bahn",
+    "s": 0.76,
+    "e": 0.94
+   },
+   {
+    "w": "noch",
+    "s": 0.94,
+    "e": 1.12
+   },
+   {
+    "w": "nie",
+    "s": 1.12,
+    "e": 1.32
+   },
+   {
+    "w": "pünktlich",
+    "s": 1.32,
+    "e": 1.74
+   },
+   {
+    "w": "gekommen.",
+    "s": 1.74,
+    "e": 2.04
+   }
+  ]
+ },
+ {
+  "line": 2,
+  "text": "Huss! Huss! Huss! Huss! Huss! Huss!",
+  "file": "stadt/e01v3/vo/l02r.wav",
+  "dur": 1.754,
+  "wer": 0.0,
+  "f0": 400,
+  "words": [
+   {
+    "w": "Huss!",
+    "s": 0.0,
+    "e": 0.11
+   },
+   {
+    "w": "Huss!",
+    "s": 0.22,
+    "e": 0.3
+   },
+   {
+    "w": "Huss!",
+    "s": 0.41,
+    "e": 0.49
+   },
+   {
+    "w": "Huss!",
+    "s": 0.97,
+    "e": 1.14
+   },
+   {
+    "w": "Huss!",
+    "s": 1.19,
+    "e": 1.27
+   },
+   {
+    "w": "Huss!",
+    "s": 1.38,
+    "e": 1.692
+   }
+  ]
+ },
+ {
+  "line": 3,
+  "text": "Meine Oma wartet seit neunzehnhundertachtundneunzig auf den RE7. Sie hat noch ein Ticket in D-Mark.",
+  "file": "stadt/e02/vo4/l03.wav",
+  "dur": 5.15,
+  "gap": 0.32,
+  "words": [
+   {
+    "w": "Meine",
+    "s": 0.19,
+    "e": 0.33
+   },
+   {
+    "w": "Oma",
+    "s": 0.33,
+    "e": 0.59
+   },
+   {
+    "w": "wartet",
+    "s": 0.59,
+    "e": 0.85
+   },
+   {
+    "w": "seit",
+    "s": 0.85,
+    "e": 1.01
+   },
+   {
+    "w": "1998",
+    "s": 1.01,
+    "e": 1.73
+   },
+   {
+    "w": "auf",
+    "s": 1.73,
+    "e": 2.61
+   },
+   {
+    "w": "den",
+    "s": 2.61,
+    "e": 2.71
+   },
+   {
+    "w": "RE7.",
+    "s": 2.71,
+    "e": 3.45
+   },
+   {
+    "w": "Sie",
+    "s": 3.81,
+    "e": 3.87
+   },
+   {
+    "w": "hat",
+    "s": 3.87,
+    "e": 3.99
+   },
+   {
+    "w": "noch",
+    "s": 3.99,
+    "e": 4.11
+   },
+   {
+    "w": "ein",
+    "s": 4.11,
+    "e": 4.23
+   },
+   {
+    "w": "Ticket",
+    "s": 4.23,
+    "e": 4.47
+   },
+   {
+    "w": "in",
+    "s": 4.47,
+    "e": 4.61
+   },
+   {
+    "w": "D",
+    "s": 4.61,
+    "e": 4.77
+   },
+   {
+    "w": "-Mark.",
+    "s": 4.77,
+    "e": 4.99
+   }
+  ]
+ },
+ {
+  "line": 4,
+  "text": "Der Postbote wohnt inzwischen auf Gleis drei. Mit Sofa. Und WLAN.",
+  "file": "stadt/e02/vo4/l04.wav",
+  "dur": 3.76,
+  "gap": 0.36,
+  "words": [
+   {
+    "w": "Der",
+    "s": 0.16,
+    "e": 0.24
+   },
+   {
+    "w": "Postbote",
+    "s": 0.24,
+    "e": 0.7
+   },
+   {
+    "w": "wohnt",
+    "s": 0.7,
+    "e": 0.96
+   },
+   {
+    "w": "inzwischen",
+    "s": 0.96,
+    "e": 1.24
+   },
+   {
+    "w": "auf",
+    "s": 1.24,
+    "e": 1.42
+   },
+   {
+    "w": "Gleis",
+    "s": 1.42,
+    "e": 1.7
+   },
+   {
+    "w": "3,",
+    "s": 1.7,
+    "e": 1.94
+   },
+   {
+    "w": "mit",
+    "s": 2.3,
+    "e": 2.4
+   },
+   {
+    "w": "Sofa",
+    "s": 2.4,
+    "e": 2.76
+   },
+   {
+    "w": "und",
+    "s": 2.76,
+    "e": 3.18
+   },
+   {
+    "w": "WLAN.",
+    "s": 3.18,
+    "e": 3.58
+   }
+  ]
+ },
+ {
+  "line": 5,
+  "text": "Der Dönermann hat am Bahnsteig einen Laden aufgemacht. Bester Umsatz der Stadt.",
+  "file": "stadt/e02/vo4/l05.wav",
+  "dur": 3.89,
+  "gap": 0.3,
+  "words": [
+   {
+    "w": "Der",
+    "s": 0.18,
+    "e": 0.26
+   },
+   {
+    "w": "Dönermann",
+    "s": 0.26,
+    "e": 0.66
+   },
+   {
+    "w": "hat",
+    "s": 0.66,
+    "e": 0.82
+   },
+   {
+    "w": "am",
+    "s": 0.82,
+    "e": 0.96
+   },
+   {
+    "w": "Bahnsteig",
+    "s": 0.96,
+    "e": 1.42
+   },
+   {
+    "w": "einen",
+    "s": 1.42,
+    "e": 1.56
+   },
+   {
+    "w": "Laden",
+    "s": 1.56,
+    "e": 1.82
+   },
+   {
+    "w": "aufgemacht.",
+    "s": 1.82,
+    "e": 2.32
+   },
+   {
+    "w": "Bester",
+    "s": 2.6,
+    "e": 2.98
+   },
+   {
+    "w": "Umsatz",
+    "s": 2.98,
+    "e": 3.38
+   },
+   {
+    "w": "der",
+    "s": 3.38,
+    "e": 3.54
+   },
+   {
+    "w": "Stadt.",
+    "s": 3.54,
+    "e": 3.74
+   }
+  ]
+ },
+ {
+  "line": 6,
+  "text": "In der Schule lernen wir: Verspätung ist kein Problem. Verspätung ist ein Gefühl.",
+  "file": "stadt/e02/vo4/l06.wav",
+  "dur": 3.81,
+  "gap": 0.44,
+  "words": [
+   {
+    "w": "In",
+    "s": 0.15,
+    "e": 0.25
+   },
+   {
+    "w": "der",
+    "s": 0.25,
+    "e": 0.33
+   },
+   {
+    "w": "Schule",
+    "s": 0.33,
+    "e": 0.49
+   },
+   {
+    "w": "lernen",
+    "s": 0.49,
+    "e": 0.73
+   },
+   {
+    "w": "wir,",
+    "s": 0.73,
+    "e": 0.93
+   },
+   {
+    "w": "Verspätung",
+    "s": 1.21,
+    "e": 1.71
+   },
+   {
+    "w": "ist",
+    "s": 1.71,
+    "e": 1.83
+   },
+   {
+    "w": "kein",
+    "s": 1.83,
+    "e": 1.97
+   },
+   {
+    "w": "Problem.",
+    "s": 1.97,
+    "e": 2.29
+   },
+   {
+    "w": "Verspätung",
+    "s": 2.69,
+    "e": 3.09
+   },
+   {
+    "w": "ist",
+    "s": 3.09,
+    "e": 3.21
+   },
+   {
+    "w": "ein",
+    "s": 3.21,
+    "e": 3.33
+   },
+   {
+    "w": "Gefühl.",
+    "s": 3.33,
+    "e": 3.59
+   }
+  ]
+ },
+ {
+  "line": 7,
+  "text": "Achtung an Gleis drei. Ihr Zug hat heute eine Verspätung von circa... ja.",
+  "file": "stadt/e02/vo4/l07.wav",
+  "dur": 3.85,
+  "gap": 0.34,
+  "words": [
+   {
+    "w": "Achtung",
+    "s": 0.22,
+    "e": 0.48
+   },
+   {
+    "w": "an",
+    "s": 0.48,
+    "e": 0.62
+   },
+   {
+    "w": "Gleis",
+    "s": 0.62,
+    "e": 0.88
+   },
+   {
+    "w": "3.",
+    "s": 0.88,
+    "e": 1.12
+   },
+   {
+    "w": "Ihr",
+    "s": 1.44,
+    "e": 1.52
+   },
+   {
+    "w": "Zug",
+    "s": 1.52,
+    "e": 1.72
+   },
+   {
+    "w": "hat",
+    "s": 1.72,
+    "e": 1.9
+   },
+   {
+    "w": "heute",
+    "s": 1.9,
+    "e": 2.04
+   },
+   {
+    "w": "eine",
+    "s": 2.04,
+    "e": 2.22
+   },
+   {
+    "w": "Verspätung",
+    "s": 2.22,
+    "e": 2.66
+   },
+   {
+    "w": "von",
+    "s": 2.66,
+    "e": 2.8
+   },
+   {
+    "w": "circa,",
+    "s": 2.8,
+    "e": 3.08
+   },
+   {
+    "w": "ja.",
+    "s": 3.54,
+    "e": 3.68
+   }
+  ]
+ },
+ {
+  "line": 8,
+  "text": "Kevin hat auf dem Bahnsteig seine Frau kennengelernt. Die haben jetzt zwei Kinder. Der Zug ist immer noch nicht da.",
+  "file": "stadt/e02/vo4/l08.wav",
+  "dur": 4.68,
+  "gap": 0.3,
+  "words": [
+   {
+    "w": "Kevin",
+    "s": 0.17,
+    "e": 0.33
+   },
+   {
+    "w": "hat",
+    "s": 0.33,
+    "e": 0.49
+   },
+   {
+    "w": "auf",
+    "s": 0.49,
+    "e": 0.61
+   },
+   {
+    "w": "dem",
+    "s": 0.61,
+    "e": 0.71
+   },
+   {
+    "w": "Bahnsteig",
+    "s": 0.71,
+    "e": 1.15
+   },
+   {
+    "w": "seine",
+    "s": 1.15,
+    "e": 1.29
+   },
+   {
+    "w": "Frau",
+    "s": 1.29,
+    "e": 1.49
+   },
+   {
+    "w": "kennengelernt.",
+    "s": 1.49,
+    "e": 2.05
+   },
+   {
+    "w": "Die",
+    "s": 2.25,
+    "e": 2.35
+   },
+   {
+    "w": "haben",
+    "s": 2.35,
+    "e": 2.49
+   },
+   {
+    "w": "jetzt",
+    "s": 2.49,
+    "e": 2.67
+   },
+   {
+    "w": "zwei",
+    "s": 2.67,
+    "e": 2.93
+   },
+   {
+    "w": "Kinder.",
+    "s": 2.93,
+    "e": 3.19
+   },
+   {
+    "w": "Der",
+    "s": 3.49,
+    "e": 3.59
+   },
+   {
+    "w": "Zug",
+    "s": 3.59,
+    "e": 3.75
+   },
+   {
+    "w": "ist",
+    "s": 3.75,
+    "e": 3.91
+   },
+   {
+    "w": "immer",
+    "s": 3.91,
+    "e": 4.07
+   },
+   {
+    "w": "noch",
+    "s": 4.07,
+    "e": 4.21
+   },
+   {
+    "w": "nicht",
+    "s": 4.21,
+    "e": 4.33
+   },
+   {
+    "w": "da.",
+    "s": 4.33,
+    "e": 4.53
+   }
+  ]
+ },
+ {
+  "line": 9,
+  "text": "Niemand glaubt mehr an die Bahn. Bis eines Tages der Zug pünktlich kam. Auf die Minute.",
+  "file": "stadt/e02/vo4/l09.wav",
+  "dur": 4.19,
+  "gap": 0.32,
+  "words": [
+   {
+    "w": "Niemand",
+    "s": 0.15,
+    "e": 0.43
+   },
+   {
+    "w": "glaubt",
+    "s": 0.43,
+    "e": 0.83
+   },
+   {
+    "w": "mehr",
+    "s": 0.83,
+    "e": 0.91
+   },
+   {
+    "w": "an",
+    "s": 0.91,
+    "e": 1.03
+   },
+   {
+    "w": "die",
+    "s": 1.03,
+    "e": 1.11
+   },
+   {
+    "w": "Bahn.",
+    "s": 1.11,
+    "e": 1.33
+   },
+   {
+    "w": "Bis",
+    "s": 1.33,
+    "e": 1.71
+   },
+   {
+    "w": "eines",
+    "s": 1.71,
+    "e": 1.89
+   },
+   {
+    "w": "Tages",
+    "s": 1.89,
+    "e": 2.19
+   },
+   {
+    "w": "der",
+    "s": 2.19,
+    "e": 2.37
+   },
+   {
+    "w": "Zug",
+    "s": 2.37,
+    "e": 2.61
+   },
+   {
+    "w": "pünktlich",
+    "s": 2.61,
+    "e": 3.05
+   },
+   {
+    "w": "kam.",
+    "s": 3.05,
+    "e": 3.25
+   },
+   {
+    "w": "Auf",
+    "s": 3.49,
+    "e": 3.63
+   },
+   {
+    "w": "die",
+    "s": 3.63,
+    "e": 3.75
+   },
+   {
+    "w": "Minute.",
+    "s": 3.75,
+    "e": 4.03
+   }
+  ]
+ },
+ {
+  "line": 10,
+  "text": "Und der Bahnsteig war leer. Weil alle zu Hause waren. Der Zug kommt ja eh nie.",
+  "file": "stadt/e02/vo4/l10.wav",
+  "dur": 3.76,
+  "gap": 0.28,
+  "words": [
+   {
+    "w": "Und",
+    "s": 0.16,
+    "e": 0.3
+   },
+   {
+    "w": "der",
+    "s": 0.3,
+    "e": 0.4
+   },
+   {
+    "w": "Bahnsteig",
+    "s": 0.4,
+    "e": 0.82
+   },
+   {
+    "w": "war",
+    "s": 0.82,
+    "e": 0.92
+   },
+   {
+    "w": "leer,",
+    "s": 0.92,
+    "e": 1.12
+   },
+   {
+    "w": "weil",
+    "s": 1.4,
+    "e": 1.52
+   },
+   {
+    "w": "alle",
+    "s": 1.52,
+    "e": 1.7
+   },
+   {
+    "w": "zu",
+    "s": 1.7,
+    "e": 1.84
+   },
+   {
+    "w": "Hause",
+    "s": 1.84,
+    "e": 2.0
+   },
+   {
+    "w": "waren.",
+    "s": 2.0,
+    "e": 2.28
+   },
+   {
+    "w": "Der",
+    "s": 2.56,
+    "e": 2.68
+   },
+   {
+    "w": "Zug",
+    "s": 2.68,
+    "e": 2.9
+   },
+   {
+    "w": "kommt",
+    "s": 2.9,
+    "e": 3.08
+   },
+   {
+    "w": "ja",
+    "s": 3.08,
+    "e": 3.22
+   },
+   {
+    "w": "eh",
+    "s": 3.22,
+    "e": 3.4
+   },
+   {
+    "w": "nie.",
+    "s": 3.4,
+    "e": 3.62
+   }
+  ]
+ },
+ {
+  "line": 11,
+  "text": "Der Bürgermeister macht eine Krisensitzung. Die Bahn muss sich offiziell entschuldigen!",
+  "file": "stadt/e02/vo4/l11.wav",
+  "dur": 3.47,
+  "gap": 0.26,
+  "words": [
+   {
+    "w": "Der",
+    "s": 0.14,
+    "e": 0.24
+   },
+   {
+    "w": "Bürgermeister",
+    "s": 0.24,
+    "e": 0.72
+   },
+   {
+    "w": "macht",
+    "s": 0.72,
+    "e": 0.84
+   },
+   {
+    "w": "eine",
+    "s": 0.84,
+    "e": 1.0
+   },
+   {
+    "w": "Krisensitzung.",
+    "s": 1.0,
+    "e": 1.58
+   },
+   {
+    "w": "Die",
+    "s": 1.82,
+    "e": 1.9
+   },
+   {
+    "w": "Bahn",
+    "s": 1.9,
+    "e": 2.12
+   },
+   {
+    "w": "muss",
+    "s": 2.12,
+    "e": 2.26
+   },
+   {
+    "w": "sich",
+    "s": 2.26,
+    "e": 2.38
+   },
+   {
+    "w": "offiziell",
+    "s": 2.38,
+    "e": 2.88
+   },
+   {
+    "w": "entschuldigen.",
+    "s": 2.88,
+    "e": 3.34
+   }
+  ]
+ },
+ {
+  "line": 12,
+  "text": "Jetzt ist der Zug wieder zwei Stunden zu spät. Und alle sind glücklich.",
+  "file": "stadt/e02/vo4/l12.wav",
+  "dur": 3.19,
+  "gap": 0.24,
+  "words": [
+   {
+    "w": "Jetzt",
+    "s": 0.13,
+    "e": 0.31
+   },
+   {
+    "w": "ist",
+    "s": 0.31,
+    "e": 0.49
+   },
+   {
+    "w": "der",
+    "s": 0.49,
+    "e": 0.59
+   },
+   {
+    "w": "Zug",
+    "s": 0.59,
+    "e": 0.81
+   },
+   {
+    "w": "wieder",
+    "s": 0.81,
+    "e": 0.99
+   },
+   {
+    "w": "zwei",
+    "s": 0.99,
+    "e": 1.23
+   },
+   {
+    "w": "Stunden",
+    "s": 1.23,
+    "e": 1.53
+   },
+   {
+    "w": "zu",
+    "s": 1.53,
+    "e": 1.73
+   },
+   {
+    "w": "spät.",
+    "s": 1.73,
+    "e": 2.03
+   },
+   {
+    "w": "Und",
+    "s": 2.27,
+    "e": 2.39
+   },
+   {
+    "w": "alle",
+    "s": 2.39,
+    "e": 2.59
+   },
+   {
+    "w": "sind",
+    "s": 2.59,
+    "e": 2.71
+   },
+   {
+    "w": "glücklich.",
+    "s": 2.71,
+    "e": 3.07
+   }
+  ]
+ },
+ {
+  "line": 13,
+  "text": "Nur Oma hat ihn verpasst. Sie war Brötchen holen. Typisch.",
+  "file": "stadt/e02/vo4/l13.wav",
+  "dur": 3.08,
+  "gap": 0.24,
+  "words": [
+   {
+    "w": "Nur",
+    "s": 0.12,
+    "e": 0.32
+   },
+   {
+    "w": "Oma",
+    "s": 0.32,
+    "e": 0.66
+   },
+   {
+    "w": "hat",
+    "s": 0.66,
+    "e": 0.82
+   },
+   {
+    "w": "ihn",
+    "s": 0.82,
+    "e": 0.9
+   },
+   {
+    "w": "verpasst.",
+    "s": 0.9,
+    "e": 1.36
+   },
+   {
+    "w": "Sie",
+    "s": 1.54,
+    "e": 1.64
+   },
+   {
+    "w": "war",
+    "s": 1.64,
+    "e": 1.76
+   },
+   {
+    "w": "Brötchenholen.",
+    "s": 1.76,
+    "e": 2.38
+   },
+   {
+    "w": "Typisch.",
+    "s": 2.56,
+    "e": 2.96
+   }
+  ]
+ },
+ {
+  "line": 14,
+  "text": "Und wenn deine Bahn heute pünktlich war... lüg nicht.",
+  "file": "stadt/e02/vo4/l14.wav",
+  "dur": 2.46,
+  "gap": 0.0,
+  "words": [
+   {
+    "w": "Und",
+    "s": 0.12,
+    "e": 0.2
+   },
+   {
+    "w": "wenn",
+    "s": 0.2,
+    "e": 0.34
+   },
+   {
+    "w": "deine",
+    "s": 0.34,
+    "e": 0.5
+   },
+   {
+    "w": "Bahn",
+    "s": 0.5,
+    "e": 0.78
+   },
+   {
+    "w": "heute",
+    "s": 0.78,
+    "e": 0.9
+   },
+   {
+    "w": "pünktlich",
+    "s": 0.9,
+    "e": 1.38
+   },
+   {
+    "w": "war,",
+    "s": 1.38,
+    "e": 1.56
+   },
+   {
+    "w": "lügt",
+    "s": 1.84,
+    "e": 2.12
+   },
+   {
+    "w": "nicht.",
+    "s": 2.12,
+    "e": 2.26
+   }
+  ]
+ }
+]
