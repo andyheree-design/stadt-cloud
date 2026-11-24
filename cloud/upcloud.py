@@ -55,7 +55,7 @@ def template(gpu):
 
 def user_data(comp, f, t, gpu):
     env = f"export COMP={comp} FROM={f} TO={t} MAXH=3 GL={'angle-egl' if gpu else 'swangle'}"
-    if not gpu: env += " CONC=$(nproc)"
+    if not gpu: env += " CONC=$(( $(nproc) / 2 ))"  # 32 kart swangle naraz = timeout; skrypt i tak zmniejsza przy błędzie
     return f"#!/bin/bash\n{env}\ncurl -fsSL {SCRIPT} | bash > /var/log/stadt.log 2>&1\n"
 
 
@@ -95,10 +95,12 @@ def url(s, path=""): return f"http://{s['ip']}:8000/{path}"
 
 
 def status():
+    bad = False
     for s in json.loads(STATE.read_text()):
         try: st = urllib.request.urlopen(url(s, "status.txt"), timeout=20).read().decode().strip().splitlines()[-1]
         except Exception as e: st = f"(jeszcze startuje: {e.__class__.__name__})"
-        print(s["frm"], s["to"], st)
+        print(s["frm"], s["to"], st); bad |= "BLAD KONCOWY" in st
+    return bad
 
 
 def fetch(out):
@@ -139,7 +141,8 @@ def frames(comp):
 
 def wait_all(out, need, t0, limit=3 * 3600):
     while True:
-        status(); fetch(out)
+        if status(): raise SystemExit("serwer zgłosił BLAD KONCOWY — przerywam (err.txt na porcie 8000)")
+        fetch(out)
         if all((out / f"part_{a:06d}.mp4").exists() for a in need): return
         if time.time() - t0 > limit: raise SystemExit("ponad limit czasu — przerywam")
         time.sleep(60)

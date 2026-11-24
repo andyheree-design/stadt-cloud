@@ -19,11 +19,12 @@ npm ci --no-audit --no-fund >/dev/null 2>&1; npx remotion browser ensure --chrom
 npx remotion bundle cloud/index.ts --out-dir=build >/dev/null 2>&1 || { log "BLAD bundle"; fail; }
 log "setup ok node $(node -v)"
 CHUNK=${CHUNK:-100}; CONC=${CONC:-$(( $(nproc) > 16 ? 16 : $(nproc) ))}; GL=${GL:-angle-egl}
-render(){ npx remotion render build "$COMP" "$3" --frames=$1-$2 --gl=$GL --chrome-mode=chrome-for-testing --concurrency=$CONC --muted --codec=h264 --crf=16 --pixel-format=yuv420p --timeout=120000 --log=error 2>>/out/err.txt; }
+render(){ npx remotion render build "$COMP" "$3" --frames=$1-$2 --gl=$GL --chrome-mode=chrome-for-testing --concurrency=$CONC --muted --codec=h264 --crf=16 --pixel-format=yuv420p --timeout=240000 --log=error 2>>/out/err.txt; }
 first=1
 for a in $(seq $FROM $CHUNK $TO); do b=$((a+CHUNK-1)); [ $b -gt $TO ] && b=$TO
   f=/out/part_$(printf %06d $a).mp4; t=$(date +%s)
-  render $a $b $f.tmp.mp4 || { log "BLAD render $a-$b GL=$GL"; [ $GL != swangle ] && GL=swangle && render $a $b $f.tmp.mp4 || fail; }
+  # przy błędzie: najpierw swangle, potem połowa równoległości (za dużo kart CPU-WebGL naraz = timeout sceny)
+  until render $a $b $f.tmp.mp4; do log "BLAD render $a-$b GL=$GL conc=$CONC"; if [ $GL != swangle ]; then GL=swangle; elif [ $CONC -gt 2 ]; then CONC=$((CONC/2)); else fail; fi; log "ponawiam GL=$GL conc=$CONC"; done
   y=$(ffmpeg -hide_banner -i $f.tmp.mp4 -vf signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=- -an -f null - 2>/dev/null | awk -F= '/YAVG/{s+=$2;n++}END{printf "%.0f",s/n}')
   if [ $first = 1 ] && { [ $y -gt 235 ] || [ $y -lt 8 ]; } && [ $GL != swangle ]; then log "PODEJRZANA jasnosc $y przy $GL -> swangle"; GL=swangle; render $a $b $f.tmp.mp4; fi
   first=0; mv $f.tmp.mp4 $f; dt=$(( $(date +%s)-t ))
