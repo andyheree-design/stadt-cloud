@@ -3,7 +3,7 @@
 # Zmienne: COMP, FROM, TO, CHUNK (100), CONC (auto), GL (angle-egl; zapas swangle)
 set -u; mkdir -p /out
 # Bezpiecznik kosztów: pod sam się usuwa po MAXH godzinach albo 20 min po końcu (RunPod wstrzykuje RUNPOD_API_KEY i RUNPOD_POD_ID)
-kill_self(){ [ -n "${RUNPOD_API_KEY:-}" ] && curl -s https://api.runpod.io/graphql -H "Content-Type: application/json" -H "Authorization: Bearer $RUNPOD_API_KEY" -d "{\"query\":\"mutation{podTerminate(input:{podId:\\\"$RUNPOD_POD_ID\\\"})}\"}"; }
+kill_self(){ [ -z "${RUNPOD_API_KEY:-}" ] && { sync; shutdown -h now; return; }; curl -s https://api.runpod.io/graphql -H "Content-Type: application/json" -H "Authorization: Bearer $RUNPOD_API_KEY" -d "{\"query\":\"mutation{podTerminate(input:{podId:\\\"$RUNPOD_POD_ID\\\"})}\"}"; }
 ( sleep $(( ${MAXH:-2} * 3600 )); echo "$(date +%T) LIMIT CZASU - usuwam pod" >> /out/status.txt; kill_self ) &
  cd /out; nohup python3 -m http.server 8000 >/dev/null 2>&1 &
 log(){ echo "$(date +%T) $*" | tee -a /out/status.txt; }
