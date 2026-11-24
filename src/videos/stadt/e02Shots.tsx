@@ -67,8 +67,9 @@ const Years: React.FC<{ at: number }> = ({ at }) => {
 
 export const SHOTS_E02: Record<string, SpecE02> = {
   // 1 — In dieser Stadt ist die Bahn noch nie pünktlich gekommen.
-  stationWide: { fx: "park", cam: { p: [9, 3.6, 39.5], l: [-2, 1.0, 32], fov: 50, mv: [-2.5, -0.6, -1.2], focus: [ICH_X, PH + 0.9, ZI] },
-    acts: [{ c: "ich", face: "smug", pose: { cross: 1 }, p: [ICH_X, PH, ZI], r: 0.4 }, ...waiting("sad")], props: (u, t) => deco(t) },
+  // HOOK (klatka 0) — kadr jak w ostatnim ujęciu hussPoint (fov 32×0.78 ≈ 25) → płynna pętla; potem odjazd kamery
+  stationWide: dusk({ fx: "close", ...pc("ich", ICH_X, { r: 0, face: "angry", pose: { cross: 1, talk: 1, shake: 0.3 }, fov: 25, zoom: 1.5, mv: [0.4, 0.25, 1.4], shake: 0.004 }),
+    props: (u, t) => deco(t) }),
   boardDelay: { fx: "close", cam: { p: [-2.4, PH + 1.55, 35.4], l: [-3, PH + 1.95, 33.6], fov: 38, zoom: 0.75, fast: true, focus: BOARD },
     acts: [{ c: "extra2", face: "angry", pose: { point: 1, shake: 0.5 }, p: [-2.6, PH, 34.3], r: PI + 0.3 }], props: (u, t) => deco(t), key: [-2, PH + 1.6, 35.2, 2, 5] },
   clockSpin: { fx: "close", fxo: { bokeh: 3 }, cam: { p: [0.9, PH + 2.0, 34.0], l: [0.5, PH + 2.32, 32.9], fov: 34, shake: 0.006, zoom: 0.8, focus: CLOCK },
@@ -124,8 +125,8 @@ export const SHOTS_E02: Record<string, SpecE02> = {
     acts: [...waiting("sad", [{ facepalm: 1 }, { cross: 1 }, { lean: 0.3 }, { facepalm: 1 }, { cross: 1 }, { lean: 0.25 }]), { c: "ich", face: "sad", pose: { lean: 0.3 }, p: [ICH_X, PH, ZI], r: -0.3 }], props: (u, t) => deco(t) },
   trainArrive: { fx: "park", fxo: { bokeh: 1 }, cam: { p: [-3.5, PH + 0.95, 34.7], l: [12, PH + 1.0, 36.0], fov: 46, shake: 0.006, focus: (u) => [TRAIN_IN(u) + 1, 1.2, ST.TZ] },
     acts: [{ c: "ich", face: "shock", pose: { armsUp: 1, jump: 0.4 }, p: [-1.6, PH, 33.6], r: PI / 2 + 0.3 }], props: (u, t) => <><Train x={TRAIN_IN(u)} />{deco(t)}</> },
-  clockExact: { fx: "close", fxo: { bokeh: 3 }, cam: { p: [0.6, PH + 2.1, 33.75], l: [0.5, PH + 2.33, 32.9], fov: 30, zoom: 0.85, fast: true, focus: CLOCK },
-    props: (u, t) => <>{clock(8, 0, 0)}<Train x={-4} /></>, key: [1.0, PH + 2.5, 34.2, 3, 4] },
+  clockExact: { fx: "close", fxo: { bokeh: 1.5 }, cam: { p: [2.3, PH + 1.55, 35.6], l: [0.2, PH + 2.0, 32.9], fov: 44, zoom: 0.8, fast: true, focus: CLOCK },
+    props: (u, t) => <>{clock(8, 0, 0)}<Train x={-4} />{board("pünktlich", { color: "#3ad16a" })}</>, key: [1.0, PH + 2.5, 34.2, 1.4, 4] },
   // 10 — Und der Bahnsteig war leer. Weil alle zu Hause waren. Der Zug kommt ja eh nie.
   emptyPlatform: { fx: "park", fxo: { sat: -0.05 }, cam: { p: [12, PH + 2.6, 34.3], l: [-4, PH + 0.6, 32.6], fov: 48, mv: [-1.5, -0.4, 0] },
     props: (u, t) => <><Train x={-16} />{deco(t, "PÜNKTLICH", false)}<mesh position={[6 - u * 6, PH + 0.2 + Math.abs(Math.sin(t * 7)) * 0.15, 33.2]} rotation={[0, 0, t * 6]}><icosahedronGeometry args={[0.2, 1]} /><meshStandardMaterial color="#b0904a" roughness={1} wireframe /></mesh></> },

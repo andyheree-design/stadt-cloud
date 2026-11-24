@@ -10,6 +10,7 @@ import { Town, TownKit, loadTown } from "./Town";
 import { Room } from "./Room";
 import { Fx } from "./Fx";
 import { Caption, Word } from "./Caption";
+import { HookText } from "./Overlays";
 import { FX, Cam, Act, COP } from "./e01Shots";
 import { SHOTS_E02, ActE02 } from "./e02Shots";
 import { Bahnhof } from "./PropsE02";
@@ -59,7 +60,8 @@ export const StadtE02: React.FC = () => {
         {S.pov && <PovHands t={t} mode={S.pov} />}
       </ThreeCanvas>}
       {S.ui?.(sh.s, sh.e)}
-      <Caption words={WORDS} y={0.69} size={96} color="#ffe23a" font={fontFamily} stroke={9} big={/^huss/i} />
+      <HookText lines={["Was passiert, wenn", "die Bahn EINMAL", "pünktlich ist?"]} until={138} font={fontFamily} />
+      <Caption words={WORDS} y={0.6} size={96} color="#ffe23a" font={fontFamily} stroke={9} big={/^huss/i} />
       <Audio src={staticFile(TL.audio)} />
     </AbsoluteFill>
   );

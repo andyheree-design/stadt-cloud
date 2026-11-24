@@ -96,3 +96,20 @@ export const Note: React.FC<{ at: number }> = ({ at }) => {
 
 /** błysk (biały) albo czerń; u = 0..1 */
 export const Flash: React.FC<{ color?: string; opacity: number }> = ({ color = "#fff", opacity }) => <AbsoluteFill style={{ background: color, opacity }} />;
+
+// Hook w klatce 0: pełny tekst od razu (bez pop-in od zera), w bezpiecznej strefie Shorts/TikTok (y ~300–620)
+export const HookText: React.FC<{ lines: string[]; until?: number; accent?: number; font?: string }> = ({ lines, until = 140, accent = 1, font = FONT }) => {
+  const f = useCurrentFrame();
+  if (f > until) return null;
+  const out = interpolate(f, [until - 12, until], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const pulse = 1 + 0.03 * Math.sin(f * 0.35);
+  return (
+    <div style={{ position: "absolute", top: 640, left: 60, right: 200, display: "flex", flexDirection: "column", alignItems: "center", gap: 6, opacity: out, transform: `scale(${pulse})` }}>
+      {lines.map((l, i) => (
+        <div key={i} style={{ fontFamily: font, fontSize: 92, lineHeight: 1.05, textAlign: "center", color: i === accent ? "#ffe23a" : "#fff",
+          WebkitTextStroke: "10px #111", paintOrder: "stroke fill", textShadow: "0 8px 0 rgba(0,0,0,.45)",
+          background: i === accent ? "rgba(214,40,40,.92)" : "transparent", borderRadius: 22, padding: i === accent ? "4px 26px" : 0 }}>{l}</div>
+      ))}
+    </div>
+  );
+};
