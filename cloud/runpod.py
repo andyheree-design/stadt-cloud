@@ -1,6 +1,7 @@
 """RunPod: odpala N podów GPU równolegle, każdy renderuje swój zakres; pobiera części.
 python cloud/runpod.py start StadtE02 693 3734 4   -> tworzy 4 pody
 python cloud/runpod.py status | fetch <outdir> | stop
+python cloud/runpod.py film StadtE03 <audio.wav> <wynik.mp4> [pody=2] [od=0]  -> wszystko: pody, pobranie, sklejenie, kontrola, usunięcie
 Klucz API: C:/Users/dimau/.runpod_key (poza repo)."""
 import json, sys, time, pathlib, urllib.request
 KEY = pathlib.Path.home().joinpath(".runpod_key").read_text().strip()
@@ -46,4 +47,30 @@ def fetch(out):
 def stop():
     for p in json.loads(STATE.read_text()):
         gql('mutation{podTerminate(input:{podId:%s})}' % json.dumps(p["id"])); print("usunięty", p["id"])
-if __name__ == "__main__": {"start": start, "status": status, "fetch": fetch, "stop": stop}[sys.argv[1]](*sys.argv[2:])
+def frames(comp):
+    import subprocess
+    js = ("const {selectComposition}=require('@remotion/renderer');"
+          f"selectComposition({{serveUrl:'build',id:'{comp}'}}).then(c=>console.log('FRAMES='+c.durationInFrames))")
+    r = subprocess.run(["node", "-e", js], cwd=pathlib.Path(__file__).parent.parent, capture_output=True, text=True, check=True, shell=False)
+    return int(r.stdout.split("FRAMES=")[-1].strip())
+def film(comp, audio, result, n=2, od=0):
+    import subprocess
+    total = frames(comp); od = int(od); t0 = time.time()
+    start(comp, od, total - 1, n)
+    out = pathlib.Path.home() / "stadt-cloud" / "out" / comp
+    need = [a for p in json.loads(STATE.read_text()) for a in range(p["frm"], p["to"] + 1, 100)]
+    try:
+        while True:
+            status(); fetch(out)
+            if all((out / f"part_{a:06d}.mp4").exists() for a in need): break
+            if time.time() - t0 > 3 * 3600: raise SystemExit("ponad 3 h — przerywam")
+            time.sleep(60)
+    finally:
+        stop()
+    parts = sorted(out.glob("part_*.mp4")); lst = out / "list.txt"
+    lst.write_text("".join(f"file '{f.as_posix()}'" + chr(10) for f in parts))
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(lst), "-i", audio,
+                    "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest",
+                    "-movflags", "+faststart", result], check=True)
+    print(f"GOTOWE {result} w {(time.time() - t0) / 60:.0f} min — teraz kontrola jakości (klatki, jasność, arkusz)")
+if __name__ == "__main__": {"film": film, "start": start, "status": status, "fetch": fetch, "stop": stop}[sys.argv[1]](*sys.argv[2:])
