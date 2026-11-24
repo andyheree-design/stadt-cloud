@@ -1,0 +1,36 @@
+# Render Remotion na CircleCI (projekt open source: 30 równoległych maszyn).
+# Zakres w circle.json; każdy węzeł renderuje swój kawałek i zapisuje go jako artefakt.
+version: 2.1
+jobs:
+  render:
+    docker:
+      - image: cimg/node:22.11-browsers
+    resource_class: large
+    parallelism: 30
+    steps:
+      - checkout
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq jq ffmpeg libgbm-dev libnss3 libxkbcommon-dev libasound2 || true
+      - restore_cache: { keys: [ "nm-{{ checksum \"package-lock.json\" }}" ] }
+      - run: npm ci --no-audit --no-fund
+      - save_cache: { key: "nm-{{ checksum \"package-lock.json\" }}", paths: [ node_modules ] }
+      - run: npx remotion browser ensure
+      - run: npx remotion bundle cloud/index.ts --out-dir=build
+      - run:
+          name: Render kawałka
+          no_output_timeout: 90m
+          command: |
+            C=$(jq -r .composition circle.json); A=$(jq -r .from circle.json); B=$(jq -r .to circle.json); K=$(jq -r .nodes circle.json)
+            I=$CIRCLE_NODE_INDEX; N=$((B - A + 1)); S=$(( (N + K - 1) / K ))
+            F=$((A + I * S)); T=$((F + S - 1)); [ $T -gt $B ] && T=$B
+            mkdir -p out
+            if [ $F -le $B ]; then
+              npx remotion render build "$C" out/part_$(printf %06d $F).mp4 --frames=$F-$T \
+                --gl=swangle --concurrency=$(nproc) --muted --codec=h264 --crf=16 --pixel-format=yuv420p --timeout=120000 --log=info
+            fi
+            ls -la out
+      - store_artifacts: { path: out }
+workflows:
+  render:
+    jobs:
+      - render:
+          filters: { branches: { only: [ circle ] } }
