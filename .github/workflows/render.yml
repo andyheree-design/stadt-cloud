@@ -41,6 +41,7 @@ jobs:
         run: |
           if [ -n "$IN_COMP" ]; then c="$IN_COMP"; k="$IN_CHUNKS"; l="${IN_LIMIT:-0}";
           else c=$(jq -r .composition render.json); k=$(jq -r '.chunks // 20' render.json); l=$(jq -r '.limit // 0' render.json); fi
+          st=$(jq -r '.start // 0' render.json 2>/dev/null || echo 0); echo "start=$st" >> "$GITHUB_OUTPUT"
           echo "comp=$c" >> "$GITHUB_OUTPUT"; echo "chunks=$k" >> "$GITHUB_OUTPUT"; echo "limit=$l" >> "$GITHUB_OUTPUT"
           echo "Kompozycja $c, kawałki $k, limit $l"
       - uses: actions/setup-node@v4
@@ -58,7 +59,7 @@ jobs:
       - name: Bundle (raz, współdzielony przez wszystkie kawałki)
         run: npx remotion bundle $REMOTION_ENTRY --out-dir=build
       - id: plan
-        run: node tools/plan.mjs build "${{ steps.params.outputs.comp }}" "${{ steps.params.outputs.chunks }}" "${{ steps.params.outputs.limit }}"
+        run: node tools/plan.mjs build "${{ steps.params.outputs.comp }}" "${{ steps.params.outputs.chunks }}" "${{ steps.params.outputs.limit }}" "${{ steps.params.outputs.start }}"
       - uses: actions/upload-artifact@v4
         with: { name: bundle, path: build, retention-days: 1 }
 
@@ -107,6 +108,7 @@ jobs:
   concat:
     needs: [plan, render]
     runs-on: ubuntu-latest
+    permissions: { contents: write }
     timeout-minutes: 20
     steps:
       - uses: actions/download-artifact@v4
@@ -134,3 +136,6 @@ jobs:
           path: full.mp4
           retention-days: 7
           compression-level: 0
+      - name: Publiczne wydanie (pobieranie bez logowania)
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: gh release create "render-${{ github.run_id }}" full.mp4 -R "${{ github.repository }}" -t "render ${{ needs.plan.outputs.comp }} ${{ github.run_id }}" -n "auto" --latest=false
