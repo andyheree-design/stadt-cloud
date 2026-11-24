@@ -1,0 +1,289 @@
+// EHRENSACHE — postać z GLB (MPFB/Blender) z tym samym kontraktem co buildHuman z cast.js:
+// { group, pose(P), meshes, head, skull, faceMesh, spine, grip: {L, R}, acc }.
+// Pozy: kierunkowo w przestrzeni postaci (patrzy w −Z, jak stare postacie), mimika: morph targets x_* (MPFB expression units).
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
+// @ts-ignore
+import { softGradientMap } from "@kos/style/akte-tusche/toon.js";
+// @ts-ignore
+import { blendExpr } from "@kos/characters/ehre/cast.js";
+import { NOINK } from "../bridge/ink";
+
+export const loadGlb = (url: string) => new Promise<any>((res, rej) => new GLTFLoader().load(url, res, undefined, rej));
+
+type Opts = { natural?: boolean; headScale?: number; skin?: string; tint?: Record<string, string> };
+const V = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
+const DOWN = V(0, -1, 0);
+const clamp = (x: number) => Math.max(0, Math.min(1, x));
+
+/** parametry twarzy (drawFace) -> wagi morphów MPFB */
+const faceToMorphs = (f: any): Record<string, number> => {
+  const m: Record<string, number> = {};
+  const both = (k: string, w: number) => { m[`x_${k.replace("*", "left")}`] = clamp(w); m[`x_${k.replace("*", "right")}`] = clamp(w); };
+  const open = (f.eyeOpen ?? 0.82) * (1 - (f.blink ?? 0));
+  both("eye-*-closure", open < 0.82 ? (0.82 - open) / 0.82 * 0.9 + (f.blink ?? 0) * 0.1 : 0);
+  both("eye-*-opened-up", open > 0.82 ? (open - 0.82) / 0.26 : 0);
+  both("eye-*-slit", (f.lidLower ?? 0) * 0.7);
+  const br = f.browRaise ?? 0, bt = f.browTilt ?? 0, bf = f.browFurrow ?? 0;
+  both("eyebrows-*-up", Math.max(0, br));
+  both("eyebrows-*-down", Math.max(0, -br) + bf * 0.45 + Math.max(0, bt) * 0.35);
+  both("eyebrows-*-inner-up", Math.max(0, -bt) * 0.9);
+  both("eyebrows-*-extern-up", Math.max(0, bt) * 0.4);
+  m["x_nose-compression"] = clamp(bf * 0.35);
+  m["x_mouth-open"] = Math.min(0.18, clamp((f.mouthOpen ?? 0) * 0.45 + (f.jaw ?? 0) * 0.3)); // realistyczne usta: bez pokazywania całych zębów
+  const c = f.mouthCurve ?? 0;
+  m["x_mouth-corner-puller"] = Math.min(0.45, clamp(Math.max(0, c) * 0.9 + (f.cheek ?? 0) * 0.2)); // uśmiech bez odsłaniania zębów
+  m["x_mouth-depression"] = Math.min(0.14, clamp(Math.max(0, -c) * 1.2));
+  const w = f.mouthWidth ?? 0.42;
+  m["x_mouth-retraction"] = Math.min(0.08, clamp((w - 0.42) * 1.4));
+  m["x_mouth-pursing"] = clamp((0.42 - w) * 3);
+  m["x_mouth-compression"] = clamp(f.lipPress ?? 0);
+  return m;
+};
+
+export const buildGlbHuman = (gltf: any, o: Opts = {}) => {
+  const root = new THREE.Group();          // pozycja + rotY (jak stare postacie)
+  const inner = new THREE.Group(); inner.rotation.y = Math.PI; root.add(inner); // GLB patrzy w +Z
+  const scene: THREE.Object3D = SkeletonUtils.clone(gltf.scene); inner.add(scene);
+  const grad = softGradientMap();
+  const meshes: THREE.Mesh[] = []; let faceMesh: any = null;
+  const morphed: THREE.Mesh[] = [];
+  scene.traverse((ob: any) => {
+    if (!ob.isMesh) return;
+    if (/eyebrow|eyelash|hair|long01|teeth|tongue|sweat/i.test(ob.name)) ob.layers.set(NOINK); // karty z alfą: bez konturu tuszu
+    // Small cloth clearance prevents skin poking through fitted tops in animated poses.
+    if (/casualsuit|sportsuit|shirt_untucked/i.test(ob.name) || (o.natural && /knitted/i.test(ob.name))) {
+      ob.geometry = ob.geometry.clone();
+      const clearance = /knitted/i.test(ob.name) ? 0.010 : 0.004;
+      const p = ob.geometry.attributes.position, n = ob.geometry.attributes.normal;
+      if (n) for (let i = 0; i < p.count; i++) p.setXYZ(i, p.getX(i) + n.getX(i) * clearance, p.getY(i) + n.getY(i) * clearance, p.getZ(i) + n.getZ(i) * clearance);
+      p.needsUpdate = true; ob.geometry.computeBoundingSphere();
+    }
+    meshes.push(ob); ob.castShadow = true; ob.receiveShadow = true; ob.frustumCulled = false;
+    const conv = (mt: any) => {
+      const props={color:mt.color,map:mt.map??null,alphaTest:mt.map?0.45:0,side:mt.side??THREE.FrontSide,vertexColors:!!ob.geometry.attributes.color};
+      const t = o.natural ? new THREE.MeshStandardMaterial({...props,roughness:0.72,metalness:0}) : new THREE.MeshToonMaterial({...props,gradientMap:grad});
+      const tk = Object.keys(o.tint ?? {}).find((k) => (mt.name + " " + ob.name).toLowerCase().includes(k));
+      if (tk) t.color.set(o.tint![tk]);
+      t.name = mt.name; return t;
+    };
+    ob.material = Array.isArray(ob.material) ? ob.material.map(conv) : conv(ob.material);
+    if (ob.morphTargetDictionary && Object.keys(ob.morphTargetDictionary).some((k) => k.startsWith("x_"))) morphed.push(ob);
+    if (ob.name === "Human" || (ob.parent && ob.parent.name === "Human" && ob.morphTargetDictionary)) faceMesh = faceMesh ?? ob;
+  });
+  // kości
+  const bones: Record<string, THREE.Bone> = {};
+  scene.traverse((b: any) => { if (b.isBone) bones[b.name] = b; });
+  root.updateMatrixWorld(true);
+  const rootInv = () => root.matrixWorld.clone().invert();
+  const posC = (b: THREE.Object3D) => b.getWorldPosition(new THREE.Vector3()).applyMatrix4(rootInv());
+  const quatC = (b: THREE.Object3D) => {
+    const q = b.getWorldQuaternion(new THREE.Quaternion());
+    return root.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(q);
+  };
+  // strona: w przestrzeni postaci (patrzy w −Z) prawa ręka ma x > 0
+  const side = (base: string) => {
+    const l = bones[`${base}_l`], r = bones[`${base}_r`];
+    return posC(l).x > 0 ? { R: l, L: r } : { R: r, L: l };
+  };
+  const UA = side("upperarm"), LA = side("lowerarm"), HA = side("hand"), TH = side("thigh"), CA = side("calf");
+  const child = (b: THREE.Bone) => b.children.find((c: any) => c.isBone) as THREE.Bone | undefined;
+  const rest = new Map<THREE.Object3D, THREE.Quaternion>();
+  Object.values(bones).forEach((b) => rest.set(b, b.quaternion.clone()));
+  const restPos = new Map<THREE.Object3D, THREE.Vector3>();
+  Object.values(bones).forEach((b) => restPos.set(b, b.position.clone()));
+  const restWorld = new Map<THREE.Object3D, THREE.Quaternion>();
+  Object.values(bones).forEach((b) => restWorld.set(b, quatC(b)));
+  const dirRest = (b: THREE.Bone, tip?: THREE.Object3D) => posC(tip ?? child(b)!).sub(posC(b)).normalize();
+  const restDir = new Map<THREE.Object3D, THREE.Vector3>();
+  for (const g of [UA, LA, TH, CA]) for (const b of [g.L, g.R]) restDir.set(b, dirRest(b, g === LA ? (b === LA.L ? HA.L : HA.R) : undefined));
+  const resetAll = () => Object.values(bones).forEach((b) => { b.quaternion.copy(rest.get(b)!); b.position.copy(restPos.get(b)!); });
+
+  /** ustaw kość tak, by jej kierunek (w przestrzeni postaci) = dir; skręt minimalny względem spoczynku */
+  const aim = (b: THREE.Bone, dir: THREE.Vector3) => {
+    root.updateMatrixWorld(true);
+    const d = new THREE.Quaternion().setFromUnitVectors(restDir.get(b)!, dir.clone().normalize());
+    const want = d.multiply(restWorld.get(b)!);
+    const parentQ = quatC(b.parent!);
+    b.quaternion.copy(parentQ.invert().multiply(want));
+  };
+  /** obrót kości o kąt wokół osi w przestrzeni postaci (oś liczona w pozie spoczynkowej) */
+  const turn = (b: THREE.Bone, axis: THREE.Vector3, ang: number) => {
+    if (!ang) return;
+    const la = axis.clone().applyQuaternion(restWorld.get(b)!.clone().invert()).normalize();
+    b.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(la, ang));
+  };
+  // stawy palców: oś zgięcia = linia kłykci (palec wskazujący -> mały)
+  const fingers = (h: "L" | "R") => {
+    const s = h === "R" ? (HA.R.name.endsWith("_l") ? "l" : "r") : (HA.L.name.endsWith("_l") ? "l" : "r");
+    const across = posC(bones[`pinky_01_${s}`]).sub(posC(bones[`index_01_${s}`])).normalize();
+    const list = ["index", "middle", "ring", "pinky"].flatMap((f) => [1, 2, 3].map((i) => bones[`${f}_0${i}_${s}`]).filter(Boolean));
+    const thumb = [2, 3].map((i) => bones[`thumb_0${i}_${s}`]).filter(Boolean);
+    return { across, list, thumb, sign: h === "R" ? 1 : -1 };
+  };
+  const FG = { L: fingers("L"), R: fingers("R") };
+
+  const head = bones["head"], neck = bones["neck_01"], spineB = [bones["spine_01"], bones["spine_02"], bones["spine_03"]], pelvis = bones["pelvis"];
+  const sweat = new THREE.Group(); head.add(sweat);
+  {
+    const dropGeo = new THREE.SphereGeometry(0.0055, 12, 10);
+    const pa = dropGeo.attributes.position as THREE.BufferAttribute;
+    for (let i = 0; i < pa.count; i++) { const y = pa.getY(i); const k = y > 0 ? 1 - (y / 0.0055) * 0.75 : 1; pa.setXYZ(i, pa.getX(i) * k, y * 1.5, pa.getZ(i) * k); }
+    dropGeo.computeVertexNormals();
+    const dropMat = new THREE.MeshToonMaterial({ color: "#8CCBEE", emissive: "#1E4A66", gradientMap: grad });
+    const rimMat = new THREE.MeshBasicMaterial({ color: "#2F6E9A", side: THREE.BackSide });
+    const hl = new THREE.MeshBasicMaterial({ color: "#FFFFFF" });
+    const hlGeo = new THREE.SphereGeometry(0.0013, 6, 4);
+    const spots: [number, number, number][] = []; // krople są w GLB (Tarek_sweat)
+    root.updateMatrixWorld(true);
+    for (const [x, y, z] of spots) {
+      const d = new THREE.Mesh(dropGeo, dropMat); d.layers.set(NOINK);
+      const rim = new THREE.Mesh(dropGeo, rimMat); rim.scale.setScalar(1.22); rim.layers.set(NOINK); d.add(rim);
+      const h = new THREE.Mesh(hlGeo, hl); h.position.set(-0.0012, 0.0015, -0.003); d.add(h); h.layers.set(NOINK);
+      d.position.copy(head.worldToLocal(V(x, y, z).applyMatrix4(root.matrixWorld)));
+      d.quaternion.copy(quatC(head).invert()); // pion w przestrzeni postaci
+      sweat.add(d);
+    }
+    sweat.visible = false;
+  }
+  if (o.headScale) head.scale.setScalar(o.headScale);
+  // punkty montażowe
+  const skull = new THREE.Object3D(); head.add(skull);
+  { const hp = posC(head); const w = new THREE.Vector3(hp.x, hp.y + 0.085, hp.z - 0.01).applyMatrix4(root.matrixWorld);
+    skull.position.copy(head.worldToLocal(w)); }
+  const mkGrip = (h: THREE.Bone, mid: THREE.Bone | undefined) => {
+    const g = new THREE.Object3D(); h.add(g);
+    const a = posC(h), b = mid ? posC(mid) : a.clone().add(V(0, -0.08, 0));
+    const w = a.clone().lerp(b, 0.85).applyMatrix4(root.matrixWorld); g.position.copy(h.worldToLocal(w));
+    // orientacja chwytu ~ jak w starych postaciach (oś Y wzdłuż dłoni w dół)
+    g.quaternion.copy(restWorld.get(h)!.clone().invert());
+    return g;
+  };
+  const sL = HA.L.name.endsWith("_l") ? "l" : "r", sR = sL === "l" ? "r" : "l";
+  const grip = { L: mkGrip(HA.L, bones[`middle_01_${sL}`]), R: mkGrip(HA.R, bones[`middle_01_${sR}`]) };
+  const acc: Record<string, THREE.Object3D> = {};
+  scene.traverse((ob: any) => { const n = ob.name.toLowerCase(); for (const k of ["cap", "chain", "bag", "airpod", "vest", "sweat"]) if (n.includes("tarek_" + k)) acc[k] = ob; });
+
+  const ZERO = { fwd: 0.05, out: 0.12, twist: 0, elbow: 0.15 };
+  const armDirs = (a: any, sgn: number) => {
+    const sh = new THREE.Quaternion().setFromEuler(new THREE.Euler(a.fwd, a.twist, sgn * a.out));
+    const up = DOWN.clone().applyQuaternion(sh);
+    const lo = DOWN.clone().applyQuaternion(new THREE.Quaternion().setFromEuler(new THREE.Euler(a.elbow, 0, 0))).applyQuaternion(sh);
+    return { up, lo };
+  };
+  const X = V(1, 0, 0), Y = V(0, 1, 0), Z = V(0, 0, 1);
+  const pelvisY0 = posC(pelvis).y;
+  // Foot targets and limb lengths are recorded in unscaled character space.
+  const FT = {L: child(CA.L)!, R: child(CA.R)!};
+  const feetRest = {L: posC(FT.L), R: posC(FT.R)};
+  const limb = {L: [posC(TH.L).distanceTo(posC(CA.L)),posC(CA.L).distanceTo(posC(FT.L))],
+                R: [posC(TH.R).distanceTo(posC(CA.R)),posC(CA.R).distanceTo(posC(FT.R))]};
+  const groundLegs = (sit:number) => {
+    let residual=0;
+    for(const side of ['L','R'] as const){
+      const hip=posC(TH[side]);
+      const target=feetRest[side].clone();
+      target.x+=(side==='R'?1:-1)*.025*sit;
+      target.z-=.08+.40*sit;
+      const [upper,lower]=limb[side];
+      const delta=target.clone().sub(hip),distance=delta.length();
+      const d=Math.max(Math.abs(upper-lower)+.0001,Math.min(upper+lower-.0001,distance));
+      const direction=delta.normalize();
+      const forward=V(0,0,-1).addScaledVector(direction,direction.z).normalize();
+      const along=(upper*upper-lower*lower+d*d)/(2*d);
+      const height=Math.sqrt(Math.max(0,upper*upper-along*along));
+      const knee=hip.clone().addScaledVector(direction,along).addScaledVector(forward,height);
+      aim(TH[side],knee.sub(hip));
+      aim(CA[side],target.clone().sub(posC(CA[side])));
+      // Keep the shoe parallel to its standing rest orientation while the knee bends.
+      FT[side].quaternion.copy(quatC(FT[side].parent!).invert().multiply(restWorld.get(FT[side])!));
+      root.updateMatrixWorld(true);
+      residual=Math.max(residual,posC(FT[side]).distanceTo(target)*root.scale.y);
+    }
+    root.userData.footContactError=residual;
+  };
+
+
+  function pose(P: any = {}) {
+    resetAll();
+    const sit = P.sit ?? 0;
+    root.position.set(...((P.pos ?? [0, 0, 0]) as [number, number, number])); root.rotation.set(0, P.rotY ?? 0, 0);
+    root.updateMatrixWorld(true);
+    if(o.natural && P.grounded){
+      const hip=posC(pelvis);
+      // Seat surface 0.43 m + pelvis clearance. Convert metres using actor scale.
+      hip.y=pelvisY0*(1-sit)+(.53/root.scale.y)*sit;
+      hip.y+=(P.bob??0)/root.scale.y;
+      pelvis.position.copy(pelvis.parent!.worldToLocal(root.localToWorld(hip)));
+      root.updateMatrixWorld(true);
+      groundLegs(sit);
+    }else{
+      if(sit || P.bob){
+        const wp=pelvis.getWorldPosition(new THREE.Vector3());
+        const lift=new THREE.Vector3(0,-sit*.43*(pelvisY0/.93)+(P.bob??0),0);
+        pelvis.position.copy(pelvis.parent!.worldToLocal(wp.add(lift.applyQuaternion(root.quaternion))));
+      }
+      for(const side of ['L','R'] as const){
+        const th=sit*Math.PI/2*.95;
+        aim(TH[side],DOWN.clone().applyEuler(new THREE.Euler(th,0,0)));
+        aim(CA[side],DOWN.clone().applyEuler(new THREE.Euler(th-sit*Math.PI/2,0,0)));
+      }
+    }
+    // kręgosłup
+    for (const b of spineB) { turn(b, X, -(P.lean ?? 0) / 3); turn(b, Y, (P.twist ?? 0) / 3); turn(b, Z, (P.tilt ?? 0) / 3); }
+    if (P.shrug) for (const s of ["L", "R"] as const) turn(UA[s].parent as THREE.Bone, Z, (s === "R" ? 1 : -1) * P.shrug * 4);
+    // ręce
+    const aL = { ...ZERO, ...(P.armL || {}) }, aR = { ...ZERO, ...(P.armR || {}) };
+    for (const [s, a, sg] of [["L", aL, -1], ["R", aR, 1]] as const) {
+      const d = armDirs(a, sg);
+      aim(UA[s], d.up); aim(LA[s], d.lo);
+    }
+    // dłonie: zgięcie palców
+    for (const s of ["L", "R"] as const) {
+      const h = (s === "L" ? P.handL : P.handR) ?? {}; const curl = h.curl ?? 0.15; const F = FG[s];
+      for (const b of F.list) turn(b, F.across, F.sign * (b.name.startsWith("index")?(h.index??curl):curl) * 0.9);
+      for (const b of F.thumb) turn(b, F.across, F.sign * (h.thumb??curl) * 0.4);
+    }
+    // torebka: kość "bag" (dziecko dłoni) wisi pionowo niezależnie od obrotu dłoni, z lekkim kołysaniem
+    const bag = bones["bag"];
+    if (bag && bag.parent) {
+      const sway = (P as any).bagSway ?? 0;
+      const want = new THREE.Quaternion().setFromAxisAngle(X, sway * 0.35).multiply(new THREE.Quaternion().setFromAxisAngle(Z, sway * 0.15)).multiply(restWorld.get(bag)!.clone());
+      bag.quaternion.copy(quatC(bag.parent).invert().multiply(want));
+    }
+    // głowa
+    const hp = P.headPitch ?? 0, hy = P.headYaw ?? 0;
+    turn(neck, X, hp * 0.4); turn(neck, Y, hy * 0.35);
+    turn(head, X, hp * 0.6); turn(head, Y, hy * 0.65); turn(head, Z, P.headTilt ?? 0);
+    // Solve for the grip contact, rather than placing the wrist at the lips.
+    if(P.smoke>0){
+      root.updateMatrixWorld(true);
+      const initialGrip=posC(grip.R);
+      const desiredGrip=initialGrip.clone().lerp(posC(skull).add(V(.015,-.15,-.17)),P.smoke);
+      const upper=posC(UA.R).distanceTo(posC(LA.R)),lower=posC(LA.R).distanceTo(posC(HA.R));
+      for(let iteration=0;iteration<4;iteration++){
+        const shoulder=posC(UA.R),wrist=posC(HA.R);
+        const target=desiredGrip.clone().sub(posC(grip.R).sub(wrist));
+        const delta=target.clone().sub(shoulder),d=Math.max(.001,Math.min(upper+lower-.001,delta.length())),dir=delta.normalize();
+        const pole=V(.8,-.8,0);pole.addScaledVector(dir,-pole.dot(dir)).normalize();
+        const along=(upper*upper-lower*lower+d*d)/(2*d);
+        const elbow=shoulder.clone().addScaledVector(dir,along).addScaledVector(pole,Math.sqrt(Math.max(0,upper*upper-along*along)));
+        aim(UA.R,elbow.sub(shoulder));aim(LA.R,target.sub(posC(LA.R)));
+        root.updateMatrixWorld(true);
+      }
+      root.userData.gripError=posC(grip.R).distanceTo(desiredGrip)*root.scale.y;
+    }
+    // mimika
+    const fc = P.face ?? blendExpr({ neutral: 1 });
+    const sw = fc.sweat ?? 0; sweat.visible = sw > 0.05; if (acc.sweat) acc.sweat.visible = sw > 0.1;
+    sweat.children.forEach((d, i) => { d.visible = sw > 0.1 + i * 0.12; d.scale.setScalar(0.7 + sw * 0.5); });
+    const mw = faceToMorphs(fc);
+    for (const m of morphed) {
+      const dict = (m as any).morphTargetDictionary, inf = (m as any).morphTargetInfluences;
+      for (const k in dict) inf[dict[k]] = mw[k] ?? 0;
+    }
+  }
+  pose({});
+  return { group: root, pose, meshes, head, skull, faceMesh, spine: spineB[2], grip, acc, bones, sweat };
+};

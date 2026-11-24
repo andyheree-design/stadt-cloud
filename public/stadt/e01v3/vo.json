@@ -1,0 +1,1372 @@
+[
+ {
+  "line": 1,
+  "text": "In dieser Stadt postet jeder Ragebait. Außer mir.",
+  "file": "stadt/e01v3/vo/l01.wav",
+  "dur": 2.508,
+  "wer": 0.0,
+  "f0": 205,
+  "words": [
+   {
+    "w": "In",
+    "s": 0.0,
+    "e": 0.12
+   },
+   {
+    "w": "dieser",
+    "s": 0.12,
+    "e": 0.3
+   },
+   {
+    "w": "Stadt",
+    "s": 0.3,
+    "e": 0.56
+   },
+   {
+    "w": "postet",
+    "s": 0.56,
+    "e": 1.0
+   },
+   {
+    "w": "jeder",
+    "s": 1.0,
+    "e": 1.16
+   },
+   {
+    "w": "Ragebait,",
+    "s": 1.16,
+    "e": 1.72
+   },
+   {
+    "w": "außer",
+    "s": 1.92,
+    "e": 2.1
+   },
+   {
+    "w": "mir.",
+    "s": 2.1,
+    "e": 2.32
+   }
+  ]
+ },
+ {
+  "line": 2,
+  "text": "Huss! Huss! Huss! Huss! Huss! Huss!",
+  "file": "stadt/e01v3/vo/l02r.wav",
+  "dur": 1.754,
+  "wer": 0.0,
+  "f0": 400,
+  "words": [
+   {
+    "w": "Huss!",
+    "s": 0.0,
+    "e": 0.11
+   },
+   {
+    "w": "Huss!",
+    "s": 0.22,
+    "e": 0.3
+   },
+   {
+    "w": "Huss!",
+    "s": 0.41,
+    "e": 0.49
+   },
+   {
+    "w": "Huss!",
+    "s": 0.97,
+    "e": 1.14
+   },
+   {
+    "w": "Huss!",
+    "s": 1.19,
+    "e": 1.27
+   },
+   {
+    "w": "Huss!",
+    "s": 1.38,
+    "e": 1.692
+   }
+  ]
+ },
+ {
+  "line": 3,
+  "text": "Sie posten, weil Ragebait Jugendwort des Jahres ist, weil Wut Klicks bringt, und einmal nur, weil der Bürgermeister geschrieben hat: Die Bahn ist heute pünktlich.",
+  "file": "stadt/e01v3/vo/l03.wav",
+  "dur": 7.179,
+  "wer": 0.0,
+  "f0": 188,
+  "words": [
+   {
+    "w": "Sie",
+    "s": 0.0,
+    "e": 0.14
+   },
+   {
+    "w": "posten,",
+    "s": 0.14,
+    "e": 0.56
+   },
+   {
+    "w": "weil",
+    "s": 0.62,
+    "e": 0.7
+   },
+   {
+    "w": "Ragebait",
+    "s": 0.7,
+    "e": 1.2
+   },
+   {
+    "w": "Jugendwort",
+    "s": 1.2,
+    "e": 1.7
+   },
+   {
+    "w": "des",
+    "s": 1.7,
+    "e": 1.84
+   },
+   {
+    "w": "Jahres",
+    "s": 1.84,
+    "e": 2.1
+   },
+   {
+    "w": "ist,",
+    "s": 2.1,
+    "e": 2.38
+   },
+   {
+    "w": "weil",
+    "s": 2.5,
+    "e": 2.6
+   },
+   {
+    "w": "Wut",
+    "s": 2.6,
+    "e": 2.94
+   },
+   {
+    "w": "Klicks",
+    "s": 2.94,
+    "e": 3.22
+   },
+   {
+    "w": "bringt",
+    "s": 3.22,
+    "e": 3.44
+   },
+   {
+    "w": "und",
+    "s": 3.44,
+    "e": 3.7
+   },
+   {
+    "w": "einmal",
+    "s": 3.7,
+    "e": 3.98
+   },
+   {
+    "w": "nur,",
+    "s": 3.98,
+    "e": 4.22
+   },
+   {
+    "w": "weil",
+    "s": 4.4,
+    "e": 4.54
+   },
+   {
+    "w": "der",
+    "s": 4.54,
+    "e": 4.64
+   },
+   {
+    "w": "Bürgermeister",
+    "s": 4.64,
+    "e": 5.16
+   },
+   {
+    "w": "geschrieben",
+    "s": 5.16,
+    "e": 5.36
+   },
+   {
+    "w": "hat,",
+    "s": 5.36,
+    "e": 5.68
+   },
+   {
+    "w": "die",
+    "s": 5.82,
+    "e": 5.92
+   },
+   {
+    "w": "Bahn",
+    "s": 5.92,
+    "e": 6.2
+   },
+   {
+    "w": "ist",
+    "s": 6.2,
+    "e": 6.4
+   },
+   {
+    "w": "heute",
+    "s": 6.4,
+    "e": 6.58
+   },
+   {
+    "w": "pünktlich.",
+    "s": 6.58,
+    "e": 7.06
+   }
+  ]
+ },
+ {
+  "line": 4,
+  "text": "Während die übrigens Kommentare sammeln, sitz ich hier drin und trainiere. Nett sein.",
+  "file": "stadt/e01v3/vo/l04.wav",
+  "dur": 3.681,
+  "wer": 0.15,
+  "f0": 195,
+  "words": [
+   {
+    "w": "Während",
+    "s": 0.0,
+    "e": 0.3
+   },
+   {
+    "w": "die",
+    "s": 0.3,
+    "e": 0.4
+   },
+   {
+    "w": "übrigen",
+    "s": 0.4,
+    "e": 0.72
+   },
+   {
+    "w": "Kommentare",
+    "s": 0.72,
+    "e": 1.1
+   },
+   {
+    "w": "sammeln,",
+    "s": 1.1,
+    "e": 1.6
+   },
+   {
+    "w": "sitze",
+    "s": 1.78,
+    "e": 1.98
+   },
+   {
+    "w": "ich",
+    "s": 1.98,
+    "e": 2.08
+   },
+   {
+    "w": "hier",
+    "s": 2.08,
+    "e": 2.18
+   },
+   {
+    "w": "drin",
+    "s": 2.18,
+    "e": 2.34
+   },
+   {
+    "w": "und",
+    "s": 2.34,
+    "e": 2.52
+   },
+   {
+    "w": "trainiere,",
+    "s": 2.52,
+    "e": 2.98
+   },
+   {
+    "w": "nett",
+    "s": 3.1,
+    "e": 3.26
+   },
+   {
+    "w": "sein.",
+    "s": 3.26,
+    "e": 3.52
+   }
+  ]
+ },
+ {
+  "line": 5,
+  "text": "Fünf Uhr morgens. Zweihundert Komplimente vor dem Frühstück. Schöner Toaster. Toller Spiegel. Starker Router.",
+  "file": "stadt/e01v3/vo/l05.wav",
+  "dur": 5.06,
+  "wer": 0.14,
+  "f0": 211,
+  "words": [
+   {
+    "w": "5",
+    "s": 0.0,
+    "e": 0.16
+   },
+   {
+    "w": "Uhr",
+    "s": 0.16,
+    "e": 0.4
+   },
+   {
+    "w": "morgens,",
+    "s": 0.4,
+    "e": 0.88
+   },
+   {
+    "w": "200",
+    "s": 1.02,
+    "e": 1.3
+   },
+   {
+    "w": "Komplimente",
+    "s": 1.3,
+    "e": 1.98
+   },
+   {
+    "w": "vor",
+    "s": 1.98,
+    "e": 2.14
+   },
+   {
+    "w": "dem",
+    "s": 2.14,
+    "e": 2.24
+   },
+   {
+    "w": "Frühstück,",
+    "s": 2.24,
+    "e": 2.7
+   },
+   {
+    "w": "schöner",
+    "s": 2.84,
+    "e": 3.04
+   },
+   {
+    "w": "Toaster,",
+    "s": 3.04,
+    "e": 3.38
+   },
+   {
+    "w": "toller",
+    "s": 3.56,
+    "e": 3.78
+   },
+   {
+    "w": "Spiegel,",
+    "s": 3.78,
+    "e": 4.16
+   },
+   {
+    "w": "starker",
+    "s": 4.28,
+    "e": 4.62
+   },
+   {
+    "w": "Router.",
+    "s": 4.62,
+    "e": 4.86
+   }
+  ]
+ },
+ {
+  "line": 6,
+  "text": "Lächeln, winken, Daumen hoch. Drei Sekunden. Zu unfreundlich. Nochmal.",
+  "file": "stadt/e01v3/vo/l06.wav",
+  "dur": 4.284,
+  "wer": 0.0,
+  "f0": 190,
+  "words": [
+   {
+    "w": "Lächeln,",
+    "s": 0.0,
+    "e": 0.5
+   },
+   {
+    "w": "winken,",
+    "s": 0.7,
+    "e": 1.06
+   },
+   {
+    "w": "Daumen",
+    "s": 1.3,
+    "e": 1.6
+   },
+   {
+    "w": "hoch,",
+    "s": 1.6,
+    "e": 1.9
+   },
+   {
+    "w": "drei",
+    "s": 2.14,
+    "e": 2.3
+   },
+   {
+    "w": "Sekunden,",
+    "s": 2.3,
+    "e": 2.84
+   },
+   {
+    "w": "zu",
+    "s": 2.96,
+    "e": 3.04
+   },
+   {
+    "w": "unfreundlich,",
+    "s": 3.04,
+    "e": 3.66
+   },
+   {
+    "w": "nochmal.",
+    "s": 3.74,
+    "e": 3.92
+   }
+  ]
+ },
+ {
+  "line": 7,
+  "text": "Dann klopft Kevin. Er hatte gerade einen Crashout. Sein Router wohnt jetzt im Teich. Er sagt: Komm raus, wir posten zusammen Ragebait!",
+  "file": "stadt/e01v3/vo/l07.wav",
+  "dur": 6.109,
+  "wer": 0.14,
+  "f0": 213,
+  "words": [
+   {
+    "w": "Dann",
+    "s": 0.0,
+    "e": 0.2
+   },
+   {
+    "w": "klopst",
+    "s": 0.2,
+    "e": 0.54
+   },
+   {
+    "w": "Kevin.",
+    "s": 0.54,
+    "e": 0.74
+   },
+   {
+    "w": "Er",
+    "s": 0.96,
+    "e": 1.04
+   },
+   {
+    "w": "hatte",
+    "s": 1.04,
+    "e": 1.2
+   },
+   {
+    "w": "gerade",
+    "s": 1.2,
+    "e": 1.4
+   },
+   {
+    "w": "einen",
+    "s": 1.4,
+    "e": 1.6
+   },
+   {
+    "w": "Crash",
+    "s": 1.6,
+    "e": 1.86
+   },
+   {
+    "w": "out.",
+    "s": 1.86,
+    "e": 2.18
+   },
+   {
+    "w": "Sein",
+    "s": 2.38,
+    "e": 2.54
+   },
+   {
+    "w": "Router",
+    "s": 2.54,
+    "e": 2.8
+   },
+   {
+    "w": "wohnt",
+    "s": 2.8,
+    "e": 3.08
+   },
+   {
+    "w": "jetzt",
+    "s": 3.08,
+    "e": 3.2
+   },
+   {
+    "w": "im",
+    "s": 3.2,
+    "e": 3.34
+   },
+   {
+    "w": "Teich.",
+    "s": 3.34,
+    "e": 3.68
+   },
+   {
+    "w": "Er",
+    "s": 3.8,
+    "e": 3.86
+   },
+   {
+    "w": "sagt,",
+    "s": 3.86,
+    "e": 4.04
+   },
+   {
+    "w": "komm",
+    "s": 4.2,
+    "e": 4.3
+   },
+   {
+    "w": "raus,",
+    "s": 4.3,
+    "e": 4.54
+   },
+   {
+    "w": "wir",
+    "s": 4.76,
+    "e": 4.84
+   },
+   {
+    "w": "posten",
+    "s": 4.84,
+    "e": 5.2
+   },
+   {
+    "w": "zusammen",
+    "s": 5.2,
+    "e": 5.38
+   },
+   {
+    "w": "Ragebait!",
+    "s": 5.38,
+    "e": 5.94
+   }
+  ]
+ },
+ {
+  "line": 8,
+  "text": "Ich sag: Nein danke. Ich hab heute noch vierhundert Mal Danke vor mir.",
+  "file": "stadt/e01v3/vo/l08.wav",
+  "dur": 3.178,
+  "wer": 0.08,
+  "f0": 246,
+  "words": [
+   {
+    "w": "Ich",
+    "s": 0.0,
+    "e": 0.14
+   },
+   {
+    "w": "sag,",
+    "s": 0.14,
+    "e": 0.32
+   },
+   {
+    "w": "nein,",
+    "s": 0.52,
+    "e": 0.64
+   },
+   {
+    "w": "danke.",
+    "s": 0.76,
+    "e": 0.98
+   },
+   {
+    "w": "Ich",
+    "s": 1.2,
+    "e": 1.3
+   },
+   {
+    "w": "hab",
+    "s": 1.3,
+    "e": 1.4
+   },
+   {
+    "w": "heute",
+    "s": 1.4,
+    "e": 1.6
+   },
+   {
+    "w": "noch",
+    "s": 1.6,
+    "e": 1.74
+   },
+   {
+    "w": "400",
+    "s": 1.74,
+    "e": 2.06
+   },
+   {
+    "w": "Mal",
+    "s": 2.06,
+    "e": 2.3
+   },
+   {
+    "w": "Danke",
+    "s": 2.3,
+    "e": 2.56
+   },
+   {
+    "w": "vor",
+    "s": 2.56,
+    "e": 2.8
+   },
+   {
+    "w": "mir.",
+    "s": 2.8,
+    "e": 2.98
+   }
+  ]
+ },
+ {
+  "line": 9,
+  "text": "Draußen wird es immer schlimmer. Der Dönermann macht Döner mit Ananas. Und Nutella. Die Lehrerin sagt, zwei plus zwei ist fünf. Der Postbote klingelt nie. Nur ein Zettel: Sie waren nicht da. Ich war da.",
+  "file": "stadt/e01v3/vo/l09.wav",
+  "dur": 9.208,
+  "wer": 0.09,
+  "f0": 209,
+  "words": [
+   {
+    "w": "Draußen",
+    "s": 0.0,
+    "e": 0.36
+   },
+   {
+    "w": "wird",
+    "s": 0.36,
+    "e": 0.52
+   },
+   {
+    "w": "es",
+    "s": 0.52,
+    "e": 0.64
+   },
+   {
+    "w": "immer",
+    "s": 0.64,
+    "e": 0.78
+   },
+   {
+    "w": "schlimmer.",
+    "s": 0.78,
+    "e": 1.18
+   },
+   {
+    "w": "Der",
+    "s": 1.26,
+    "e": 1.34
+   },
+   {
+    "w": "Dönermann",
+    "s": 1.34,
+    "e": 1.74
+   },
+   {
+    "w": "macht",
+    "s": 1.74,
+    "e": 1.9
+   },
+   {
+    "w": "Döner",
+    "s": 1.9,
+    "e": 2.14
+   },
+   {
+    "w": "mit",
+    "s": 2.14,
+    "e": 2.28
+   },
+   {
+    "w": "Ananas.",
+    "s": 2.28,
+    "e": 2.68
+   },
+   {
+    "w": "Und",
+    "s": 2.94,
+    "e": 3.02
+   },
+   {
+    "w": "Nutella.",
+    "s": 3.02,
+    "e": 3.4
+   },
+   {
+    "w": "Die",
+    "s": 3.56,
+    "e": 3.64
+   },
+   {
+    "w": "Lehrerin",
+    "s": 3.64,
+    "e": 4.0
+   },
+   {
+    "w": "sagt,",
+    "s": 4.0,
+    "e": 4.2
+   },
+   {
+    "w": "2",
+    "s": 4.4,
+    "e": 4.52
+   },
+   {
+    "w": "plus",
+    "s": 4.52,
+    "e": 4.74
+   },
+   {
+    "w": "2",
+    "s": 4.74,
+    "e": 5.04
+   },
+   {
+    "w": "ist",
+    "s": 5.04,
+    "e": 5.28
+   },
+   {
+    "w": "5.",
+    "s": 5.28,
+    "e": 5.54
+   },
+   {
+    "w": "Der",
+    "s": 5.8,
+    "e": 5.86
+   },
+   {
+    "w": "Postbote",
+    "s": 5.86,
+    "e": 6.34
+   },
+   {
+    "w": "klingelt",
+    "s": 6.34,
+    "e": 6.64
+   },
+   {
+    "w": "nie.",
+    "s": 6.64,
+    "e": 6.82
+   },
+   {
+    "w": "Nur",
+    "s": 7.02,
+    "e": 7.1
+   },
+   {
+    "w": "ein",
+    "s": 7.1,
+    "e": 7.24
+   },
+   {
+    "w": "Zettel.",
+    "s": 7.24,
+    "e": 7.6
+   },
+   {
+    "w": "Sie",
+    "s": 7.68,
+    "e": 7.78
+   },
+   {
+    "w": "waren",
+    "s": 7.78,
+    "e": 8.0
+   },
+   {
+    "w": "nicht",
+    "s": 8.0,
+    "e": 8.2
+   },
+   {
+    "w": "da.",
+    "s": 8.2,
+    "e": 8.42
+   },
+   {
+    "w": "Ich",
+    "s": 8.6,
+    "e": 8.72
+   },
+   {
+    "w": "war",
+    "s": 8.72,
+    "e": 8.88
+   },
+   {
+    "w": "da.",
+    "s": 8.88,
+    "e": 9.06
+   }
+  ]
+ },
+ {
+  "line": 10,
+  "text": "Und ich? Muskelkater in den Mundwinkeln.",
+  "file": "stadt/e01v3/vo/l10.wav",
+  "dur": 1.985,
+  "wer": 0.0,
+  "f0": 172,
+  "words": [
+   {
+    "w": "Und",
+    "s": 0.0,
+    "e": 0.18
+   },
+   {
+    "w": "ich?",
+    "s": 0.18,
+    "e": 0.38
+   },
+   {
+    "w": "Muskelkater",
+    "s": 0.78,
+    "e": 1.16
+   },
+   {
+    "w": "in",
+    "s": 1.16,
+    "e": 1.26
+   },
+   {
+    "w": "den",
+    "s": 1.26,
+    "e": 1.34
+   },
+   {
+    "w": "Mundwinkeln.",
+    "s": 1.34,
+    "e": 1.84
+   }
+  ]
+ },
+ {
+  "line": 11,
+  "text": "Dann poste ich mein erstes Video. Ich lächle und sage: Schönen Tag noch. Zwölf Likes. Drei Kommentare. Einer davon ist meine Oma.",
+  "file": "stadt/e01v3/vo/l11.wav",
+  "dur": 6.246,
+  "wer": 0.0,
+  "f0": 203,
+  "words": [
+   {
+    "w": "Dann",
+    "s": 0.0,
+    "e": 0.14
+   },
+   {
+    "w": "poste",
+    "s": 0.14,
+    "e": 0.46
+   },
+   {
+    "w": "ich",
+    "s": 0.46,
+    "e": 0.52
+   },
+   {
+    "w": "mein",
+    "s": 0.52,
+    "e": 0.64
+   },
+   {
+    "w": "erstes",
+    "s": 0.64,
+    "e": 0.98
+   },
+   {
+    "w": "Video,",
+    "s": 0.98,
+    "e": 1.22
+   },
+   {
+    "w": "ich",
+    "s": 1.42,
+    "e": 1.52
+   },
+   {
+    "w": "lächle",
+    "s": 1.52,
+    "e": 1.82
+   },
+   {
+    "w": "und",
+    "s": 1.82,
+    "e": 1.92
+   },
+   {
+    "w": "sage,",
+    "s": 1.92,
+    "e": 2.18
+   },
+   {
+    "w": "schönen",
+    "s": 2.42,
+    "e": 2.7
+   },
+   {
+    "w": "Tag",
+    "s": 2.7,
+    "e": 2.9
+   },
+   {
+    "w": "noch,",
+    "s": 2.9,
+    "e": 3.12
+   },
+   {
+    "w": "zwölf",
+    "s": 3.24,
+    "e": 3.54
+   },
+   {
+    "w": "Likes,",
+    "s": 3.54,
+    "e": 3.86
+   },
+   {
+    "w": "drei",
+    "s": 4.04,
+    "e": 4.22
+   },
+   {
+    "w": "Kommentare.",
+    "s": 4.22,
+    "e": 4.7
+   },
+   {
+    "w": "Einer",
+    "s": 4.98,
+    "e": 5.18
+   },
+   {
+    "w": "davon",
+    "s": 5.18,
+    "e": 5.44
+   },
+   {
+    "w": "ist",
+    "s": 5.44,
+    "e": 5.6
+   },
+   {
+    "w": "meine",
+    "s": 5.6,
+    "e": 5.8
+   },
+   {
+    "w": "Oma.",
+    "s": 5.8,
+    "e": 6.1
+   }
+  ]
+ },
+ {
+  "line": 12,
+  "text": "Also nochmal. Gleiches Video. Nur netter.",
+  "file": "stadt/e01v3/vo/l12.wav",
+  "dur": 1.958,
+  "wer": 0.0,
+  "f0": 205,
+  "words": [
+   {
+    "w": "Also",
+    "s": 0.0,
+    "e": 0.24
+   },
+   {
+    "w": "nochmal,",
+    "s": 0.24,
+    "e": 0.48
+   },
+   {
+    "w": "gleiches",
+    "s": 0.72,
+    "e": 1.02
+   },
+   {
+    "w": "Video,",
+    "s": 1.02,
+    "e": 1.24
+   },
+   {
+    "w": "nur",
+    "s": 1.44,
+    "e": 1.56
+   },
+   {
+    "w": "netter.",
+    "s": 1.56,
+    "e": 1.84
+   }
+  ]
+ },
+ {
+  "line": 13,
+  "text": "Und dann ist die Stadt durchgedreht. Warum ist der so nett?! Was will der von uns?! Achtzig Millionen Kommentare.",
+  "file": "stadt/e01v3/vo/l13.wav",
+  "dur": 5.009,
+  "wer": 0.05,
+  "f0": 254,
+  "words": [
+   {
+    "w": "Und",
+    "s": 0.0,
+    "e": 0.18
+   },
+   {
+    "w": "dann",
+    "s": 0.18,
+    "e": 0.38
+   },
+   {
+    "w": "ist",
+    "s": 0.38,
+    "e": 0.56
+   },
+   {
+    "w": "die",
+    "s": 0.56,
+    "e": 0.66
+   },
+   {
+    "w": "Stadt",
+    "s": 0.66,
+    "e": 0.8
+   },
+   {
+    "w": "durchgedreht.",
+    "s": 0.8,
+    "e": 1.46
+   },
+   {
+    "w": "Warum",
+    "s": 1.56,
+    "e": 1.76
+   },
+   {
+    "w": "ist",
+    "s": 1.76,
+    "e": 1.94
+   },
+   {
+    "w": "der",
+    "s": 1.94,
+    "e": 2.06
+   },
+   {
+    "w": "so",
+    "s": 2.06,
+    "e": 2.14
+   },
+   {
+    "w": "nett?",
+    "s": 2.14,
+    "e": 2.32
+   },
+   {
+    "w": "Was",
+    "s": 2.5,
+    "e": 2.6
+   },
+   {
+    "w": "will",
+    "s": 2.6,
+    "e": 2.8
+   },
+   {
+    "w": "der",
+    "s": 2.8,
+    "e": 2.9
+   },
+   {
+    "w": "von",
+    "s": 2.9,
+    "e": 3.06
+   },
+   {
+    "w": "uns?",
+    "s": 3.06,
+    "e": 3.26
+   },
+   {
+    "w": "80",
+    "s": 3.5,
+    "e": 3.78
+   },
+   {
+    "w": "Millionen",
+    "s": 3.78,
+    "e": 4.26
+   },
+   {
+    "w": "Kommentare!",
+    "s": 4.26,
+    "e": 4.6
+   }
+  ]
+ },
+ {
+  "line": 14,
+  "text": "Jetzt kopieren mich alle. Der Dönermann sagt Danke. Der Postbote klingelt zweimal. Oma trägt Schuhe. Und alle regen sich darüber auf.",
+  "file": "stadt/e01v3/vo/l14.wav",
+  "dur": 6.014,
+  "wer": 0.05,
+  "f0": 182,
+  "words": [
+   {
+    "w": "Jetzt",
+    "s": 0.0,
+    "e": 0.16
+   },
+   {
+    "w": "kopieren",
+    "s": 0.16,
+    "e": 0.54
+   },
+   {
+    "w": "mich",
+    "s": 0.54,
+    "e": 0.64
+   },
+   {
+    "w": "alle,",
+    "s": 0.64,
+    "e": 0.88
+   },
+   {
+    "w": "der",
+    "s": 1.04,
+    "e": 1.12
+   },
+   {
+    "w": "Döhnermann",
+    "s": 1.12,
+    "e": 1.54
+   },
+   {
+    "w": "sagt",
+    "s": 1.54,
+    "e": 1.76
+   },
+   {
+    "w": "Danke,",
+    "s": 1.76,
+    "e": 2.04
+   },
+   {
+    "w": "der",
+    "s": 2.26,
+    "e": 2.34
+   },
+   {
+    "w": "Postbote",
+    "s": 2.34,
+    "e": 2.78
+   },
+   {
+    "w": "klingelt",
+    "s": 2.78,
+    "e": 3.04
+   },
+   {
+    "w": "zweimal,",
+    "s": 3.04,
+    "e": 3.44
+   },
+   {
+    "w": "Oma",
+    "s": 3.66,
+    "e": 3.9
+   },
+   {
+    "w": "trägt",
+    "s": 3.9,
+    "e": 4.18
+   },
+   {
+    "w": "Schuhe",
+    "s": 4.18,
+    "e": 4.56
+   },
+   {
+    "w": "und",
+    "s": 4.56,
+    "e": 4.74
+   },
+   {
+    "w": "alle",
+    "s": 4.74,
+    "e": 5.02
+   },
+   {
+    "w": "regen",
+    "s": 5.02,
+    "e": 5.26
+   },
+   {
+    "w": "sich",
+    "s": 5.26,
+    "e": 5.44
+   },
+   {
+    "w": "darüber",
+    "s": 5.44,
+    "e": 5.66
+   },
+   {
+    "w": "auf.",
+    "s": 5.66,
+    "e": 5.92
+   }
+  ]
+ },
+ {
+  "line": 15,
+  "text": "Der Bürgermeister fragt mich: Wie hast du das gemacht? Ich sag: Während ihr übrigens Ragebait gepostet habt, saß ich hier drin und hab trainiert.",
+  "file": "stadt/e01v3/vo/l15.wav",
+  "dur": 5.894,
+  "wer": 0.0,
+  "f0": 203,
+  "words": [
+   {
+    "w": "Der",
+    "s": 0.0,
+    "e": 0.1
+   },
+   {
+    "w": "Bürgermeister",
+    "s": 0.1,
+    "e": 0.58
+   },
+   {
+    "w": "fragt",
+    "s": 0.58,
+    "e": 0.88
+   },
+   {
+    "w": "mich,",
+    "s": 0.88,
+    "e": 0.94
+   },
+   {
+    "w": "wie",
+    "s": 1.12,
+    "e": 1.22
+   },
+   {
+    "w": "hast",
+    "s": 1.22,
+    "e": 1.36
+   },
+   {
+    "w": "du",
+    "s": 1.36,
+    "e": 1.46
+   },
+   {
+    "w": "das",
+    "s": 1.46,
+    "e": 1.58
+   },
+   {
+    "w": "gemacht?",
+    "s": 1.58,
+    "e": 1.84
+   },
+   {
+    "w": "Ich",
+    "s": 2.08,
+    "e": 2.16
+   },
+   {
+    "w": "sag,",
+    "s": 2.16,
+    "e": 2.36
+   },
+   {
+    "w": "während",
+    "s": 2.54,
+    "e": 2.68
+   },
+   {
+    "w": "ihr",
+    "s": 2.68,
+    "e": 2.88
+   },
+   {
+    "w": "übrigens",
+    "s": 2.88,
+    "e": 3.2
+   },
+   {
+    "w": "Ragebait",
+    "s": 3.2,
+    "e": 3.7
+   },
+   {
+    "w": "gepostet",
+    "s": 3.7,
+    "e": 4.18
+   },
+   {
+    "w": "habt,",
+    "s": 4.18,
+    "e": 4.34
+   },
+   {
+    "w": "saß",
+    "s": 4.52,
+    "e": 4.74
+   },
+   {
+    "w": "ich",
+    "s": 4.74,
+    "e": 4.84
+   },
+   {
+    "w": "hier",
+    "s": 4.84,
+    "e": 4.96
+   },
+   {
+    "w": "drin",
+    "s": 4.96,
+    "e": 5.14
+   },
+   {
+    "w": "und",
+    "s": 5.14,
+    "e": 5.28
+   },
+   {
+    "w": "hab",
+    "s": 5.28,
+    "e": 5.42
+   },
+   {
+    "w": "trainiert.",
+    "s": 5.42,
+    "e": 5.78
+   }
+  ]
+ }
+]

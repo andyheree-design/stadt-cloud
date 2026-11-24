@@ -1,0 +1,1192 @@
+[
+ {
+  "line": 1,
+  "text": "In dieser Stadt ist alles Ragebait.",
+  "file": "stadt/e01/vo/l01.wav",
+  "dur": 2.462,
+  "wer": 0.0,
+  "f0": 296,
+  "words": [
+   {
+    "w": "In",
+    "s": 0.0,
+    "e": 0.16
+   },
+   {
+    "w": "dieser",
+    "s": 0.16,
+    "e": 0.42
+   },
+   {
+    "w": "Stadt",
+    "s": 0.42,
+    "e": 0.84
+   },
+   {
+    "w": "ist",
+    "s": 0.84,
+    "e": 1.1
+   },
+   {
+    "w": "alles",
+    "s": 1.1,
+    "e": 1.48
+   },
+   {
+    "w": "ragebait.",
+    "s": 1.48,
+    "e": 2.22
+   }
+  ]
+ },
+ {
+  "line": 2,
+  "text": "Seit Ragebait Jugendwort des Jahres ist, will hier jeder nur noch eins: Kommentare.",
+  "file": "stadt/e01/vo/l02.wav",
+  "dur": 4.322,
+  "wer": 0.0,
+  "f0": 193,
+  "words": [
+   {
+    "w": "Seit",
+    "s": 0.0,
+    "e": 0.16
+   },
+   {
+    "w": "Ragebait,",
+    "s": 0.16,
+    "e": 0.72
+   },
+   {
+    "w": "Jugendwort",
+    "s": 0.92,
+    "e": 1.34
+   },
+   {
+    "w": "des",
+    "s": 1.34,
+    "e": 1.52
+   },
+   {
+    "w": "Jahres",
+    "s": 1.52,
+    "e": 1.82
+   },
+   {
+    "w": "ist,",
+    "s": 1.82,
+    "e": 2.1
+   },
+   {
+    "w": "will",
+    "s": 2.28,
+    "e": 2.4
+   },
+   {
+    "w": "hier",
+    "s": 2.4,
+    "e": 2.56
+   },
+   {
+    "w": "jeder",
+    "s": 2.56,
+    "e": 2.78
+   },
+   {
+    "w": "nur",
+    "s": 2.78,
+    "e": 2.98
+   },
+   {
+    "w": "noch",
+    "s": 2.98,
+    "e": 3.1
+   },
+   {
+    "w": "eins,",
+    "s": 3.1,
+    "e": 3.36
+   },
+   {
+    "w": "Kommentare.",
+    "s": 3.64,
+    "e": 3.78
+   }
+  ]
+ },
+ {
+  "line": 3,
+  "text": "Der Dönermann macht Döner mit Ananas. Und Nutella.",
+  "file": "stadt/e01/vo/l03.wav",
+  "dur": 2.604,
+  "wer": 0.12,
+  "f0": 254,
+  "words": [
+   {
+    "w": "Ja,",
+    "s": 0.0,
+    "e": 0.12
+   },
+   {
+    "w": "Dönermann",
+    "s": 0.2,
+    "e": 0.56
+   },
+   {
+    "w": "macht",
+    "s": 0.56,
+    "e": 0.78
+   },
+   {
+    "w": "Döner",
+    "s": 0.78,
+    "e": 1.1
+   },
+   {
+    "w": "mit",
+    "s": 1.1,
+    "e": 1.22
+   },
+   {
+    "w": "Ananas",
+    "s": 1.22,
+    "e": 1.7
+   },
+   {
+    "w": "und",
+    "s": 1.7,
+    "e": 2.0
+   },
+   {
+    "w": "Nutella.",
+    "s": 2.0,
+    "e": 2.44
+   }
+  ]
+ },
+ {
+  "line": 4,
+  "text": "Meine Lehrerin sagt, zwei plus zwei ist fünf. Dann grinst sie in die Kamera.",
+  "file": "stadt/e01/vo/l04.wav",
+  "dur": 3.949,
+  "wer": 0.21,
+  "f0": 193,
+  "words": [
+   {
+    "w": "Meine",
+    "s": 0.0,
+    "e": 0.2
+   },
+   {
+    "w": "Lehrerin",
+    "s": 0.2,
+    "e": 0.64
+   },
+   {
+    "w": "sagt",
+    "s": 0.64,
+    "e": 0.86
+   },
+   {
+    "w": "2",
+    "s": 0.86,
+    "e": 1.26
+   },
+   {
+    "w": "plus",
+    "s": 1.26,
+    "e": 1.54
+   },
+   {
+    "w": "2",
+    "s": 1.54,
+    "e": 1.94
+   },
+   {
+    "w": "ist",
+    "s": 1.94,
+    "e": 2.18
+   },
+   {
+    "w": "5,",
+    "s": 2.18,
+    "e": 2.44
+   },
+   {
+    "w": "dann",
+    "s": 2.7,
+    "e": 2.84
+   },
+   {
+    "w": "grinst",
+    "s": 2.84,
+    "e": 3.12
+   },
+   {
+    "w": "sie",
+    "s": 3.12,
+    "e": 3.28
+   },
+   {
+    "w": "in",
+    "s": 3.28,
+    "e": 3.36
+   },
+   {
+    "w": "die",
+    "s": 3.36,
+    "e": 3.46
+   },
+   {
+    "w": "Kamera.",
+    "s": 3.46,
+    "e": 3.66
+   }
+  ]
+ },
+ {
+  "line": 5,
+  "text": "Der Postbote klingelt nie. Er wirft nur einen Zettel rein: „Sie waren nicht da.“ Ich war da.",
+  "file": "stadt/e01/vo/l05.wav",
+  "dur": 4.008,
+  "wer": 0.0,
+  "f0": 185,
+  "words": [
+   {
+    "w": "Der",
+    "s": 0.0,
+    "e": 0.1
+   },
+   {
+    "w": "Postbote",
+    "s": 0.1,
+    "e": 0.58
+   },
+   {
+    "w": "klingelt",
+    "s": 0.58,
+    "e": 0.92
+   },
+   {
+    "w": "nie.",
+    "s": 0.92,
+    "e": 1.12
+   },
+   {
+    "w": "Er",
+    "s": 1.3,
+    "e": 1.36
+   },
+   {
+    "w": "wirft",
+    "s": 1.36,
+    "e": 1.6
+   },
+   {
+    "w": "nur",
+    "s": 1.6,
+    "e": 1.7
+   },
+   {
+    "w": "einen",
+    "s": 1.7,
+    "e": 1.88
+   },
+   {
+    "w": "Zettel",
+    "s": 1.88,
+    "e": 2.2
+   },
+   {
+    "w": "rein.",
+    "s": 2.2,
+    "e": 2.38
+   },
+   {
+    "w": "Sie",
+    "s": 2.6,
+    "e": 2.66
+   },
+   {
+    "w": "waren",
+    "s": 2.66,
+    "e": 2.88
+   },
+   {
+    "w": "nicht",
+    "s": 2.88,
+    "e": 3.06
+   },
+   {
+    "w": "da.",
+    "s": 3.06,
+    "e": 3.28
+   },
+   {
+    "w": "Ich",
+    "s": 3.44,
+    "e": 3.54
+   },
+   {
+    "w": "war",
+    "s": 3.54,
+    "e": 3.66
+   },
+   {
+    "w": "da.",
+    "s": 3.66,
+    "e": 3.82
+   }
+  ]
+ },
+ {
+  "line": 6,
+  "text": "Meine Oma trägt Socken in Sandalen. Mit Absicht. Drei Millionen Kommentare.",
+  "file": "stadt/e01/vo/l06.wav",
+  "dur": 4.036,
+  "wer": 0.09,
+  "f0": 205,
+  "words": [
+   {
+    "w": "Meine",
+    "s": 0.0,
+    "e": 0.18
+   },
+   {
+    "w": "Oma",
+    "s": 0.18,
+    "e": 0.48
+   },
+   {
+    "w": "trägt",
+    "s": 0.48,
+    "e": 0.72
+   },
+   {
+    "w": "Socken",
+    "s": 0.72,
+    "e": 1.02
+   },
+   {
+    "w": "in",
+    "s": 1.02,
+    "e": 1.14
+   },
+   {
+    "w": "Sandalen",
+    "s": 1.14,
+    "e": 1.64
+   },
+   {
+    "w": "mit",
+    "s": 1.64,
+    "e": 1.88
+   },
+   {
+    "w": "Absicht",
+    "s": 1.88,
+    "e": 2.36
+   },
+   {
+    "w": "3",
+    "s": 2.36,
+    "e": 2.66
+   },
+   {
+    "w": "Millionen",
+    "s": 2.66,
+    "e": 3.22
+   },
+   {
+    "w": "Kommentare.",
+    "s": 3.22,
+    "e": 3.64
+   }
+  ]
+ },
+ {
+  "line": 7,
+  "text": "Und der Bürgermeister hat gepostet: „Die Bahn ist heute pünktlich.“ Da ist das Internet explodiert.",
+  "file": "stadt/e01/vo/l07.wav",
+  "dur": 4.401,
+  "wer": 0.0,
+  "f0": 190,
+  "words": [
+   {
+    "w": "Und",
+    "s": 0.0,
+    "e": 0.12
+   },
+   {
+    "w": "der",
+    "s": 0.12,
+    "e": 0.24
+   },
+   {
+    "w": "Bürgermeister",
+    "s": 0.24,
+    "e": 0.78
+   },
+   {
+    "w": "hat",
+    "s": 0.78,
+    "e": 0.86
+   },
+   {
+    "w": "gepostet,",
+    "s": 0.86,
+    "e": 1.34
+   },
+   {
+    "w": "die",
+    "s": 1.48,
+    "e": 1.58
+   },
+   {
+    "w": "Bahn",
+    "s": 1.58,
+    "e": 1.84
+   },
+   {
+    "w": "ist",
+    "s": 1.84,
+    "e": 2.08
+   },
+   {
+    "w": "heute",
+    "s": 2.08,
+    "e": 2.3
+   },
+   {
+    "w": "pünktlich,",
+    "s": 2.3,
+    "e": 2.84
+   },
+   {
+    "w": "da",
+    "s": 3.0,
+    "e": 3.08
+   },
+   {
+    "w": "ist",
+    "s": 3.08,
+    "e": 3.2
+   },
+   {
+    "w": "das",
+    "s": 3.2,
+    "e": 3.32
+   },
+   {
+    "w": "Internet",
+    "s": 3.32,
+    "e": 3.64
+   },
+   {
+    "w": "explodiert.",
+    "s": 3.64,
+    "e": 4.28
+   }
+  ]
+ },
+ {
+  "line": 8,
+  "text": "Aber es gibt ein Problem. Alle sind sauer. Die ganze Zeit.",
+  "file": "stadt/e01/vo/l08.wav",
+  "dur": 2.834,
+  "wer": 0.0,
+  "f0": 234,
+  "words": [
+   {
+    "w": "Aber",
+    "s": 0.0,
+    "e": 0.22
+   },
+   {
+    "w": "es",
+    "s": 0.22,
+    "e": 0.34
+   },
+   {
+    "w": "gibt",
+    "s": 0.34,
+    "e": 0.46
+   },
+   {
+    "w": "ein",
+    "s": 0.46,
+    "e": 0.6
+   },
+   {
+    "w": "Problem.",
+    "s": 0.6,
+    "e": 0.9
+   },
+   {
+    "w": "Alle",
+    "s": 1.16,
+    "e": 1.34
+   },
+   {
+    "w": "sind",
+    "s": 1.34,
+    "e": 1.54
+   },
+   {
+    "w": "sauer.",
+    "s": 1.54,
+    "e": 1.92
+   },
+   {
+    "w": "Die",
+    "s": 2.06,
+    "e": 2.12
+   },
+   {
+    "w": "ganze",
+    "s": 2.12,
+    "e": 2.32
+   },
+   {
+    "w": "Zeit.",
+    "s": 2.32,
+    "e": 2.64
+   }
+  ]
+ },
+ {
+  "line": 9,
+  "text": "Nachbarn schreien sich über den Zaun an. Mein bester Freund Kevin hatte so einen Crashout, dass sein Router jetzt im Teich wohnt.",
+  "file": "stadt/e01/vo/l09.wav",
+  "dur": 5.485,
+  "wer": 0.09,
+  "f0": 186,
+  "words": [
+   {
+    "w": "Nachbarn",
+    "s": 0.0,
+    "e": 0.44
+   },
+   {
+    "w": "schreien",
+    "s": 0.44,
+    "e": 0.82
+   },
+   {
+    "w": "sich",
+    "s": 0.82,
+    "e": 0.92
+   },
+   {
+    "w": "über",
+    "s": 0.92,
+    "e": 1.12
+   },
+   {
+    "w": "den",
+    "s": 1.12,
+    "e": 1.24
+   },
+   {
+    "w": "Zaun",
+    "s": 1.24,
+    "e": 1.6
+   },
+   {
+    "w": "an.",
+    "s": 1.6,
+    "e": 1.78
+   },
+   {
+    "w": "Mein",
+    "s": 1.96,
+    "e": 2.02
+   },
+   {
+    "w": "bester",
+    "s": 2.02,
+    "e": 2.3
+   },
+   {
+    "w": "Freund",
+    "s": 2.3,
+    "e": 2.44
+   },
+   {
+    "w": "Kevin",
+    "s": 2.44,
+    "e": 2.7
+   },
+   {
+    "w": "hatte",
+    "s": 2.7,
+    "e": 2.9
+   },
+   {
+    "w": "so",
+    "s": 2.9,
+    "e": 3.04
+   },
+   {
+    "w": "einen",
+    "s": 3.04,
+    "e": 3.2
+   },
+   {
+    "w": "Crash",
+    "s": 3.2,
+    "e": 3.44
+   },
+   {
+    "w": "-Out,",
+    "s": 3.44,
+    "e": 3.74
+   },
+   {
+    "w": "dass",
+    "s": 3.9,
+    "e": 3.98
+   },
+   {
+    "w": "sein",
+    "s": 3.98,
+    "e": 4.12
+   },
+   {
+    "w": "Router",
+    "s": 4.12,
+    "e": 4.4
+   },
+   {
+    "w": "jetzt",
+    "s": 4.4,
+    "e": 4.58
+   },
+   {
+    "w": "im",
+    "s": 4.58,
+    "e": 4.76
+   },
+   {
+    "w": "Teich",
+    "s": 4.76,
+    "e": 5.1
+   },
+   {
+    "w": "wohnt.",
+    "s": 5.1,
+    "e": 5.38
+   }
+  ]
+ },
+ {
+  "line": 10,
+  "text": "Also hab ich das schlimmste Ragebait aller Zeiten gepostet.",
+  "file": "stadt/e01/vo/l10.wav",
+  "dur": 2.523,
+  "wer": 0.11,
+  "f0": 178,
+  "words": [
+   {
+    "w": "Also",
+    "s": 0.0,
+    "e": 0.18
+   },
+   {
+    "w": "habe",
+    "s": 0.18,
+    "e": 0.32
+   },
+   {
+    "w": "ich",
+    "s": 0.32,
+    "e": 0.42
+   },
+   {
+    "w": "das",
+    "s": 0.42,
+    "e": 0.54
+   },
+   {
+    "w": "schlimmste",
+    "s": 0.54,
+    "e": 0.86
+   },
+   {
+    "w": "Ragebait",
+    "s": 0.86,
+    "e": 1.36
+   },
+   {
+    "w": "aller",
+    "s": 1.36,
+    "e": 1.6
+   },
+   {
+    "w": "Zeiten",
+    "s": 1.6,
+    "e": 1.9
+   },
+   {
+    "w": "gepostet.",
+    "s": 1.9,
+    "e": 2.44
+   }
+  ]
+ },
+ {
+  "line": 11,
+  "text": "Ein Video, in dem nichts passiert. Ich lächle und sage: „Schönen Tag noch.“",
+  "file": "stadt/e01/vo/l11.wav",
+  "dur": 3.335,
+  "wer": 0.0,
+  "f0": 190,
+  "words": [
+   {
+    "w": "Ein",
+    "s": 0.0,
+    "e": 0.14
+   },
+   {
+    "w": "Video",
+    "s": 0.14,
+    "e": 0.42
+   },
+   {
+    "w": "in",
+    "s": 0.42,
+    "e": 0.6
+   },
+   {
+    "w": "dem",
+    "s": 0.6,
+    "e": 0.68
+   },
+   {
+    "w": "nichts",
+    "s": 0.68,
+    "e": 0.88
+   },
+   {
+    "w": "passiert,",
+    "s": 0.88,
+    "e": 1.3
+   },
+   {
+    "w": "ich",
+    "s": 1.5,
+    "e": 1.6
+   },
+   {
+    "w": "lächle",
+    "s": 1.6,
+    "e": 1.9
+   },
+   {
+    "w": "und",
+    "s": 1.9,
+    "e": 2.0
+   },
+   {
+    "w": "sage,",
+    "s": 2.0,
+    "e": 2.26
+   },
+   {
+    "w": "schönen",
+    "s": 2.46,
+    "e": 2.72
+   },
+   {
+    "w": "Tag",
+    "s": 2.72,
+    "e": 2.92
+   },
+   {
+    "w": "noch!",
+    "s": 2.92,
+    "e": 3.14
+   }
+  ]
+ },
+ {
+  "line": 12,
+  "text": "Die Stadt ist durchgedreht. „Warum ist der so nett?!“ „Was will der von uns?!“ Achtzig Millionen Kommentare.",
+  "file": "stadt/e01/vo/l12.wav",
+  "dur": 4.925,
+  "wer": 0.06,
+  "f0": 256,
+  "words": [
+   {
+    "w": "Die",
+    "s": 0.0,
+    "e": 0.18
+   },
+   {
+    "w": "Stadt",
+    "s": 0.18,
+    "e": 0.36
+   },
+   {
+    "w": "ist",
+    "s": 0.36,
+    "e": 0.52
+   },
+   {
+    "w": "durchgedreht.",
+    "s": 0.52,
+    "e": 1.16
+   },
+   {
+    "w": "Warum",
+    "s": 1.26,
+    "e": 1.4
+   },
+   {
+    "w": "ist",
+    "s": 1.4,
+    "e": 1.58
+   },
+   {
+    "w": "der",
+    "s": 1.58,
+    "e": 1.66
+   },
+   {
+    "w": "so",
+    "s": 1.66,
+    "e": 1.76
+   },
+   {
+    "w": "nett?",
+    "s": 1.76,
+    "e": 1.94
+   },
+   {
+    "w": "Was",
+    "s": 2.16,
+    "e": 2.26
+   },
+   {
+    "w": "will",
+    "s": 2.26,
+    "e": 2.48
+   },
+   {
+    "w": "der",
+    "s": 2.48,
+    "e": 2.6
+   },
+   {
+    "w": "von",
+    "s": 2.6,
+    "e": 2.76
+   },
+   {
+    "w": "uns?",
+    "s": 2.76,
+    "e": 2.96
+   },
+   {
+    "w": "80",
+    "s": 3.22,
+    "e": 3.52
+   },
+   {
+    "w": "Millionen",
+    "s": 3.52,
+    "e": 4.06
+   },
+   {
+    "w": "Kommentare.",
+    "s": 4.06,
+    "e": 4.42
+   }
+  ]
+ },
+ {
+  "line": 13,
+  "text": "Und dann haben mich alle kopiert.",
+  "file": "stadt/e01/vo/l13.wav",
+  "dur": 1.354,
+  "wer": 0.0,
+  "f0": 250,
+  "words": [
+   {
+    "w": "Und",
+    "s": 0.0,
+    "e": 0.14
+   },
+   {
+    "w": "dann",
+    "s": 0.14,
+    "e": 0.28
+   },
+   {
+    "w": "haben",
+    "s": 0.28,
+    "e": 0.48
+   },
+   {
+    "w": "mich",
+    "s": 0.48,
+    "e": 0.64
+   },
+   {
+    "w": "alle",
+    "s": 0.64,
+    "e": 0.8
+   },
+   {
+    "w": "kopiert.",
+    "s": 0.8,
+    "e": 1.2
+   }
+  ]
+ },
+ {
+  "line": 14,
+  "text": "Der Dönermann sagt jetzt Danke. Der Postbote klingelt. Zweimal. Oma trägt Schuhe. Und Kevin hat seinen Router aus dem Teich geholt.",
+  "file": "stadt/e01/vo/l14.wav",
+  "dur": 5.742,
+  "wer": 0.0,
+  "f0": 186,
+  "words": [
+   {
+    "w": "Der",
+    "s": 0.0,
+    "e": 0.1
+   },
+   {
+    "w": "Dönermann",
+    "s": 0.1,
+    "e": 0.44
+   },
+   {
+    "w": "sagt",
+    "s": 0.44,
+    "e": 0.62
+   },
+   {
+    "w": "jetzt",
+    "s": 0.62,
+    "e": 0.82
+   },
+   {
+    "w": "Danke,",
+    "s": 0.82,
+    "e": 1.12
+   },
+   {
+    "w": "der",
+    "s": 1.32,
+    "e": 1.4
+   },
+   {
+    "w": "Postbote",
+    "s": 1.4,
+    "e": 1.86
+   },
+   {
+    "w": "klingelt,",
+    "s": 1.86,
+    "e": 2.24
+   },
+   {
+    "w": "zweimal.",
+    "s": 2.36,
+    "e": 2.76
+   },
+   {
+    "w": "Oma",
+    "s": 2.96,
+    "e": 3.16
+   },
+   {
+    "w": "trägt",
+    "s": 3.16,
+    "e": 3.4
+   },
+   {
+    "w": "Schuhe",
+    "s": 3.4,
+    "e": 3.72
+   },
+   {
+    "w": "und",
+    "s": 3.72,
+    "e": 3.88
+   },
+   {
+    "w": "Kevin",
+    "s": 3.88,
+    "e": 4.1
+   },
+   {
+    "w": "hat",
+    "s": 4.1,
+    "e": 4.28
+   },
+   {
+    "w": "seinen",
+    "s": 4.28,
+    "e": 4.46
+   },
+   {
+    "w": "Router",
+    "s": 4.46,
+    "e": 4.78
+   },
+   {
+    "w": "aus",
+    "s": 4.78,
+    "e": 4.94
+   },
+   {
+    "w": "dem",
+    "s": 4.94,
+    "e": 5.06
+   },
+   {
+    "w": "Teich",
+    "s": 5.06,
+    "e": 5.34
+   },
+   {
+    "w": "geholt.",
+    "s": 5.34,
+    "e": 5.62
+   }
+  ]
+ },
+ {
+  "line": 15,
+  "text": "Jetzt ist in dieser Stadt jeder nett. Und alle regen sich darüber auf.",
+  "file": "stadt/e01/vo/l15.wav",
+  "dur": 2.833,
+  "wer": 0.0,
+  "f0": 232,
+  "words": [
+   {
+    "w": "Jetzt",
+    "s": 0.0,
+    "e": 0.18
+   },
+   {
+    "w": "ist",
+    "s": 0.18,
+    "e": 0.4
+   },
+   {
+    "w": "in",
+    "s": 0.4,
+    "e": 0.5
+   },
+   {
+    "w": "dieser",
+    "s": 0.5,
+    "e": 0.66
+   },
+   {
+    "w": "Stadt",
+    "s": 0.66,
+    "e": 0.84
+   },
+   {
+    "w": "jeder",
+    "s": 0.84,
+    "e": 1.06
+   },
+   {
+    "w": "nett",
+    "s": 1.06,
+    "e": 1.4
+   },
+   {
+    "w": "und",
+    "s": 1.4,
+    "e": 1.64
+   },
+   {
+    "w": "alle",
+    "s": 1.64,
+    "e": 1.84
+   },
+   {
+    "w": "regen",
+    "s": 1.84,
+    "e": 2.04
+   },
+   {
+    "w": "sich",
+    "s": 2.04,
+    "e": 2.18
+   },
+   {
+    "w": "darüber",
+    "s": 2.18,
+    "e": 2.38
+   },
+   {
+    "w": "auf.",
+    "s": 2.38,
+    "e": 2.66
+   }
+  ]
+ },
+ {
+  "line": 16,
+  "text": "Und wenn du das jetzt kommentierst … hab ich dich.",
+  "file": "stadt/e01/vo/l16.wav",
+  "dur": 2.111,
+  "wer": 0.0,
+  "f0": 174,
+  "words": [
+   {
+    "w": "Und",
+    "s": 0.0,
+    "e": 0.14
+   },
+   {
+    "w": "wenn",
+    "s": 0.14,
+    "e": 0.28
+   },
+   {
+    "w": "du",
+    "s": 0.28,
+    "e": 0.4
+   },
+   {
+    "w": "das",
+    "s": 0.4,
+    "e": 0.56
+   },
+   {
+    "w": "jetzt",
+    "s": 0.56,
+    "e": 0.72
+   },
+   {
+    "w": "kommentierst,",
+    "s": 0.72,
+    "e": 1.5
+   },
+   {
+    "w": "hab",
+    "s": 1.56,
+    "e": 1.72
+   },
+   {
+    "w": "ich",
+    "s": 1.72,
+    "e": 1.86
+   },
+   {
+    "w": "dich.",
+    "s": 1.86,
+    "e": 2.02
+   }
+  ]
+ }
+]

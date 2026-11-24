@@ -1,0 +1,386 @@
+{
+ "fps": 30,
+ "width": 1080,
+ "height": 1920,
+ "durationSec": 46.638,
+ "durationFrames": 1400,
+ "voiceDir": "output/KOS/E04/voice_trim",
+ "gap": 0.1,
+ "lead": 0.15,
+ "tailAfterLastWord": 0.7,
+ "voteBoard": {
+  "start": 41.857,
+  "end": 46.638
+ },
+ "lines": [
+  {
+   "id": "S1_OFF",
+   "shot": 1,
+   "who": "OFF",
+   "start": 0.15,
+   "end": 3.779,
+   "dur": 3.629,
+   "sub": "Ein Stempel will heiraten. Antrag: abgelehnt.",
+   "f0": 4,
+   "f1": 113
+  },
+  {
+   "id": "S2_buero",
+   "shot": 2,
+   "who": "buero",
+   "start": 3.879,
+   "end": 6.073,
+   "dur": 2.194,
+   "sub": "Formfehler! Alles nochmal – dreifach!",
+   "f0": 116,
+   "f1": 182
+  },
+  {
+   "id": "S3_guenther",
+   "shot": 3,
+   "who": "guenther",
+   "start": 6.173,
+   "end": 8.957,
+   "dur": 2.784,
+   "sub": "Willkommen zur Hochzeit am Pfandautomaten!",
+   "f0": 185,
+   "f1": 269
+  },
+  {
+   "id": "S4_pfand",
+   "shot": 4,
+   "who": "pfand",
+   "start": 9.057,
+   "end": 12.342,
+   "dur": 3.285,
+   "sub": "Ausgerechnet hier? Das Ding frisst Flaschen wie mich!",
+   "f0": 272,
+   "f1": 370
+  },
+  {
+   "id": "S5_curry",
+   "shot": 5,
+   "who": "curry",
+   "start": 12.442,
+   "end": 15.805,
+   "dur": 3.363,
+   "sub": "Ich will nur Ja sagen. Ohne Formular, ohne Stempel.",
+   "f0": 373,
+   "f1": 474
+  },
+  {
+   "id": "S6_buero",
+   "shot": 6,
+   "who": "buero",
+   "start": 15.905,
+   "end": 18.899,
+   "dur": 2.994,
+   "sub": "Ohne Formular gibt es kein Ja. Paragraf zwölf.",
+   "f0": 477,
+   "f1": 567
+  },
+  {
+   "id": "S7a_curry",
+   "shot": 7,
+   "who": "curry",
+   "start": 18.999,
+   "end": 20.422,
+   "dur": 1.423,
+   "sub": "Hatschi!",
+   "f0": 570,
+   "f1": 613
+  },
+  {
+   "id": "S7b_OFF",
+   "shot": 7,
+   "who": "OFF",
+   "start": 20.222,
+   "end": 22.087,
+   "dur": 1.865,
+   "sub": "Alle drei – weg.",
+   "f0": 607,
+   "f1": 663
+  },
+  {
+   "id": "S8_guenther",
+   "shot": 8,
+   "who": "guenther",
+   "start": 22.187,
+   "end": 24.797,
+   "dur": 2.61,
+   "sub": "Wer Einspruch hat – jetzt oder nie!",
+   "f0": 666,
+   "f1": 744
+  },
+  {
+   "id": "S9_doener",
+   "shot": 9,
+   "who": "doener",
+   "start": 25.147,
+   "end": 26.488,
+   "dur": 1.341,
+   "sub": "Ich erhebe Einspruch!",
+   "f0": 754,
+   "f1": 795
+  },
+  {
+   "id": "S10_brez",
+   "shot": 10,
+   "who": "brez",
+   "start": 26.588,
+   "end": 27.219,
+   "dur": 0.631,
+   "sub": "Du?!",
+   "f0": 798,
+   "f1": 817
+  },
+  {
+   "id": "S11_doener",
+   "shot": 11,
+   "who": "doener",
+   "start": 27.319,
+   "end": 30.355,
+   "dur": 3.036,
+   "sub": "Ich hab's versprochen, Brezelina. Ich vermiss sie jetzt schon.",
+   "f0": 820,
+   "f1": 911
+  },
+  {
+   "id": "S12_buero",
+   "shot": 12,
+   "who": "buero",
+   "start": 30.455,
+   "end": 32.493,
+   "dur": 2.038,
+   "sub": "Einspruch… abgelehnt.",
+   "f0": 914,
+   "f1": 975
+  },
+  {
+   "id": "S13_pfand",
+   "shot": 13,
+   "who": "pfand",
+   "start": 32.593,
+   "end": 36.126,
+   "dur": 3.533,
+   "sub": "Der Strauß?! Dann heirate ich als Nächster… am Automaten?",
+   "f0": 978,
+   "f1": 1084
+  },
+  {
+   "id": "S14a_versp",
+   "shot": 14,
+   "who": "versp",
+   "start": 36.226,
+   "end": 38.27,
+   "dur": 2.044,
+   "sub": "Zu spät? Signalstörung!",
+   "f0": 1087,
+   "f1": 1148
+  },
+  {
+   "id": "S14b_doener",
+   "shot": 14,
+   "who": "doener",
+   "start": 38.39,
+   "end": 39.015,
+   "dur": 0.625,
+   "sub": "Ja!",
+   "f0": 1152,
+   "f1": 1170
+  },
+  {
+   "id": "S14b_brez",
+   "shot": 14,
+   "who": "brez",
+   "start": 38.47,
+   "end": 39.127,
+   "dur": 0.657,
+   "sub": "Ja!",
+   "f0": 1154,
+   "f1": 1174
+  },
+  {
+   "id": "S14b_pfand",
+   "shot": 14,
+   "who": "pfand",
+   "start": 38.54,
+   "end": 39.145,
+   "dur": 0.605,
+   "sub": "Ja!",
+   "f0": 1156,
+   "f1": 1174
+  },
+  {
+   "id": "S15_guenther",
+   "shot": 15,
+   "who": "guenther",
+   "start": 39.245,
+   "end": 41.837,
+   "dur": 2.592,
+   "sub": "Beamter oder Döner? Ihr entscheidet!",
+   "f0": 1177,
+   "f1": 1255
+  },
+  {
+   "id": "S16_OFF",
+   "shot": 16,
+   "who": "OFF",
+   "start": 41.937,
+   "end": 44.401,
+   "dur": 2.464,
+   "sub": "A: Beamter. B: Döner.",
+   "f0": 1258,
+   "f1": 1332
+  },
+  {
+   "id": "S17_buero",
+   "shot": 17,
+   "who": "buero",
+   "start": 44.501,
+   "end": 45.938,
+   "dur": 1.437,
+   "sub": "Abstimmung? Abgelehnt.",
+   "f0": 1335,
+   "f1": 1378
+  }
+ ],
+ "shots": [
+  {
+   "shot": 1,
+   "start": 0,
+   "end": 3.799,
+   "f0": 0,
+   "f1": 114,
+   "dur": 3.8
+  },
+  {
+   "shot": 2,
+   "start": 3.799,
+   "end": 6.093,
+   "f0": 114,
+   "f1": 183,
+   "dur": 2.29
+  },
+  {
+   "shot": 3,
+   "start": 6.093,
+   "end": 8.977,
+   "f0": 183,
+   "f1": 269,
+   "dur": 2.88
+  },
+  {
+   "shot": 4,
+   "start": 8.977,
+   "end": 12.362,
+   "f0": 269,
+   "f1": 371,
+   "dur": 3.38
+  },
+  {
+   "shot": 5,
+   "start": 12.362,
+   "end": 15.825,
+   "f0": 371,
+   "f1": 475,
+   "dur": 3.46
+  },
+  {
+   "shot": 6,
+   "start": 15.825,
+   "end": 18.919,
+   "f0": 475,
+   "f1": 568,
+   "dur": 3.09
+  },
+  {
+   "shot": 7,
+   "start": 18.919,
+   "end": 22.107,
+   "f0": 568,
+   "f1": 663,
+   "dur": 3.19
+  },
+  {
+   "shot": 8,
+   "start": 22.107,
+   "end": 24.947,
+   "f0": 663,
+   "f1": 748,
+   "dur": 2.84
+  },
+  {
+   "shot": 9,
+   "start": 24.947,
+   "end": 26.508,
+   "f0": 748,
+   "f1": 795,
+   "dur": 1.56
+  },
+  {
+   "shot": 10,
+   "start": 26.508,
+   "end": 27.239,
+   "f0": 795,
+   "f1": 817,
+   "dur": 0.73
+  },
+  {
+   "shot": 11,
+   "start": 27.239,
+   "end": 30.375,
+   "f0": 817,
+   "f1": 911,
+   "dur": 3.14
+  },
+  {
+   "shot": 12,
+   "start": 30.375,
+   "end": 32.513,
+   "f0": 911,
+   "f1": 975,
+   "dur": 2.14
+  },
+  {
+   "shot": 13,
+   "start": 32.513,
+   "end": 36.146,
+   "f0": 975,
+   "f1": 1084,
+   "dur": 3.63
+  },
+  {
+   "shot": 14,
+   "start": 36.146,
+   "end": 39.165,
+   "f0": 1084,
+   "f1": 1175,
+   "dur": 3.02
+  },
+  {
+   "shot": 15,
+   "start": 39.165,
+   "end": 41.857,
+   "f0": 1175,
+   "f1": 1256,
+   "dur": 2.69
+  },
+  {
+   "shot": 16,
+   "start": 41.857,
+   "end": 44.421,
+   "f0": 1256,
+   "f1": 1333,
+   "dur": 2.56
+  },
+  {
+   "shot": 17,
+   "start": 44.421,
+   "end": 46.638,
+   "f0": 1333,
+   "f1": 1399,
+   "dur": 2.22
+  }
+ ]
+}
