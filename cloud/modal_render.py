@@ -30,9 +30,9 @@ app = modal.App("stadt-render", image=image)
 FLAGS = ["--muted", "--codec=h264", "--crf=16", "--pixel-format=yuv420p", "--timeout=120000", "--log=info"]
 
 
-def _render(comp, a, b, gl, extra):
+def _render(comp, a, b, gl, extra, cores):
     out = f"/tmp/part_{a:06d}.mp4"
-    cores = os.cpu_count() or 4
+    # os.cpu_count() widzi rdzenie hosta (24), Modal daje tylko zamówione → podajemy jawnie
     cmd = ["npx", "remotion", "render", "build", comp, out, f"--frames={a}-{b}",
            f"--gl={gl}", f"--concurrency={cores}", *FLAGS, *extra]
     t = time.time()
@@ -44,7 +44,7 @@ def _render(comp, a, b, gl, extra):
 
 @app.function(cpu=8, memory=12288, timeout=3600, retries=1)
 def render_cpu(comp: str, a: int, b: int):
-    return _render(comp, a, b, "swangle", [])
+    return _render(comp, a, b, "swangle", [], 8)
 
 
 # GPU wymaga karty płatniczej w Modal — rejestrujemy funkcję tylko przy STADT_GPU=1,
@@ -55,7 +55,7 @@ if os.environ.get("STADT_GPU") == "1":
     def render_gpu(comp: str, a: int, b: int):
         subprocess.run(["nvidia-smi"], check=False)
         return _render(comp, a, b, "angle-egl",
-                       ["--chrome-mode=chrome-for-testing", "--enable-multiprocess-on-linux"])
+                       ["--chrome-mode=chrome-for-testing", "--enable-multiprocess-on-linux"], 4)
 
 
 @app.function(timeout=300)
