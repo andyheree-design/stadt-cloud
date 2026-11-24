@@ -3,11 +3,11 @@
 import { getCompositions } from "@remotion/renderer";
 import fs from "node:fs";
 
-const [serveUrl, id, chunksArg] = process.argv.slice(2);
+const [serveUrl, id, chunksArg, limitArg] = process.argv.slice(2);
 const comps = await getCompositions(serveUrl, { chromiumOptions: { gl: "swangle" } });
 const c = comps.find((x) => x.id === id);
 if (!c) { console.error(`Brak kompozycji ${id}. Dostępne: ${comps.map((x) => x.id).join(", ")}`); process.exit(1); }
-const N = c.durationInFrames;
+const N = Number(limitArg) > 0 ? Math.min(Number(limitArg), c.durationInFrames) : c.durationInFrames;
 const chunks = Math.max(1, Math.min(Number(chunksArg) || 20, N));
 const size = Math.ceil(N / chunks);
 const include = [];

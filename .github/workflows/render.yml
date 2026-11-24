@@ -11,6 +11,10 @@ on:
         description: "Liczba równoległych kawałków (max 20 na darmowym planie)"
         default: "20"
         required: true
+      limit:
+        description: "Test: renderuj tylko pierwsze N klatek (0 = całość)"
+        default: "0"
+        required: false
 
 env:
   COMP: ${{ inputs.composition }}
@@ -38,7 +42,7 @@ jobs:
       - name: Bundle (raz, współdzielony przez wszystkie kawałki)
         run: npx remotion bundle $REMOTION_ENTRY --out-dir=build
       - id: plan
-        run: node tools/plan.mjs build "$COMP" "${{ inputs.chunks }}"
+        run: node tools/plan.mjs build "$COMP" "${{ inputs.chunks }}" "${{ inputs.limit }}"
       - uses: actions/upload-artifact@v4
         with: { name: bundle, path: build, retention-days: 1 }
 
