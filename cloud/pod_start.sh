@@ -20,14 +20,20 @@ npx remotion bundle cloud/index.ts --out-dir=build >/dev/null 2>&1 || { log "BLA
 log "setup ok node $(node -v)"
 CHUNK=${CHUNK:-100}; CONC=${CONC:-$(( $(nproc) > 16 ? 16 : $(nproc) ))}; GL=${GL:-angle-egl}
 render(){ npx remotion render build "$COMP" "$3" --frames=$1-$2 --gl=$GL --chrome-mode=chrome-for-testing --concurrency=$CONC --muted --codec=h264 --crf=16 --pixel-format=yuv420p --timeout=240000 --log=error 2>>/out/err.txt; }
-first=1
-for a in $(seq $FROM $CHUNK $TO); do b=$((a+CHUNK-1)); [ $b -gt $TO ] && b=$TO
-  f=/out/part_$(printf %06d $a).mp4; t=$(date +%s)
-  # przy błędzie: najpierw swangle, potem połowa równoległości (za dużo kart CPU-WebGL naraz = timeout sceny)
-  until render $a $b $f.tmp.mp4; do log "BLAD render $a-$b GL=$GL conc=$CONC"; if [ $GL != swangle ]; then GL=swangle; elif [ $CONC -gt 2 ]; then CONC=$((CONC/2)); else fail; fi; log "ponawiam GL=$GL conc=$CONC"; done
+# P = ile osobnych procesów renderu naraz. CPU (swangle): wiele kart w JEDNEJ przeglądarce dzieli jeden
+# programowy GPU-proces -> kolejka i timeouty; osobne procesy po conc=1 skalują się na wszystkie rdzenie.
+P=${P:-1}
+chunk(){ local a=$1 b=$2 n=0 g=$GL f=/out/part_$(printf %06d $1).mp4 t=$(date +%s) y
+  until GL=$g render $a $b $f.tmp.mp4; do n=$((n+1)); log "BLAD render $a-$b GL=$g proba $n"
+    if [ $g != swangle ]; then g=swangle; elif [ $n -ge 3 ]; then fail; fi; done
   y=$(ffmpeg -hide_banner -i $f.tmp.mp4 -vf signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=- -an -f null - 2>/dev/null | awk -F= '/YAVG/{s+=$2;n++}END{printf "%.0f",s/n}')
-  if [ $first = 1 ] && { [ $y -gt 235 ] || [ $y -lt 8 ]; } && [ $GL != swangle ]; then log "PODEJRZANA jasnosc $y przy $GL -> swangle"; GL=swangle; render $a $b $f.tmp.mp4; fi
-  first=0; mv $f.tmp.mp4 $f; dt=$(( $(date +%s)-t ))
-  log "OK $a-$b ${dt}s $(awk "BEGIN{printf \"%.2f\",$dt/($b-$a+1)}") s/kl YAVG=$y GL=$GL conc=$CONC"
+  if { [ $y -gt 235 ] || [ $y -lt 8 ]; } && [ $g != swangle ]; then log "PODEJRZANA jasnosc $y przy $g -> swangle"; g=swangle; GL=$g render $a $b $f.tmp.mp4; fi
+  mv $f.tmp.mp4 $f; local dt=$(( $(date +%s)-t ))
+  log "OK $a-$b ${dt}s $(awk "BEGIN{printf \"%.2f\",$dt/($b-$a+1)}") s/kl/proces YAVG=$y GL=$g conc=$CONC P=$P"; }
+pids=()
+for a in $(seq $FROM $CHUNK $TO); do b=$((a+CHUNK-1)); [ $b -gt $TO ] && b=$TO
+  while :; do al=(); for q in "${pids[@]}"; do kill -0 $q 2>/dev/null && al+=($q); done; pids=("${al[@]}"); [ ${#pids[@]} -lt $P ] && break; sleep 5; done
+  chunk $a $b & pids+=($!)
 done
+wait "${pids[@]}"
 log "KONIEC"; sleep 1200; kill_self; sleep infinity

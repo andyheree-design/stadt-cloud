@@ -53,14 +53,14 @@ def template(gpu):
     raise RuntimeError("brak szablonu Ubuntu 24.04" + (" z NVIDIA" if gpu else ""))
 
 
-def user_data(comp, f, t, gpu):
-    env = f"export COMP={comp} FROM={f} TO={t} MAXH=3 GL={'angle-egl' if gpu else 'swangle'}"
-    if not gpu: env += " CONC=$(( $(nproc) / 2 ))"  # 32 kart swangle naraz = timeout; skrypt i tak zmniejsza przy błędzie
+def user_data(comp, f, t, gpu, chunk=100):
+    env = f"export COMP={comp} FROM={f} TO={t} CHUNK={chunk} MAXH=3 GL={'angle-egl' if gpu else 'swangle'}"
+    if not gpu: env += " CONC=1 P=$(( $(nproc) / 2 ))"  # osobne procesy (pomiar 24.11: 16 proc. ~1,9 s/kl, 16 kart w 1 przegl. = timeout)
     return f"#!/bin/bash\n{env}\ncurl -fsSL {SCRIPT} | bash > /var/log/stadt.log 2>&1\n"
 
 
-def start(comp, a, b, n, plan=None, zone=None):
-    a, b, n = int(a), int(b), int(n); plan = plan or GPU_PLAN; gpu = "GPU" in plan
+def start(comp, a, b, n, plan=None, zone=None, chunk=100):
+    a, b, n, chunk = int(a), int(b), int(n), int(chunk); plan = plan or GPU_PLAN; gpu = "GPU" in plan
     zone = zone or (GPU_ZONE if gpu else CPU_ZONE); tpl = template(gpu)
     size = -(-(b - a + 1) // n); servers = []
     try:
@@ -74,9 +74,9 @@ def start(comp, a, b, n, plan=None, zone=None):
                     {"type": "public", "ip_addresses": {"ip_address": [{"family": "IPv4"}]}},
                     {"type": "utility", "ip_addresses": {"ip_address": [{"family": "IPv4"}]}}]}},
                 "login_user": {"username": "root", "ssh_keys": {"ssh_key": [PUB]}},
-                "user_data": user_data(comp, f, t, gpu)}}
+                "user_data": user_data(comp, f, t, gpu, chunk)}}
             s = api("POST", "/server", body)["server"]
-            servers.append(dict(id=s["uuid"], frm=f, to=t, ip=None, plan=plan, zone=zone))
+            servers.append(dict(id=s["uuid"], frm=f, to=t, ip=None, plan=plan, zone=zone, chunk=chunk))
             STATE.write_text(json.dumps(servers))
             print(f"serwer {s['uuid']} {plan} {zone} klatki {f}-{t}")
     except Exception:
@@ -106,7 +106,7 @@ def status():
 def fetch(out):
     out = pathlib.Path(out); out.mkdir(parents=True, exist_ok=True)
     for s in json.loads(STATE.read_text()):
-        for a in range(s["frm"], s["to"] + 1, 100):
+        for a in range(s["frm"], s["to"] + 1, s.get("chunk", 100)):
             f = out / f"part_{a:06d}.mp4"
             if f.exists(): continue
             try: f.write_bytes(urllib.request.urlopen(url(s, f.name), timeout=120).read()); print("pobrano", f.name)
@@ -153,7 +153,7 @@ def film(comp, audio, result, n=1, od=0, plan=None, zone=None):
     total = frames(comp); t0 = time.time(); out = HOME / "stadt-cloud" / "out" / comp
     try:
         start(comp, int(od), total - 1, n, plan, zone)
-        need = [a for s in json.loads(STATE.read_text()) for a in range(s["frm"], s["to"] + 1, 100)]
+        need = [a for s in json.loads(STATE.read_text()) for a in range(s["frm"], s["to"] + 1, s.get("chunk", 100))]
         wait_all(out, need, t0)
     finally:
         stop()
@@ -166,11 +166,11 @@ def film(comp, audio, result, n=1, od=0, plan=None, zone=None):
 
 
 def test(plan=None, zone=None):
-    """200 klatek ze środka E02 (sceny 3D) — wynik s/klatkę z status.txt, potem kasacja."""
+    """200 klatek ze środka E02 w 16 kawałkach (sceny 3D) — wynik s/klatkę z status.txt, potem kasacja."""
     out = HOME / "stadt-cloud" / "out" / "upcloud_test"; t0 = time.time()
     try:
-        start("StadtE02", 1800, 1999, 1, plan, zone)
-        wait_all(out, [1800, 1900], t0, limit=3600)
+        start("StadtE02", 1800, 1999, 1, plan, zone, chunk=13)  # 16 kawałków = 16 procesów naraz
+        wait_all(out, list(range(1800, 2000, 13)), t0, limit=3600)
         s = json.loads(STATE.read_text())[0]
         print(urllib.request.urlopen(url(s, "status.txt"), timeout=20).read().decode())
     finally:
