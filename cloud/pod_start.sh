@@ -10,7 +10,7 @@ fail(){ log "BLAD KONCOWY - wylaczam za 15 min"; sleep 900; kill_self; sleep inf
 log(){ echo "$(date +%T) $*" | tee -a /out/status.txt; }
 log "start $COMP $FROM-$TO"; nvidia-smi -L >> /out/status.txt 2>&1
 export DEBIAN_FRONTEND=noninteractive
-apt-get update -qq && apt-get install -y -qq curl git ffmpeg ca-certificates libnss3 libdbus-1-3 libgbm-dev libxrandr2 libxkbcommon-dev libxfixes3 libxcomposite1 libxdamage1 libpango-1.0-0 libcairo2 libegl1 libgl1 fonts-liberation >/dev/null 2>&1 || log "BLAD apt podstawowe"
+apt-get update -qq && apt-get install -y -qq curl git ffmpeg ca-certificates libnss3 libdbus-1-3 libgbm-dev libxrandr2 libxkbcommon-dev libxfixes3 libxcomposite1 libxdamage1 libpango-1.0-0 libcairo2 libegl1 libgl1 fonts-liberation fonts-noto-color-emoji >/dev/null 2>&1 || log "BLAD apt podstawowe"
 # Ubuntu 24.04 ma nazwy z sufiksem t64 (libatk1.0-0t64 itd.), starsze bez — próbuj obu
 for p in libatk1.0-0 libasound2 libatk-bridge2.0-0 libcups2; do apt-get install -y -qq ${p}t64 >/dev/null 2>&1 || apt-get install -y -qq $p >/dev/null 2>&1 || log "BLAD apt $p"; done
 curl -fsSL https://deb.nodesource.com/setup_22.x | bash - >/dev/null 2>&1 && apt-get install -y -qq nodejs >/dev/null 2>&1
@@ -31,7 +31,9 @@ chunk(){ local a=$1 b=$2 n=0 g=$GL f=/out/part_$(printf %06d $1).mp4 t=$(date +%
   mv $f.tmp.mp4 $f; local dt=$(( $(date +%s)-t ))
   log "OK $a-$b ${dt}s $(awk "BEGIN{printf \"%.2f\",$dt/($b-$a+1)}") s/kl/proces YAVG=$y GL=$g conc=$CONC P=$P"; }
 pids=()
-for a in $(seq $FROM $CHUNK $TO); do b=$((a+CHUNK-1)); [ $b -gt $TO ] && b=$TO
+# LIST="a:b a:b ..." = tylko wybrane kawałki (poprawki); bez LIST cały zakres FROM..TO po CHUNK
+RL=${LIST:-$(for a in $(seq $FROM $CHUNK $TO); do b=$((a+CHUNK-1)); [ $b -gt $TO ] && b=$TO; echo $a:$b; done)}
+for r in $RL; do a=${r%:*}; b=${r#*:}
   while :; do al=(); for q in "${pids[@]}"; do kill -0 $q 2>/dev/null && al+=($q); done; pids=("${al[@]}"); [ ${#pids[@]} -lt $P ] && break; sleep 5; done
   chunk $a $b & pids+=($!)
 done

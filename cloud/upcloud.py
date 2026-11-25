@@ -53,13 +53,14 @@ def template(gpu):
     raise RuntimeError("brak szablonu Ubuntu 24.04" + (" z NVIDIA" if gpu else ""))
 
 
-def user_data(comp, f, t, gpu, chunk=100):
+def user_data(comp, f, t, gpu, chunk=100, lst=None):
     env = f"export COMP={comp} FROM={f} TO={t} CHUNK={chunk} MAXH=3 GL={'angle-egl' if gpu else 'swangle'}"
+    if lst: env += f' LIST="{" ".join(f"{x}:{y}" for x, y in lst)}"'
     if not gpu: env += " CONC=1 P=$(( $(nproc) / 2 ))"  # osobne procesy (pomiar 24.11: 16 proc. ~1,9 s/kl, 16 kart w 1 przegl. = timeout)
     return f"#!/bin/bash\n{env}\ncurl -fsSL {SCRIPT} | bash > /var/log/stadt.log 2>&1\n"
 
 
-def start(comp, a, b, n, plan=None, zone=None, chunk=100):
+def start(comp, a, b, n, plan=None, zone=None, chunk=100, lst=None):
     a, b, n, chunk = int(a), int(b), int(n), int(chunk); plan = plan or GPU_PLAN; gpu = "GPU" in plan
     zone = zone or (GPU_ZONE if gpu else CPU_ZONE); tpl = template(gpu)
     size = -(-(b - a + 1) // n); servers = []
@@ -74,9 +75,9 @@ def start(comp, a, b, n, plan=None, zone=None, chunk=100):
                     {"type": "public", "ip_addresses": {"ip_address": [{"family": "IPv4"}]}},
                     {"type": "utility", "ip_addresses": {"ip_address": [{"family": "IPv4"}]}}]}},
                 "login_user": {"username": "root", "ssh_keys": {"ssh_key": [PUB]}},
-                "user_data": user_data(comp, f, t, gpu, chunk)}}
+                "user_data": user_data(comp, f, t, gpu, chunk, lst)}}
             s = api("POST", "/server", body)["server"]
-            servers.append(dict(id=s["uuid"], frm=f, to=t, ip=None, plan=plan, zone=zone, chunk=chunk))
+            servers.append(dict(id=s["uuid"], frm=f, to=t, ip=None, plan=plan, zone=zone, chunk=chunk, parts=[x for x, _ in lst] if lst else None))
             STATE.write_text(json.dumps(servers))
             print(f"serwer {s['uuid']} {plan} {zone} klatki {f}-{t}")
     except Exception:
@@ -106,7 +107,7 @@ def status():
 def fetch(out):
     out = pathlib.Path(out); out.mkdir(parents=True, exist_ok=True)
     for s in json.loads(STATE.read_text()):
-        for a in range(s["frm"], s["to"] + 1, s.get("chunk", 100)):
+        for a in s.get("parts") or range(s["frm"], s["to"] + 1, s.get("chunk", 100)):
             f = out / f"part_{a:06d}.mp4"
             if f.exists(): continue
             try: f.write_bytes(urllib.request.urlopen(url(s, f.name), timeout=120).read()); print("pobrano", f.name)
@@ -148,11 +149,14 @@ def wait_all(out, need, t0, limit=3 * 3600):
         time.sleep(60)
 
 
-def film(comp, audio, result, n=1, od=0, plan=None, zone=None):
+def film(comp, audio, result, n=1, od=0, plan=None, zone=None, chunk=60):  # 60 kl.: 63 kawałki ≈ 4 pełne fale po 16 procesów
     import subprocess
     total = frames(comp); t0 = time.time(); out = HOME / "stadt-cloud" / "out" / comp
+    ad = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", audio],
+                              capture_output=True, text=True, check=True).stdout)
+    if ad < total / 60 - 1: raise SystemExit(f"audio {audio} ma {ad:.1f} s, film {total / 60:.1f} s — to plik zastępczy? (np. weź audio z poprzedniej wersji mp4)")
     try:
-        start(comp, int(od), total - 1, n, plan, zone)
+        start(comp, int(od), total - 1, n, plan, zone, chunk)
         need = [a for s in json.loads(STATE.read_text()) for a in range(s["frm"], s["to"] + 1, s.get("chunk", 100))]
         wait_all(out, need, t0)
     finally:
@@ -160,9 +164,32 @@ def film(comp, audio, result, n=1, od=0, plan=None, zone=None):
     parts = sorted(out.glob("part_*.mp4")); lst = out / "list.txt"
     lst.write_text("".join(f"file '{f.as_posix()}'\n" for f in parts))
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(lst), "-i", audio,
-                    "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest",
+                    "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-t", f"{total / 60:.3f}",  # -shortest + concat copy ucinało do 1 kawałka
                     "-movflags", "+faststart", result], check=True)
     print(f"GOTOWE {result} w {(time.time() - t0) / 60:.0f} min — teraz kontrola jakości (klatki, jasność, arkusz)")
+
+
+def poprawka(comp, zakresy, audio, result, chunk=12, plan=None, zone=None):
+    """Przerenderuj tylko zakresy klatek (np. "240-419,2700-2879"), podmień kawałki w out/<comp> i sklej film.
+    Zakresy wyrównaj do granic starych kawałków (60) — stare części z tych zakresów są usuwane."""
+    import subprocess
+    chunk = int(chunk); out = HOME / "stadt-cloud" / "out" / comp; t0 = time.time(); lst = []
+    for z in zakresy.split(","):
+        a, b = map(int, z.split("-"))
+        lst += [(x, min(x + chunk - 1, b)) for x in range(a, b + 1, chunk)]
+        for f in out.glob("part_*.mp4"):
+            if a <= int(f.stem[5:]) <= b: f.unlink()
+    try:
+        start(comp, lst[0][0], lst[-1][1], 1, plan or CPU_PLAN, zone, chunk, lst)
+        wait_all(out, [x for x, _ in lst], t0)
+    finally:
+        stop()
+    total = frames(comp); parts = sorted(out.glob("part_*.mp4")); lstf = out / "list.txt"
+    lstf.write_text("".join(f"file '{f.as_posix()}'\n" for f in parts))
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(lstf), "-i", audio,
+                    "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "copy" if audio.endswith(".mp4") else "aac",
+                    "-t", f"{total / 60:.3f}", "-movflags", "+faststart", result], check=True)
+    print(f"GOTOWE {result} w {(time.time() - t0) / 60:.0f} min (poprawka {zakresy})")
 
 
 def test(plan=None, zone=None):
@@ -180,4 +207,4 @@ def test(plan=None, zone=None):
 
 if __name__ == "__main__":
     {"plany": plany, "start": start, "status": status, "fetch": fetch, "stop": stop, "film": film,
-     "test": test}[sys.argv[1]](*sys.argv[2:])
+     "test": test, "poprawka": poprawka}[sys.argv[1]](*sys.argv[2:])
