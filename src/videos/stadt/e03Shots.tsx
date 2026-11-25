@@ -56,7 +56,7 @@ const outro = (u: number) => { if (u < 0.4) { const k = u / 0.4; return { ...FAC
 
 export const SHOTS_E03: Record<string, SpecE03> = {
   // 1 — In dieser Stadt ist Six Seven verboten.  HOOK klatka 0: Kevin za kratami robi „67”, koguty, znak zakazu
-  hookCell: { light: "day", fx: "close", fxo: { sat: 0.28, bright: 0.04, bokeh: 2.2, sat: 0.2 }, ...cc("kevin", -0.07, { face: "grin", pose: { six7: 1, talk: 1 }, zoom: 0.82, fast: true, shake: 0.005 }),
+  hookCell: { light: "day", fx: "close", fxo: { sat: 0.28, bright: 0.04, bokeh: 2.2 }, ...cc("kevin", -0.07, { face: "grin", pose: { six7: 1, talk: 1 }, zoom: 0.82, fast: true, shake: 0.005 }),
     props: (u, t) => <>{cell(t)}{siren(t)}</>, ui: (s) => <Ban67 at={s} /> },
   kevinSix: { light: "day", fx: "close", fxo: { sat: 0.28, bright: 0.04, bokeh: 3 }, ...cc("kevin", -0.25, { r: 0.3, face: "happy", pose: { six7: 1, jump: 0.2 }, zoom: 0.7, fov: 26, shake: 0.006 }),
     props: (u, t) => <>{cell(t)}{siren(t)}</>, ui: (s) => <Ban67 at={s - 60} size={200} /> },
@@ -80,6 +80,8 @@ export const SHOTS_E03: Record<string, SpecE03> = {
   omaCake: { fx: "street", fxo: { bokeh: 1 }, cam: { p: [0.2, 1.35, -2.4], l: [-2.1, 1.0, 0.3], fov: 48, mv: [-0.4, -0.1, -0.3], focus: [-2.1, 1.0, 0.3] },
     acts: [{ c: "oma", face: "happy", pose: { wave: 1 }, p: [OMA.x, SW, OMA.z], r: PI / 2 }], props: (u, t) => <>{cake(t)}<Hearts position={[OMA.x + 0.2, 1.5, OMA.z]} t={t} /></>, key: [-0.8, 1.6, 1.2, 3, 5] },
   omaSmug: { fx: "close", ...close("oma", OMA.x, OMA.z, { r: PI / 2, face: "smug", pose: { cross: 1, talk: 1 }, zoom: 0.85 }), props: (u, t) => cake(t) },
+  // v4: refren po scenie Omy — Oma przy torcie sama robi „67” na rytm Huss
+  omaSix: { fx: "close", fxo: { sat: 0.3 }, ...close("oma", OMA.x, OMA.z, { r: PI / 2 + 0.15, face: "grin", pose: { six7: 1, jump: 0.3 }, zoom: 0.8, shake: 0.006 }), props: (u, t) => cake(t) },
   cakeClose: { fx: "close", fxo: { bokeh: 3 }, cam: { p: [OMA.x + 2.5, 1.5, OMA.z + 2.0], l: [OMA.x + 0.75, 1.42, OMA.z + 0.6], fov: 36, zoom: 0.8, fast: true, focus: [OMA.x + 0.78, 1.45, OMA.z + 0.62] },
     acts: [{ c: "oma", face: "wink", pose: { point: 0.6 }, p: [OMA.x, SW, OMA.z], r: PI / 2 + 0.3 }], props: (u, t) => cake(t), key: [OMA.x + 1.5, 1.8, OMA.z + 1.2, 2.5, 4],
     ui: (s) => <Counter from={66} to={67} at={s + 20} dur={20} icon="🎂" suffix="?" /> },
