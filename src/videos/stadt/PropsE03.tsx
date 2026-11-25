@@ -99,9 +99,9 @@ export const Megaphone: React.FC<{ position: V3; rot?: V3 }> = ({ position, rot 
 const pop = (f: number, fps: number) => spring({ frame: f, fps, config: { damping: 9, stiffness: 220 } });
 
 /** hook: duży znak zakazu „67” (klatka 0 → widoczny od razu, potem lekko pulsuje) */
-export const Ban67: React.FC<{ at: number; top?: number; size?: number }> = ({ at, top = 230, size = 300 }) => {
+export const Ban67: React.FC<{ at: number; top?: number; size?: number }> = ({ at, top = 110, size = 240 }) => { // prawy górny róg: na środku zasłaniał twarz Kevina (v2)
   const f = useCurrentFrame() - at, { fps } = useVideoConfig(), k = f < 0 ? 0 : Math.max(0.85, pop(f, fps)), s = 1 + Math.sin(f / 7) * 0.03;
-  return <div style={{ position: "absolute", top, left: 0, right: 0, display: "flex", justifyContent: "center", transform: `scale(${k * s}) rotate(${Math.sin(f / 9) * 3}deg)` }}>
+  return <div style={{ position: "absolute", top, left: 0, right: 56, display: "flex", justifyContent: "flex-end", transformOrigin: "85% 50%", transform: `scale(${k * s}) rotate(${Math.sin(f / 9) * 3}deg)` }}>
     <div style={{ width: size, height: size, borderRadius: "50%", border: `${size * 0.09}px solid #e3191c`, background: "rgba(255,255,255,.93)", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 10px 40px rgba(0,0,0,.5)" }}>
       <span style={{ fontFamily: F, fontWeight: 700, fontSize: size * 0.5, color: "#111" }}>67</span>
       <div style={{ position: "absolute", width: size * 1.02, height: size * 0.09, background: "#e3191c", transform: "rotate(-45deg)" }} />

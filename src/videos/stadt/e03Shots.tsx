@@ -59,7 +59,7 @@ export const SHOTS_E03: Record<string, SpecE03> = {
   hookCell: { light: "dusk", fx: "close", fxo: { bokeh: 2.2, sat: 0.2 }, ...cc("kevin", -0.07, { face: "grin", pose: { six7: 1, talk: 1 }, zoom: 0.82, fast: true, shake: 0.005 }),
     props: (u, t) => <>{cell(t)}{siren(t)}</>, ui: (s) => <Ban67 at={s} /> },
   kevinSix: { light: "dusk", fx: "close", fxo: { bokeh: 3 }, ...cc("kevin", -0.25, { r: 0.3, face: "happy", pose: { six7: 1, jump: 0.2 }, zoom: 0.7, fov: 26, shake: 0.006 }),
-    props: (u, t) => <>{cell(t)}{siren(t)}</>, ui: (s) => <Ban67 at={s - 60} top={200} size={190} /> },
+    props: (u, t) => <>{cell(t)}{siren(t)}</>, ui: (s) => <Ban67 at={s - 60} size={200} /> },
   // 3 — Wer es sagt, kommt sofort ins Gefängnis. Mein bester Freund Kevin sitzt da schon seit drei Wochen.
   copArrest: { fx: "street", cam: { p: [0.7, 1.35, -1.0], l: [-2.4, 1.0, -4.6], fov: 46, mv: [-0.2, 0, -0.4], shake: 0.004, focus: [-2.4, 1.0, -4.4] },
     acts: [{ c: "extra2", face: "shock", pose: { six7: 1, shake: 0.6 }, p: [-2.3, SW, -4.3], r: PI / 2 + 0.3 },
