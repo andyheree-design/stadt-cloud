@@ -37,7 +37,7 @@ const desk = (t: number) => <MayorDesk position={[MX, 0.12, MZ + 0.6]} t={t} />;
 const tv = (title?: string) => (s: number) => <TvLive at={s} title={title} />;
 const OMA = { x: SPOT.oma.x, z: SPOT.oma.z };
 const cake = (t: number) => <Cake position={[OMA.x + 0.75, SW, OMA.z + 0.55]} t={t} rotY={0.9} />;
-const DOOR: V3 = [-3.25, SW, -12];
+const DOOR: V3 = [-3.0, SW, -12];
 const PRICE: V3 = [1.5, 0, -5.0];
 /** tłum w parku robiący „67” */
 const SIX: R6Pose[] = [{ six7: 1, jump: 0.5 }, { six7: 1, talk: 1 }, { six7: 1, dance: 0.4 }, { six7: 1 }, { six7: 1, jump: 0.3, talk: 1 }];
@@ -101,7 +101,7 @@ export const SHOTS_E03: Record<string, SpecE03> = {
   postDoor: { fx: "street", cam: { p: [0.3, 1.3, -9.9], l: [-3.0, 1.2, -12.1], fov: 46, mv: [-0.3, 0, -0.2], focus: [-2.6, 1.0, -11.6] },
     acts: [{ c: "post", face: "shock", pose: { headScratch: 1 }, p: [-1.95, SW, -11.0], r: PI / 2 - 0.3 }],
     props: (u, t) => <><Door67 position={DOOR} rotY={PI / 2} t={t} /><Parcel position={[-2.15, 0.75, -11.1]} rotY={0.6} /></> },
-  door67: { fx: "close", fxo: { bokeh: 1.8 }, cam: { p: [-0.4, 2.0, -11.2], l: [-3.2, 2.0, -12], fov: 40, zoom: 0.85, fast: true, focus: [-3.2, 2.0, -12] },
+  door67: { fx: "close", fxo: { bokeh: 1.8 }, cam: { p: [-0.4, 2.0, -11.2], l: [-3.0, 2.0, -12], fov: 40, zoom: 0.85, fast: true, focus: [-3.0, 2.0, -12] },
     props: (u, t) => <Door67 position={DOOR} rotY={PI / 2} t={t} />, key: [-1.5, 2.2, -11.2, 2.5, 4] },
   postEmpty: { fx: "street", fxo: { sat: -0.12 }, cam: { p: [0.4, 1.0, -8.6], l: [-2.6, 0.8, -12.4], fov: 46, mv: [0, 0, -0.3], focus: [-2.4, 0.8, -12] },
     acts: [{ c: "post", face: "sad", pose: { walk: 1 }, p: [-2.2, SW, -11.4], r: 0, mv: [0, 1.4] }],
