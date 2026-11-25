@@ -43,7 +43,7 @@ const PRICE: V3 = [1.5, 0, -5.0];
 const SIX: R6Pose[] = [{ six7: 1, jump: 0.5 }, { six7: 1, talk: 1 }, { six7: 1, dance: 0.4 }, { six7: 1 }, { six7: 1, jump: 0.3, talk: 1 }];
 
 // ---------- refren: Ich na chodniku o zmierzchu ----------
-const IX = SPOT.ich.x, IZ = SPOT.ich.z, IR = PI / 2;
+const IX = SPOT.ich.x, IZ = SPOT.ich.z + 0.9 /* latarnia Town (-2.05,-6) stała przed twarzą */, IR = PI / 2;
 const warm = (p: V3) => <pointLight position={p} color="#ffb067" intensity={5} distance={7} decay={1.5} />;
 const dusk = (s: SpecE03, kp?: V3): SpecE03 => ({ ...s, light: "dusk", fxo: { sat: 0.24, bright: 0.03, ...(s.fxo ?? {}) },
   props: (u, t) => <>{s.props?.(u, t)}{warm(kp ?? [IX + 1.6, 1.7, IZ + 1.2])}</> });
@@ -92,14 +92,14 @@ export const SHOTS_E03: Record<string, SpecE03> = {
     props: () => <><Kasse position={[2.15, 1.05, -5.4]} rotY={-0.6} text="9,00 €" /></> },
   // 7 — Achtung, Achtung. Wer seine Hände so bewegt, wird sofort festgenommen.
   copSpeaker: { fx: "close", fxo: { bokeh: 2 }, ...close("cop", -2.4, -9, { r: PI / 2 + 0.25, face: "angry", pose: { talk: 1 }, zoom: 0.85, shake: 0.005 }),
-    props: (u, t) => <><Megaphone position={[-2.4 + 0.33, 0.97, -9 + 0.08]} rot={[0, PI / 2 + 0.4, 0]} /><Speaker position={[-3.1, 1.55, -9.9]} rotY={PI / 2} t={t} on scale={0.8} />{siren(t, [-0.3, 2.2, -7.5], 5)}</> },
+    props: (u, t) => <><Megaphone position={[-2.4 + 0.22, 0.78, -9 + 0.38]} rot={[0.5, PI / 2 + 1.1, 0]} /><Speaker position={[-3.1, 1.55, -9.9]} rotY={PI / 2} t={t} on scale={0.8} />{siren(t, [-0.3, 2.2, -7.5], 5)}</> },
   copDemo: { fx: "street", cam: { p: [-0.1, 1.2, -7.6], l: [-2.4, 0.95, -9.2], fov: 42, mv: [-0.3, 0, -0.2], focus: [-2.4, 0.95, -9.0] },
     acts: [{ c: "cop", face: "evil", pose: { six7: 1, talk: 1 }, p: [-2.4, SW, -9], r: PI / 2 + 0.4 }, { c: "cop", face: "angry", pose: { cross: 1 }, p: [-2.9, SW, -10.2], r: PI / 2, dt: 0.4 }],
     props: (u, t) => siren(t, [-0.3, 2.2, -7.5], 5), key: [-0.8, 1.6, -8, 3, 5] },
   crowdHands: { fx: "park", fxo: { sat: -0.1 }, cam: { ...PARKCAM, mv: [-1.6, -0.2, 0] }, acts: crowd("shock", [{ cross: 1 }, { facepalm: 1 }, { cross: 1, shake: 0.5 }, { headScratch: 1 }]) },
   // 8 — Der Postbote liefert nicht mehr in die Hausnummer siebenundsechzig. Da wohnt jetzt keiner mehr.
   postDoor: { fx: "street", cam: { p: [0.3, 1.3, -9.9], l: [-3.0, 1.2, -12.1], fov: 46, mv: [-0.3, 0, -0.2], focus: [-2.6, 1.0, -11.6] },
-    acts: [{ c: "post", face: "shock", pose: { headScratch: 1 }, p: [-2.4, SW, -11.3], r: PI / 2 - 0.3 }],
+    acts: [{ c: "post", face: "shock", pose: { headScratch: 1 }, p: [-1.95, SW, -11.0], r: PI / 2 - 0.3 }],
     props: (u, t) => <><Door67 position={DOOR} rotY={PI / 2} t={t} /><Parcel position={[-2.15, 0.75, -11.1]} rotY={0.6} /></> },
   door67: { fx: "close", fxo: { bokeh: 1.8 }, cam: { p: [-1.2, 1.9, -11.4], l: [-3.2, 1.9, -12], fov: 40, zoom: 0.8, fast: true, focus: [-3.2, 1.8, -12] },
     props: (u, t) => <Door67 position={DOOR} rotY={PI / 2} t={t} />, key: [-1.5, 2.2, -11.2, 2.5, 4] },
@@ -143,7 +143,7 @@ export const SHOTS_E03: Record<string, SpecE03> = {
   hussGrind: dusk({ fx: "close", ...ic({ r: IR + 0.35, face: "angry", pose: { shake: 1, talk: 1 }, zoom: 0.85, shake: 0.006 }) }),
   hussFast: dusk({ fx: "close", ...ic({ r: IR - 0.35, face: "smile", pose: { wave: 1, shake: 0.5 }, zoom: 0.72, fast: true, shake: 0.008 }) }),
   hussPoint: dusk({ fx: "close", ...ic({ r: IR, face: "grin", pose: { point: 1, shake: 0.6 }, zoom: 0.78, shake: 0.007 }) }),
-  hussSix: dusk({ fx: "close", fxo: { bokeh: 2 }, ...ic({ r: IR + 0.1, face: "grin", pose: { six7: 1, jump: 0.3 }, zoom: 0.75, fast: true, shake: 0.007 }) }),
+  hussSix: dusk({ fx: "close", fxo: { bokeh: 2 }, ...ic({ r: IR + 0.1, face: "grin", pose: { six7: 1, jump: 0.3 }, zoom: 0.88, fast: true, shake: 0.007 }) }),
   hussOutro: dusk({ fx: "close", fxo: { bokeh: 0.9, sat: 0.3 }, cam: { p: FACE.p, l: FACE.l, fov: FACE.fov, fn: outro, focus: (u) => outro(u).l, shake: 0.003 },
     town: { wide: true, center: [0, -10], fog: (u) => { const k = Math.pow(Math.max(0, (u - 0.4) / 0.6), 2); return [40 + 120 * k, 160 + 260 * k]; } },
     acts: [{ c: "ich", face: "grin", pose: { six7: 1, talk: 1 }, p: [IX, SW, IZ], r: IR + 0.15 }, ...walkers(-2, 6, { face: "grin", pose: { six7: 1 } })],
