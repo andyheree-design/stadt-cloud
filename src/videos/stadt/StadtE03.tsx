@@ -54,7 +54,7 @@ export const StadtE03: React.FC = () => {
       {kit && <ThreeCanvas width={1080} height={1920} shadows gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1 }} camera={{ fov: 50, near: 0.05, far: 320 }}>
         <CamRig c={S.cam} u={u} t={t} />
         {S.room ? <>{<Room night open={S.open} />}{S.open && <PartyOutside t={t} />}</> : <><Town kit={kit} light={S.light ?? "day"} center={S.town?.center ?? [S.cam.l[0], S.cam.l[2]]} fog={S.town?.fog?.(u)} wide={S.town?.wide} /></>}
-        <Fx focus={focus} bokeh={focus ? fx.bokeh ?? 2 : 0} aoRadius={S.room ? 0.5 : 1.0} ao={(fx as any).ao ?? (S.room ? 1.1 : 2.2)} bright={fx.bright ?? 0} contrast={fx.contrast ?? 0} sat={fx.sat ?? 0} />
+        <Fx focus={focus} bokeh={focus ? fx.bokeh ?? 2 : 0} aoRadius={S.room ? 0.5 : 1.0} ao={(fx as any).ao ?? (S.room ? 1.1 : 2.2)} bright={fx.bright ?? 0.03} contrast={fx.contrast ?? 0.04} sat={fx.sat ?? 0.22} />
         {S.key && <pointLight position={[S.key[0], S.key[1], S.key[2]]} intensity={S.key[3]} distance={S.key[4]} decay={1.5} />}
         {(S.acts ?? []).map((a, k) => <Actor key={k} a={a} t={t} u={u} />)}
         {S.props?.(u, t)}

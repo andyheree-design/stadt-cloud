@@ -233,7 +233,7 @@ export const SPOT = {
 };
 const SPECIAL: Record<string, Partial<BStyle> & { shop: Shop }> = {
   "-6:1": { shop: { text: "DÖNER", bg: "#d62b2b", fg: "#ffe14d", inner: 3 }, awning: "#d62b2b", mat: "plaster", color: "#efe3c8" },
-  "-12:-1": { shop: { text: "POST", bg: "#ffd21f", fg: "#111" }, mat: "plaster", color: "#f2efe6" },
+  "-12:-1": { shop: { text: "POST", bg: "#ffd21f", fg: "#111" }, awning: undefined, mat: "plaster", color: "#f2efe6" },
   "-18:1": { shop: { text: "SCHULE", bg: "#2f6fd6", fg: "#fff" }, floors: 3, mat: "brick", color: "#b5533a" },
   "-24:-1": { shop: { text: "RATHAUS", bg: "#f2efe6", fg: "#1a1a1a" }, floors: 4, mat: "plaster", color: "#e8dcc2", trim: "#ffffff" },
 };

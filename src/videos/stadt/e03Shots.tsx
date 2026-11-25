@@ -45,8 +45,8 @@ const SIX: R6Pose[] = [{ six7: 1, jump: 0.5 }, { six7: 1, talk: 1 }, { six7: 1, 
 // ---------- refren: Ich na chodniku o zmierzchu ----------
 const IX = SPOT.ich.x, IZ = SPOT.ich.z + 0.9 /* latarnia Town (-2.05,-6) stała przed twarzą */, IR = PI / 2;
 const warm = (p: V3) => <pointLight position={p} color="#ffb067" intensity={5} distance={7} decay={1.5} />;
-const dusk = (s: SpecE03, kp?: V3): SpecE03 => ({ ...s, light: "dusk", fxo: { sat: 0.24, bright: 0.03, ...(s.fxo ?? {}) },
-  props: (u, t) => <>{s.props?.(u, t)}{warm(kp ?? [IX + 1.6, 1.7, IZ + 1.2])}</> });
+// v4: jasny dzień jak topka (było: zmierzch) — nazwa zostaje, żeby nie ruszać ujęć
+const dusk = (s: SpecE03, _kp?: V3): SpecE03 => ({ ...s, light: "day", fxo: { sat: 0.3, bright: 0.05, ...(s.fxo ?? {}) } });
 const ic = (o: Parameters<typeof close>[3]) => close("ich", IX, IZ, { r: IR, ...o });
 const lerp3 = (a: V3, b: V3, k: number): V3 => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
 const FACE = { p: [IX + 2.05, 1.0, IZ + 0.1] as V3, l: [IX, 0.85, IZ] as V3, fov: 30 };
@@ -56,18 +56,18 @@ const outro = (u: number) => { if (u < 0.4) { const k = u / 0.4; return { ...FAC
 
 export const SHOTS_E03: Record<string, SpecE03> = {
   // 1 — In dieser Stadt ist Six Seven verboten.  HOOK klatka 0: Kevin za kratami robi „67”, koguty, znak zakazu
-  hookCell: { light: "dusk", fx: "close", fxo: { bokeh: 2.2, sat: 0.2 }, ...cc("kevin", -0.07, { face: "grin", pose: { six7: 1, talk: 1 }, zoom: 0.82, fast: true, shake: 0.005 }),
+  hookCell: { light: "day", fx: "close", fxo: { sat: 0.28, bright: 0.04, bokeh: 2.2, sat: 0.2 }, ...cc("kevin", -0.07, { face: "grin", pose: { six7: 1, talk: 1 }, zoom: 0.82, fast: true, shake: 0.005 }),
     props: (u, t) => <>{cell(t)}{siren(t)}</>, ui: (s) => <Ban67 at={s} /> },
-  kevinSix: { light: "dusk", fx: "close", fxo: { bokeh: 3 }, ...cc("kevin", -0.25, { r: 0.3, face: "happy", pose: { six7: 1, jump: 0.2 }, zoom: 0.7, fov: 26, shake: 0.006 }),
+  kevinSix: { light: "day", fx: "close", fxo: { sat: 0.28, bright: 0.04, bokeh: 3 }, ...cc("kevin", -0.25, { r: 0.3, face: "happy", pose: { six7: 1, jump: 0.2 }, zoom: 0.7, fov: 26, shake: 0.006 }),
     props: (u, t) => <>{cell(t)}{siren(t)}</>, ui: (s) => <Ban67 at={s - 60} size={200} /> },
   // 3 — Wer es sagt, kommt sofort ins Gefängnis. Mein bester Freund Kevin sitzt da schon seit drei Wochen.
   copArrest: { fx: "street", cam: { p: [0.7, 1.35, -1.0], l: [-2.4, 1.0, -4.6], fov: 46, mv: [-0.2, 0, -0.4], shake: 0.004, focus: [-2.4, 1.0, -4.4] },
     acts: [{ c: "extra2", face: "shock", pose: { six7: 1, shake: 0.6 }, p: [-2.3, SW, -4.3], r: PI / 2 + 0.3 },
       { c: "cop", face: "angry", pose: { point: 1, talk: 1 }, p: [-1.7, SW, -5.2], r: -0.4, dt: 0.2 }, { c: "cop", face: "evil", pose: { cross: 1 }, p: [-2.8, SW, -5.4], r: 0.4, dt: 0.5 },
       ...walkers(-9, 4, { face: "shock" })], props: (u, t) => siren(t, [0.5, 2.4, -3]), key: [-0.5, 1.6, -2.6, 3, 6] },
-  cellWide: { light: "dusk", fx: "close", fxo: { bokeh: 1.2 }, cam: { p: [1.3, 1.45, CZ + 3.2], l: [0, 1.15, CZ - 1.8], fov: 46, mv: [-0.4, 0, -0.5], focus: [-0.2, 1.0, CZ - 1.3] },
+  cellWide: { light: "day", fx: "close", fxo: { sat: 0.28, bright: 0.04, bokeh: 1.2 }, cam: { p: [1.3, 1.45, CZ + 3.2], l: [0, 1.15, CZ - 1.8], fov: 46, mv: [-0.4, 0, -0.5], focus: [-0.2, 1.0, CZ - 1.3] },
     acts: [inCell("kevin", -0.4, "sad", { cross: 1 }, 0.15)], props: (u, t) => cell(t), key: [1.0, 1.8, CZ + 2, 3, 6] },
-  cellTally: { light: "dusk", fx: "close", fxo: { bokeh: 2.5 }, cam: { p: [-0.24, 1.3, -7.1], l: [-0.75, 1.1, -10.5], fov: 38, zoom: 0.85, focus: [-0.45, 1.0, -10.2] },
+  cellTally: { light: "day", fx: "close", fxo: { sat: 0.28, bright: 0.04, bokeh: 2.5 }, cam: { p: [-0.24, 1.3, -7.1], l: [-0.75, 1.1, -10.5], fov: 38, zoom: 0.85, focus: [-0.45, 1.0, -10.2] },
     acts: [{ c: "kevin", face: "sad", pose: { headScratch: 1 }, p: [-0.45, FL, -10.2], r: -0.2 }], props: (u, t) => cell(t),
     ui: (s) => <Counter from={0} to={21} at={s} dur={40} icon="📅" suffix=" Tage" /> },
   // 4 — In der Schule zählen wir jetzt so: fünfundsechzig, sechsundsechzig... achtundsechzig.
@@ -128,9 +128,9 @@ export const SHOTS_E03: Record<string, SpecE03> = {
   crowd67b: { fx: "street", fxo: { sat: 0.3 }, cam: { ...STREET, shake: 0.006 }, acts: walkers(-4, 8, { face: "grin", pose: { six7: 1, jump: 0.4 } }), props: (u, t) => siren(t, [0, 2.5, -6], 4) },
   oma67: { fx: "close", fxo: { sat: 0.2 }, ...close("oma", OMA.x, OMA.z, { r: PI / 2 + 0.35, face: "grin", pose: { six7: 1, jump: 0.3 }, zoom: 0.75, fast: true, shake: 0.007 }), props: (u, t) => cake(t) },
   // 13 — Jetzt sitzt der Bürgermeister im Gefängnis. Direkt neben Kevin.
-  cellBoth: { light: "dusk", fx: "close", fxo: { bokeh: 1.2 }, cam: { p: [0.9, 1.35, CZ + 2.6], l: [-0.1, 1.05, CZ - 1.5], fov: 44, mv: [-0.3, 0, -0.4], focus: [-0.1, 1.0, CZ - 1.3] },
+  cellBoth: { light: "day", fx: "close", fxo: { sat: 0.28, bright: 0.04, bokeh: 1.2 }, cam: { p: [0.9, 1.35, CZ + 2.6], l: [-0.1, 1.05, CZ - 1.5], fov: 44, mv: [-0.3, 0, -0.4], focus: [-0.1, 1.0, CZ - 1.3] },
     acts: [inCell("mayor", 0.35, "cry", { facepalm: 1 }, -0.1), inCell("kevin", -0.6, "happy", { wave: 1 }, 0.25, 0.3)], props: (u, t) => <>{cell(t)}{siren(t)}</>, key: [0.8, 1.8, CZ + 1.8, 3, 6] },
-  kevinWave: { light: "dusk", fx: "close", fxo: { bokeh: 2.5 }, ...cc("kevin", -0.6, { r: 0.25, face: "happy", pose: { wave: 1 }, zoom: 0.85 }),
+  kevinWave: { light: "day", fx: "close", fxo: { sat: 0.28, bright: 0.04, bokeh: 2.5 }, ...cc("kevin", -0.6, { r: 0.25, face: "happy", pose: { wave: 1 }, zoom: 0.85 }),
     props: (u, t) => cell(t) },
   // 14 — Und wenn du jetzt Six Seven in die Kommentare schreibst... kommst du auch rein.
   ichSmug: dusk({ fx: "close", ...ic({ r: IR + 0.25, face: "smug", pose: { cross: 1 }, zoom: 0.85 }) }),
