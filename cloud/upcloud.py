@@ -11,6 +11,7 @@ Dostęp API: C:/Users/dimau/.upcloud_key — token z Account → API tokens albo
 Klucz SSH: ~/.ssh/upcloud_ed25519(.pub). Bez klucza w repo, bez wypisywania sekretów.
 GPU (L40S, fi-hel2) wymaga konta odblokowanego wpłatą >= 50% kredytu promocyjnego; CPU działa od razu."""
 import base64, json, sys, time, pathlib, urllib.request, urllib.error
+sys.stdout.reconfigure(encoding="utf-8", errors="replace"); sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 HOME = pathlib.Path.home()
 _K = HOME.joinpath(".upcloud_key").read_text().strip()

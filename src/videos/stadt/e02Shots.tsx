@@ -121,7 +121,7 @@ export const SHOTS_E02: Record<string, SpecE02> = {
   // 7 — Achtung an Gleis drei. Ihr Zug hat heute eine Verspätung von circa... ja.
   speaker: { fx: "close", fxo: { bokeh: 2.5 }, cam: { p: [0.75, PH + 1.65, 32.85], l: [0, PH + 2.05, 31.5], fov: 36, zoom: 0.85, shake: 0.004, focus: SPK }, props: (u, t) => <>{deco(t, "+999 min", true)}</>, key: [0.6, PH + 2.3, 32.6, 2.5, 4] },
   // v4: pionowy kadr jest wąski — tłum ustawiony W GŁĄB osi kamery (nad torem 1), wszyscy przodem do kamery
-  platformCrowd: { fx: "park", cam: { p: [0.45, PH + 1.35, 37.6], l: [0.4, PH + 1.3, 32.6], fov: 50, mv: [-0.25, 0, -0.35], focus: [0.45, PH + 1.3, 34.3] },
+  platformCrowd: { fx: "park", cam: { p: [0.45, PH + 1.35, 37.6], l: [0.4, PH + 0.7, 32.6], fov: 50, mv: [-0.25, 0, -0.35], focus: [0.45, PH + 1.3, 34.3] },
     acts: ([["extra1", -0.35, 33.3, 0.25, { armsUp: 0.4 }], ["extra2", 1.2, 33.2, -0.3, { facepalm: 1 }], ["lehrerin", -0.8, 32.3, 0.2, { point: 1 }],
       ["extra3", 1.6, 32.1, -0.25, { shake: 1 }], ["murat", -1.05, 31.4, 0.15, { facepalm: 1 }], ["kevin", 1.95, 31.4, -0.2, { armsUp: 0.6 }]] as [string, number, number, number, R6Pose][])
       .map(([c, x, z, r, pose], i): ActE02 => ({ c, face: "shock", pose, p: [x, PH, z], r, dt: i * 0.37 }))
@@ -132,7 +132,7 @@ export const SHOTS_E02: Record<string, SpecE02> = {
   kevinCouple: { fx: "close", fxo: { bokeh: 2.5 }, cam: { p: [-0.6, PH + 0.95, 35.95], l: [-0.6, PH + 0.8, 33.6], fov: 38, mv: [0, 0, -0.3], focus: [-0.6, PH + 0.9, 33.6] },
     acts: [{ c: "kevin", face: "happy", pose: { wave: 0.3 }, p: [-0.95, PH, 33.6], r: 0.6 }, { c: "extra1", look: WIFE, pose: { talk: 1 }, p: [-0.25, PH, 33.6], r: -0.6 }],
     props: (u, t) => <><Hearts position={[-0.6, PH + 1.2, 33.6]} t={t} />{deco(t)}</>, key: [-0.6, PH + 1.4, 35.2, 2.5, 4] },
-  kevinKids: { fx: "close", fxo: { bokeh: 1.8 }, cam: { p: [-0.6, PH + 1.1, 36.3], l: [-0.6, PH + 0.7, 33.6], fov: 44, mv: [0.3, 0, 0.1], focus: [-0.6, PH + 0.7, 33.6] },
+  kevinKids: { fx: "close", fxo: { bokeh: 1.8 }, cam: { p: [-0.6, PH + 1.1, 36.3], l: [-0.6, PH + 0.95, 33.6], fov: 44, mv: [0.3, 0, 0.1], focus: [-0.6, PH + 0.7, 33.6] },
     acts: [{ c: "kevin", face: "happy", pose: { cross: 1 }, p: [-1.15, PH, 33.5], r: 0.2 }, { c: "extra1", look: WIFE, pose: { wave: 1 }, p: [-0.05, PH, 33.5], r: -0.2 },
       { c: "kevin", look: { hat: "hair", hatColor: "#2a1a10", shirt: "#3cba54" }, face: "grin", pose: { jump: 0.6, armsUp: 1 }, p: [-0.75, PH, 33.95], r: 0, s: 0.6 },
       { c: "extra1", look: { ...WIFE, shirt: "#ffd23f" }, face: "happy", pose: { dance: 1 }, p: [-0.4, PH, 34.0], r: 0, s: 0.55, dt: 0.4 }],
