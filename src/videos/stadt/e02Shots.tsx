@@ -152,9 +152,9 @@ export const SHOTS_E02: Record<string, SpecE02> = {
   // 11 — Der Bürgermeister macht eine Krisensitzung. Die Bahn muss sich offiziell entschuldigen!
   mayorDesk: { fx: "close", ...close("mayor", -1.6, -24.4, { face: "angry", pose: { point: 1, shake: 1, talk: 1 }, zoom: 0.8, shake: 0.006, fov: 36 }),
     props: (u, t) => <MayorDesk position={[-1.6, 0.12, -24.4 + 0.6]} t={t} /> },
-  bahnSorry: { fx: "park", cam: { p: [ICH_X + 0.12, PH + 1.15, 37.4], l: [ICH_X, PH + 1.15, 32.6], fov: 58, mv: [0, 0, -0.4], focus: [ICH_X, PH + 1.0, 33] },
+  bahnSorry: { fx: "park", cam: { p: [ICH_X + 0.5, PH + 1.15, 37.4], l: [ICH_X + 0.38, PH + 1.15, 32.6], fov: 62, mv: [0, 0, -0.4], focus: [ICH_X, PH + 1.0, 33] },
     acts: [{ c: "post", look: BAHNER, face: "sad", pose: { facepalm: 1 }, p: [ICH_X + 0.75, PH, 33.1], r: 0.1 }, { c: "post", look: BAHNER, face: "cry", pose: { talk: 1 }, p: [ICH_X - 0.75, PH, 33.1], r: -0.1, dt: 0.5 }, ...waiting("angry", [{ point: 1 }, { cross: 1 }, { point: 1, shake: 1 }, { cross: 1 }, { facepalm: 1 }, { point: 1 }])],
-    props: (u, t) => <><SorryBanner position={[ICH_X, PH, 32.85]} t={t} />{deco(t)}</> },
+    props: (u, t) => <><SorryBanner position={[ICH_X + 0.38, PH, 32.85]} t={t} />{deco(t)}</> },
   // 12 — Jetzt ist der Zug wieder zwei Stunden zu spät. Und alle sind glücklich.
   boardDelay2: { fx: "close", fxo: { bokeh: 1.4 }, cam: { p: [-2.1, PH + 1.2, 35.6], l: [-3, PH + 1.75, 33.6], fov: 42, zoom: 0.85, focus: BOARD },
     acts: waiting("happy", [{ armsUp: 1 }, { wave: 1 }, { dance: 1 }]), props: (u, t) => <>{board("+120 min", { color: "#5aff6a", blink: 0.7 + 0.3 * Math.abs(Math.sin(t * 5)) })}{clock(10, 12)}</>, key: [-2.4, PH + 1.6, 35.2, 2.5, 4] },
