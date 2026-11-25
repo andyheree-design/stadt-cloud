@@ -25,6 +25,7 @@ export type R6Pose = {
   headScratch?: number; // 0..1 ręka za głową (pewna siebie poza)
   cross?: number;   // 0..1 ręce skrzyżowane
   lean?: number;    // pochylenie do przodu (rad)
+  six7?: number;    // 0..1 gest „67” (dłonie przed sobą, na zmianę góra/dół)
 };
 
 export const STUD = 0.2;
@@ -363,6 +364,7 @@ export const R6: React.FC<{ look: R6Look; pose?: R6Pose; t: number; position?: [
   if (pose.facepalm) { rArmX = rArmX * (1 - pose.facepalm) - 2.5 * pose.facepalm; rArmZ = rArmZ * (1 - pose.facepalm) - 0.85 * pose.facepalm; }
   if (pose.headScratch) { const h = pose.headScratch; rArmX = rArmX * (1 - h) - 3.35 * h; rArmZ = rArmZ * (1 - h) - 0.55 * h; }
   if (pose.cross) { const c = pose.cross; rArmX = rArmX * (1 - c) - 1.2 * c; lArmX = lArmX * (1 - c) - 1.2 * c; rArmZ = rArmZ * (1 - c) - 0.9 * c; lArmZ = lArmZ * (1 - c) + 0.9 * c; }
+  if (pose.six7) { const k = pose.six7, sp = Math.sin(t * 2.6 * Math.PI * 2) * 0.42; rArmX = rArmX * (1 - k) - (1.25 + sp) * k; lArmX = lArmX * (1 - k) - (1.25 - sp) * k; rArmZ = rArmZ * (1 - k) - 0.18 * k; lArmZ = lArmZ * (1 - k) + 0.18 * k; }
   // pompki: ciało poziomo, ręce prostopadle do ziemi, uginanie
   const pu = pose.pushup ?? 0, puY = (Math.sin(t * 5) * 0.5 + 0.5);
   const bodyPitch = pu * (Math.PI / 2 - 0.12 - puY * 0.1) + (pose.lean ?? 0);
