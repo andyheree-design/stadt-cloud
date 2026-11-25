@@ -62,7 +62,7 @@ def user_data(comp, f, t, gpu, chunk=100, lst=None):
 
 
 def start(comp, a, b, n, plan=None, zone=None, chunk=100, lst=None):
-    a, b, n, chunk = int(a), int(b), int(n), int(chunk); plan = plan or GPU_PLAN; gpu = "GPU" in plan
+    a, b, n, chunk = int(a), int(b), int(n), int(chunk); plan = plan or CPU_PLAN; gpu = "GPU" in plan  # domyślnie CPU: GPU = 403 GPU_LIMIT_REACHED (25.11)
     zone = zone or (GPU_ZONE if gpu else CPU_ZONE); tpl = template(gpu)
     size = -(-(b - a + 1) // n); servers = []
     try:
