@@ -21,7 +21,9 @@ export const rowsTex = (w: number, h: number, bg: string, rows: Row[], frame?: s
     g.fillStyle = bg; g.fillRect(0, 0, w, h);
     if (frame) { g.lineWidth = Math.max(6, w / 90); g.strokeStyle = frame; g.strokeRect(g.lineWidth / 2, g.lineWidth / 2, w - g.lineWidth, h - g.lineWidth); }
     g.textAlign = "center"; g.textBaseline = "middle";
-    rows.forEach((r, i) => { g.fillStyle = r.c ?? "#fff"; g.font = `${r.f ?? "900"} ${r.px ?? 80}px 'Arial Black', Arial, sans-serif`; g.fillText(r.t, w / 2, h * (i + 0.5) / rows.length + 4); });
+    rows.forEach((r, i) => { g.fillStyle = r.c ?? "#fff"; let px = r.px ?? 80; const fnt = () => `${r.f ?? "900"} ${px}px 'Arial Black', Arial, sans-serif`; g.font = fnt();
+      while (px > 20 && g.measureText(r.t).width > w * 0.92) { px -= 4; g.font = fnt(); } // auto-dopasowanie: tekst nigdy nie wychodzi poza tablicę
+      g.fillText(r.t, w / 2, h * (i + 0.5) / rows.length + 4); });
   });
 const gravelTex = () => ctex("gravel", 256, 256, (g, r) => {
   g.fillStyle = "#77736c"; g.fillRect(0, 0, 256, 256);
