@@ -18,8 +18,8 @@ import TL from "../../../public/stadt/e02/timeline.json";
 
 const { fontFamily } = loadFont("normal", { weights: ["700"] });
 export const STADT_E02_FRAMES = TL.frames;
-// v3: hook (lot z góry, kl. 0–46) bez napisów — czysty obraz
-const WORDS: Word[] = TL.lines.flatMap((l: any) => l.words.map((w: any) => ({ t: w.t, s: w.s, e: w.e }))).filter((w: Word) => w.s >= 46);
+// v4: napisy od pierwszej klatki (także w locie z góry)
+const WORDS: Word[] = TL.lines.flatMap((l: any) => l.words.map((w: any) => ({ t: w.t, s: w.s, e: w.e })));
 const ease = (u: number) => u * u * (3 - 2 * u);
 
 const CamRig: React.FC<{ c: Cam; u: number; t: number }> = ({ c, u, t }) => {

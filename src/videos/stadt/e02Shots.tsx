@@ -110,9 +110,9 @@ export const SHOTS_E02: Record<string, SpecE02> = {
   doenerStand: { fx: "park", cam: { p: [6.4, PH + 1.5, 37.0], l: [9.4, PH + 1.0, 32.0], fov: 50, mv: [0.3, 0, -0.4], focus: [DX, PH + 1.0, DZ + 0.6] },
     acts: [{ c: "murat", face: "grin", pose: { wave: 1 }, p: [DX, PH, DZ - 0.15], r: 0 }, ...[0, 1, 2, 3].map((i): ActE02 => ({ c: ["extra1", "kevin", "extra3", "oma"][i], face: "happy", pose: i % 2 ? { phone: 1 } : {}, p: [DX - 1.2 - i * 0.7, PH, DZ + 1.2 + (i % 2) * 0.3], r: PI / 2 + 0.3, dt: i * 0.3 }))],
     props: (u, t) => <><DoenerStand position={[DX, PH, DZ]} t={t} />{deco(t)}</> },
-  doenerCash: { fx: "doener", ...pc("murat", DX, { z: DZ - 0.15, face: "evil", pose: { armsUp: 1, jump: 0.3 }, zoom: 0.85 }),
-    props: (u, t) => <><DoenerStand position={[DX, PH, DZ]} t={t} /><Kasse position={[DX + 0.55, PH + 0.86, DZ + 0.55]} rotY={-0.3} text="99.999 €" /><Money position={[DX, PH + 0.9, DZ + 0.4]} t={t} n={14} /></>,
-    ui: (s) => <Counter from={0} to={99999} at={s} dur={60} /> },
+  doenerCash: { fx: "doener", ...pc("murat", DX, { z: DZ + 1.05, face: "evil", pose: { armsUp: 1, jump: 0.3 }, zoom: 1.2 }),
+    props: (u, t) => <><DoenerStand position={[DX, PH, DZ]} t={t} /><Kasse position={[DX + 0.55, PH + 0.86, DZ + 0.55]} rotY={-0.3} text="99.999 €" /><Money position={[DX, PH + 0.9, DZ + 1.15]} t={t} n={14} /></>,
+    ui: (s) => <Counter from={0} to={99999} at={s} dur={60} icon="💶" suffix=" €" /> },
   // 6 — In der Schule lernen wir: Verspätung ist kein Problem. Verspätung ist ein Gefühl.
   schoolBoard: { fx: "street", fxo: { bright: -0.05, contrast: -0.12 }, cam: { p: [SCH.x - 3.6, 1.15, SCH.z - 1.2], l: [SCH.x + 0.4, 0.95, SCH.z + 0.3], fov: 44, mv: [0.6, 0, 0.2], focus: [SCH.x + 0.5, 1.0, SCH.z + 0.2] },
     acts: [{ c: "lehrerin", face: "evil", pose: { point: 1, talk: 1 }, p: [SCH.x - 0.1, SW, SCH.z + 1.4], r: -PI / 2 - 0.4 }, ...PUPILS], props: schoolProps(["Verspätung =", "kein Problem"]), key: [SCH.x - 1.5, 1.6, SCH.z, 3, 6] },
@@ -120,8 +120,12 @@ export const SHOTS_E02: Record<string, SpecE02> = {
   teacherClose: { fx: "close", fxo: { bokeh: 3 }, ...close("lehrerin", SCH.x - 0.1, SCH.z + 1.4, { r: -PI / 2 + 0.2, face: "grin", pose: { armsUp: 0.6, talk: 1 }, zoom: 0.7, fast: true, fov: 28 }), props: schoolProps(["Verspätung ist", "ein Gefühl"]) },
   // 7 — Achtung an Gleis drei. Ihr Zug hat heute eine Verspätung von circa... ja.
   speaker: { fx: "close", fxo: { bokeh: 2.5 }, cam: { p: [0.75, PH + 1.65, 32.85], l: [0, PH + 2.05, 31.5], fov: 36, zoom: 0.85, shake: 0.004, focus: SPK }, props: (u, t) => <>{deco(t, "+999 min", true)}</>, key: [0.6, PH + 2.3, 32.6, 2.5, 4] },
-  platformCrowd: { fx: "park", cam: { p: [2.5, PH + 2.2, 36.2], l: [0, PH + 1.1, 32.2], fov: 54, mv: [-0.8, -0.3, 0], focus: [0.5, PH + 1.0, 33] },
-    acts: waiting("shock", [{ armsUp: 0.4 }, { facepalm: 1 }, { point: 1 }, { shake: 1 }, { facepalm: 1 }, { armsUp: 0.6 }]).concat([{ c: "ich", face: "shock", pose: { headScratch: 1 }, p: [ICH_X, PH, ZI], r: -0.5 }]),
+  // v4: pionowy kadr jest wąski — tłum ustawiony W GŁĄB osi kamery (nad torem 1), wszyscy przodem do kamery
+  platformCrowd: { fx: "park", cam: { p: [0.45, PH + 1.35, 37.6], l: [0.4, PH + 1.3, 32.6], fov: 50, mv: [-0.25, 0, -0.35], focus: [0.45, PH + 1.3, 34.3] },
+    acts: ([["extra1", -0.35, 33.3, 0.25, { armsUp: 0.4 }], ["extra2", 1.2, 33.2, -0.3, { facepalm: 1 }], ["lehrerin", -0.8, 32.3, 0.2, { point: 1 }],
+      ["extra3", 1.6, 32.1, -0.25, { shake: 1 }], ["murat", -1.05, 31.4, 0.15, { facepalm: 1 }], ["kevin", 1.95, 31.4, -0.2, { armsUp: 0.6 }]] as [string, number, number, number, R6Pose][])
+      .map(([c, x, z, r, pose], i): ActE02 => ({ c, face: "shock", pose, p: [x, PH, z], r, dt: i * 0.37 }))
+      .concat([{ c: "ich", face: "shock", pose: { headScratch: 1 }, p: [0.45, PH, 34.3], r: 0.05 }]),
     props: (u, t) => deco(t, "+999 min", true) },
   speakerClose: { fx: "close", fxo: { bokeh: 3 }, cam: { p: [0.3, PH + 1.9, 32.3], l: [0, PH + 2.05, 31.5], fov: 34, zoom: 0.65, fast: true, shake: 0.008, focus: SPK }, props: (u, t) => deco(t, "+999 min", true), key: [0.5, PH + 2.3, 32.4, 2.5, 4] },
   // 8 — Kevin hat auf dem Bahnsteig seine Frau kennengelernt. Die haben jetzt zwei Kinder. Der Zug ist immer noch nicht da.
@@ -132,7 +136,7 @@ export const SHOTS_E02: Record<string, SpecE02> = {
     acts: [{ c: "kevin", face: "happy", pose: { cross: 1 }, p: [-1.15, PH, 33.5], r: 0.2 }, { c: "extra1", look: WIFE, pose: { wave: 1 }, p: [-0.05, PH, 33.5], r: -0.2 },
       { c: "kevin", look: { hat: "hair", hatColor: "#2a1a10", shirt: "#3cba54" }, face: "grin", pose: { jump: 0.6, armsUp: 1 }, p: [-0.75, PH, 33.95], r: 0, s: 0.6 },
       { c: "extra1", look: { ...WIFE, shirt: "#ffd23f" }, face: "happy", pose: { dance: 1 }, p: [-0.4, PH, 34.0], r: 0, s: 0.55, dt: 0.4 }],
-    props: (u, t) => deco(t), key: [-0.6, PH + 1.4, 35.4, 2.5, 4], ui: (s) => <Counter from={0} to={2} at={s} dur={30} /> },
+    props: (u, t) => deco(t), key: [-0.6, PH + 1.4, 35.4, 2.5, 4], ui: (s) => <Counter from={0} to={2} at={s} dur={30} icon="👶" /> },
   emptyTrack: { fx: "park", fxo: { sat: -0.1, bokeh: 0.5 }, cam: { p: [2, 0.55, ST.TZ], l: [-40, 0.4, ST.TZ], fov: 48, mv: [-0.6, 0, 0], shake: 0.002 },
     props: (u, t) => <><mesh position={[-6 + u * 3, 0.32 + Math.abs(Math.sin(t * 6)) * 0.12, ST.TZ + 0.1]} rotation={[0, 0, t * 5]}><icosahedronGeometry args={[0.2, 1]} /><meshStandardMaterial color="#b0904a" roughness={1} wireframe /></mesh>{deco(t)}</> },
   // 9 — Niemand glaubt mehr an die Bahn. Bis eines Tages der Zug pünktlich kam. Auf die Minute.

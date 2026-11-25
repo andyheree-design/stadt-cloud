@@ -13,15 +13,15 @@ const Heart: React.FC<{ size: number }> = ({ size }) => (
 );
 
 /** licznik komentarzy na górze — „rattert” od from do to w czasie dur klatek */
-export const Counter: React.FC<{ from: number; to: number; dur?: number; at: number }> = ({ from, to, dur = 40, at }) => {
+export const Counter: React.FC<{ from: number; to: number; dur?: number; at: number; icon?: string; suffix?: string }> = ({ from, to, dur = 40, at, icon, suffix = "" }) => {
   const f = useCurrentFrame() - at, { fps } = useVideoConfig();
   const v = interpolate(f, [0, dur], [from, to], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: (x) => 1 - Math.pow(1 - x, 3) });
   const pop = spring({ frame: f, fps, config: { damping: 9, stiffness: 220 } }), shake = f < dur ? Math.sin(f * 2.3) * 4 : 0;
   return (
     <div style={{ position: "absolute", top: 250, left: 0, right: 0, display: "flex", justifyContent: "center", transform: `scale(${0.6 + 0.4 * pop}) rotate(${shake * 0.4}deg)` }}>
       <div style={{ display: "flex", alignItems: "center", gap: 18, background: "rgba(0,0,0,.72)", borderRadius: 60, padding: "14px 36px 14px 22px", border: "5px solid #fff" }}>
-        <Bubble size={84} color="#ffd23f" />
-        <span style={{ fontFamily: FONT, fontSize: 82, color: "#fff", fontVariantNumeric: "tabular-nums" }}>{de(v)}</span>
+        {icon ? <span style={{ fontSize: 72, lineHeight: 1 }}>{icon}</span> : <Bubble size={84} color="#ffd23f" />}
+        <span style={{ fontFamily: FONT, fontSize: 82, color: "#fff", fontVariantNumeric: "tabular-nums" }}>{de(v)}{suffix}</span>
       </div>
     </div>
   );
