@@ -10,7 +10,7 @@ python cloud/upcloud.py test [plan] [strefa]                 -> 200 klatek Stadt
 Dostęp API: C:/Users/dimau/.upcloud_key — token z Account → API tokens albo "login:hasło" subkonta API.
 Klucz SSH: ~/.ssh/upcloud_ed25519(.pub). Bez klucza w repo, bez wypisywania sekretów.
 GPU (L40S, fi-hel2) wymaga konta odblokowanego wpłatą >= 50% kredytu promocyjnego; CPU działa od razu."""
-import base64, json, sys, time, pathlib, urllib.request, urllib.error
+import base64, json, re, sys, time, pathlib, urllib.request, urllib.error
 sys.stdout.reconfigure(encoding="utf-8", errors="replace"); sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 HOME = pathlib.Path.home()
@@ -62,7 +62,7 @@ def user_data(comp, f, t, gpu, chunk=100, lst=None):
 
 
 def start(comp, a, b, n, plan=None, zone=None, chunk=100, lst=None):
-    a, b, n, chunk = int(a), int(b), int(n), int(chunk); plan = plan or CPU_PLAN; gpu = "GPU" in plan  # domyślnie CPU: GPU = 403 GPU_LIMIT_REACHED (25.11)
+    a, b, n, chunk = int(a), int(b), int(n), int(chunk); plan = plan or CPU_PLAN; gpu = "GPU" in plan; n = min(n, max(1, 32 // int(re.search(r"(\d+)xCPU", plan).group(1)))) if re.search(r"(\d+)xCPU", plan) else n  # limit konta 32 rdzenie (SERVER_CORE_LIMIT_REACHED 25.11); domyślnie CPU: GPU = 403 GPU_LIMIT_REACHED (25.11)
     zone = zone or (GPU_ZONE if gpu else CPU_ZONE); tpl = template(gpu)
     size = -(-(b - a + 1) // n); servers = []
     try:
@@ -126,7 +126,12 @@ def stop():
             for _ in range(40):
                 if api("GET", f"/server/{s['id']}")["server"]["state"] == "stopped": break
                 time.sleep(5)
-            api("DELETE", f"/server/{s['id']}?storages=1&backups=delete"); print("usunięty", s["id"])
+            for k in range(12):  # 409 = serwer jeszcze w maintenance po starcie
+                try: api("DELETE", f"/server/{s['id']}?storages=1&backups=delete"); break
+                except RuntimeError as e:
+                    if "409" not in str(e) or k == 11: raise
+                    time.sleep(10)
+            print("usunięty", s["id"])
         except Exception as e:
             print("NIE USUNIĘTO", s["id"], e); left.append(s)
     STATE.write_text(json.dumps(left))
