@@ -7,6 +7,7 @@ import * as THREE from "three";
 import { useThree } from "@react-three/fiber";
 import { RoundedBox } from "@react-three/drei";
 import { ctex, rep, skyTex, labelTex } from "./Tex";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 export type V3 = [number, number, number];
 export type LocCam = { p: V3; l: V3; fov: number; mv?: V3 };
@@ -91,14 +92,14 @@ export const BrightLights: React.FC<{ sun?: V3; sunI?: number; hemi?: number; sk
   };
 
 /** pokój: podłoga + 3 ściany + sufit, płaszczyzny jednostronne skierowane do środka → kamera z przodu/z góry widzi wnętrze przez „zdjętą” ścianę */
-export const RoomBox: React.FC<{ w: number; d: number; h: number; wall: THREE.Texture | string; floor: THREE.Texture | string; ceil?: string; wallRep?: [number, number]; floorRep?: [number, number]; children?: React.ReactNode }> =
-  ({ w, d, h, wall, floor, ceil = "#ffffff", wallRep = [w / 2, h / 2], floorRep = [w / 2, d / 2], children }) => {
+export const RoomBox: React.FC<{ w: number; d: number; h: number; wall: THREE.Texture | string; floor: THREE.Texture | string; ceil?: string; wallRep?: [number, number]; floorRep?: [number, number]; floorEm?: string; floorEi?: number; children?: React.ReactNode }> =
+  ({ w, d, h, wall, floor, ceil = "#ffffff", wallRep = [w / 2, h / 2], floorRep = [w / 2, d / 2], floorEm, floorEi = 0, children }) => {
     const wm = typeof wall === "string" ? { c: wall } : { map: rep(wall, wallRep[0], wallRep[1]) };
     const wmS = typeof wall === "string" ? { c: wall } : { map: rep(wall, (d / w) * wallRep[0], wallRep[1]) };
     const fm = typeof floor === "string" ? { c: floor } : { map: rep(floor, floorRep[0], floorRep[1]) };
     const F = THREE.FrontSide;
     return <group>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[w, d]} /><M {...fm} rough={0.6} side={F} /></mesh>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[w, d]} /><M {...fm} rough={0.6} side={F} emissive={floorEm} ei={floorEi} /></mesh>
       <mesh position={[0, h / 2, -d / 2]} receiveShadow><planeGeometry args={[w, h]} /><M {...wm} side={F} /></mesh>
       <mesh position={[-w / 2, h / 2, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow><planeGeometry args={[d, h]} /><M {...wmS} side={F} /></mesh>
       <mesh position={[w / 2, h / 2, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow><planeGeometry args={[d, h]} /><M {...wmS} side={F} /></mesh>
@@ -126,37 +127,119 @@ const Car: React.FC<{ p: V3; c: string; ry?: number }> = ({ p, c, ry = 0 }) =>
     {[[-0.72, 0.95], [0.72, 0.95], [-0.72, -0.95], [0.72, -0.95]].map(([x, z], i) => <mesh key={i} position={[x, 0.24, z]} rotation={[0, 0, Math.PI / 2]} castShadow><cylinderGeometry args={[0.24, 0.24, 0.18, 16]} /><M c="#2b2b33" /></mesh>)}
     <Box p={[-0.45, 0.48, 1.51]} s={[0.3, 0.14, 0.03]} c="#fff8c8" emissive="#fff3a0" ei={0.6} /><Box p={[0.45, 0.48, 1.51]} s={[0.3, 0.14, 0.03]} c="#fff8c8" emissive="#fff3a0" ei={0.6} />
   </group>;
-const Tree: React.FC<{ p: V3; s?: number; c?: string }> = ({ p, s = 1, c = "#5fcf5a" }) =>
+const Tree: React.FC<{ p: V3; s?: number; c?: string }> = ({ p, s = 1, c = "#9be22d" }) =>
   <group position={p} scale={s}>
-    <Cyl p={[0, 0.9, 0]} r={0.14} h={1.8} c="#9a6a3e" />
-    <Ball p={[0, 2.25, 0]} r={0.9} c={c} /><Ball p={[0.45, 2.0, 0.2]} r={0.6} c={c} /><Ball p={[-0.4, 2.05, -0.2]} r={0.62} c="#6fdc66" />
+    <Cyl p={[0, 0.95, 0]} r={0.15} h={1.9} c="#8a5a32" />
+    <Ball p={[0, 2.5, 0]} r={1.05} c={c} /><Ball p={[0.25, 2.95, 0.35]} r={0.45} c="#b4f04a" />
   </group>;
 const Lamp: React.FC<{ p: V3; side: 1 | -1 }> = ({ p, side }) =>
   <group position={p}>
     <Cyl p={[0, 1.7, 0]} r={0.06} h={3.4} c="#4a5568" /><Box p={[-side * 0.35, 3.38, 0]} s={[0.8, 0.07, 0.07]} c="#4a5568" />
     <Box p={[-side * 0.7, 3.3, 0]} s={[0.32, 0.14, 0.22]} c="#fff6c8" emissive="#fff1a0" ei={0.5} />
   </group>;
-const Building: React.FC<{ x: number; z: number; w: number; h: number; d: number; i: number; side: 1 | -1 }> = ({ x, z, w, h, d, i, side }) => {
-  const col = PASTEL[i % PASTEL.length], [a1, a2] = AWN[i % AWN.length];
-  const wt = useMemo(() => rep(winTex(col), w / 2.4, (h - 1.6) / 2.4), [col, w, h]);
-  const at = useMemo(() => rep(stripeTex(a1, a2, 8, true), w / 1.6, 1), [a1, a2, w]);
-  const fx = x - side * d / 2; // lico od strony ulicy
-  return <group>
-    <Box p={[x, h / 2, z]} s={[d, h, w]} c={col} />
-    {/* fasada z oknami (od 1.6 w górę), parter — witryna */}
-    <mesh position={[fx - side * 0.012, 1.6 + (h - 1.6) / 2, z]} rotation={[0, -side * Math.PI / 2, 0]} receiveShadow><planeGeometry args={[w, h - 1.6]} /><M map={wt} /></mesh>
-    <mesh position={[fx - side * 0.015, 0.8, z]} rotation={[0, -side * Math.PI / 2, 0]}><planeGeometry args={[w * 0.8, 1.3]} /><M c="#c8ecff" emissive="#e8f8ff" ei={0.5} rough={0.2} /></mesh>
-    {/* markiza w paski */}
-    <group position={[fx - side * 0.45, 1.85, z]} rotation={[0, -side * Math.PI / 2, 0]}><mesh rotation={[-1.0, 0, 0]} castShadow><planeGeometry args={[w * 0.9, 1.0]} /><M map={at} side={THREE.DoubleSide} /></mesh></group>
-    {/* gzyms */}
-    <Box p={[fx + side * 0.15, h + 0.12, z]} s={[0.5, 0.24, w + 0.1]} c="#ffffff" />
+/** sygnalizator na chodniku (bez wysięgnika nad jezdnią) — 3 światła, świeci jedno */
+const TrafficLight: React.FC<{ p: V3; ry?: number; on?: number }> = ({ p, ry = 0, on = 2 }) =>
+  <group position={p} rotation={[0, ry, 0]}>
+    <Cyl p={[0, 1.35, 0]} r={0.06} h={2.7} c="#3a3f4a" />
+    <Box p={[0, 2.9, 0.05]} s={[0.34, 0.92, 0.26]} c="#22262e" r={0.05} />
+    {["#ff3b30", "#ffcc00", "#34c759"].map((c, k) => <mesh key={k} position={[0, 3.18 - k * 0.28, 0.19]} rotation={[Math.PI / 2, 0, 0]}><cylinderGeometry args={[0.095, 0.095, 0.03, 16]} /><M c={k === on ? c : "#3b3b3b"} emissive={k === on ? c : "#000"} ei={k === on ? 1.4 : 0} /></mesh>)}
+    {[0, 1, 2].map((k) => <Box key={k} p={[0, 3.3 - k * 0.28, 0.22]} s={[0.26, 0.03, 0.08]} c="#22262e" />)}
+    <Box p={[0, 1.15, 0.08]} s={[0.16, 0.22, 0.1]} c="#ffd400" />
+  </group>;
+/** donica z kwiatami */
+const FLOWER = ["#ff4d6d", "#ffd23a", "#ff8fd0", "#ffffff", "#b06cff"];
+const Planter: React.FC<{ p: V3; k: number }> = ({ p, k }) =>
+  <group position={p}>
+    <Box p={[0, 0.22, 0]} s={[0.55, 0.44, 1.5]} c="#c7774a" r={0.05} />
+    <Ball p={[0, 0.5, 0]} r={0.26} c="#4fc24a" s={[0.9, 0.6, 2.6]} />
+    {Array.from({ length: 7 }, (_, j) => <Ball key={j} p={[((j * 37) % 3 - 1) * 0.12, 0.68, -0.6 + j * 0.2]} r={0.1} c={FLOWER[(j + k) % FLOWER.length]} />)}
+  </group>;
+/** żółty autobus szkolny (własny projekt) */
+const SchoolBus: React.FC<{ p: V3; ry?: number }> = ({ p, ry = 0 }) => {
+  const sign = labelTex("SCHULBUS", "#ffc400", "#111", 512, 128, "900 82px 'Nunito','Arial Black',Arial,sans-serif");
+  return <group position={p} rotation={[0, ry, 0]}>
+    <Box p={[0, 1.3, 0]} s={[2.1, 1.9, 7.2]} c="#ffc400" r={0.18} rough={0.4} />
+    <Box p={[0, 0.6, 3.75]} s={[2.0, 0.9, 0.9]} c="#ffc400" r={0.15} rough={0.4} />
+    <Box p={[0, 0.35, 4.22]} s={[2.1, 0.22, 0.12]} c="#1b1b1b" />
+    {[-1, 1].map((sx) => <group key={sx}>
+      <Box p={[sx * 1.06, 0.95, 0]} s={[0.04, 0.12, 7.0]} c="#151515" /><Box p={[sx * 1.06, 1.25, 0]} s={[0.04, 0.06, 7.0]} c="#151515" />
+      {Array.from({ length: 6 }, (_, k) => <Box key={k} p={[sx * 1.06, 1.75, -2.9 + k * 1.05]} s={[0.04, 0.62, 0.86]} c="#2c4a6e" rough={0.15} />)}
+    </group>)}
+    <Box p={[0, 1.75, 3.62]} s={[1.8, 0.7, 0.04]} c="#2c4a6e" rough={0.15} />
+    <mesh position={[0, 2.12, 3.63]}><planeGeometry args={[1.4, 0.35]} /><M map={sign} /></mesh>
+    {[-0.85, 0.85].map((x, k) => <Box key={k} p={[x, 0.6, 4.2]} s={[0.24, 0.18, 0.04]} c="#fff8c8" emissive="#fff3a0" ei={0.6} />)}
+    {[[-1.0, 2.6], [1.0, 2.6], [-1.0, -2.2], [1.0, -2.2]].map(([x, z], k) => <mesh key={k} position={[x, 0.36, z]} rotation={[0, 0, Math.PI / 2]} castShadow><cylinderGeometry args={[0.36, 0.36, 0.26, 18]} /><M c="#22222a" /></mesh>)}
   </group>;
 };
-const Tower: React.FC<{ p: V3; w: number; h: number; c: string; i: number }> = ({ p, w, h, c, i }) => {
-  const t = useMemo(() => rep(winTex(c, "#e8f4ff", i % 2 ? "#6fc3ff" : "#8adfff"), w / 3, h / 3), [c, w, h, i]);
+function shadeHex(h: string, f: number) { const n = parseInt(h.slice(1), 16); const r = Math.min(255, ((n >> 16) & 255) * f), gg = Math.min(255, ((n >> 8) & 255) * f), b = Math.min(255, (n & 255) * f); return `rgb(${r | 0},${gg | 0},${b | 0})`; }
+const brickTex = (c: string) => ctex("wz-brick" + c, 256, 256, (g) => {
+  g.fillStyle = "#eadfd2"; g.fillRect(0, 0, 256, 256);
+  for (let y = 0; y < 16; y++) for (let x = -1; x < 9; x++) { g.fillStyle = (x + y) % 3 === 0 ? shadeHex(c, 0.9) : c; g.fillRect(x * 32 + (y % 2) * 16 + 2, y * 16 + 2, 28, 12); }
+});
+const SHOPS: [string, string][] = [["BÄCKEREI", "#e2572b"], ["DÖNER 24", "#d6332b"], ["APOTHEKE", "#1fa35a"], ["BLUMEN", "#e04f9a"], ["KIOSK", "#2f7be0"], ["FRISEUR", "#7a4fe0"], ["CAFÉ", "#8a5a32"], ["SPÄTI", "#ff8c1a"], ["EIS", "#2fc0d0"], ["OPTIK", "#3a4a66"], ["BUCHLADEN", "#2a8a3e"], ["METZGEREI", "#b0302a"]];
+const FACADE = ["#b75a44", "#a77be0", "#ffd6a5", "#9bd6ff", "#f6e7c1", "#ff9fb0", "#c9b6ff", "#b9e6a0", "#ffe08a", "#f2b6a0"];
+const AWN2 = [["#ff5d5d", "#ffffff"], ["#2fa9ff", "#ffffff"], ["#33c27a", "#ffffff"], ["#ffb000", "#ffffff"], ["#b06cff", "#ffffff"]];
+const bx = (w: number, h: number, d: number, x: number, y: number, z: number) => new THREE.BoxGeometry(w, h, d).translate(x, y, z);
+/** kamienica z głębią: gzymsy międzypiętrowe, okna we wnękach (rama + szkło cofnięte + parapet), witryna, szyld */
+const Building: React.FC<{ x: number; z: number; w: number; h: number; d: number; i: number; side: 1 | -1 }> = ({ x, z, w, h, d, i, side }) => {
+  const col = FACADE[i % FACADE.length], brick = i % 10 === 0 || i % 7 === 3, [a1, a2] = AWN2[i % AWN2.length];
+  const [shop, shopC] = SHOPS[(i * 5) % SHOPS.length];
+  const variant = i % 3, GF = 2.3, FH = 1.7;
+  const { frame, glass, trim } = useMemo(() => {
+    const ww = variant === 0 ? 0.8 : variant === 1 ? 0.6 : 1.1, wh = variant === 0 ? 0.95 : variant === 1 ? 1.25 : 0.8;
+    const rows = Math.max(1, Math.floor((h - GF - 0.35) / FH)), cols = Math.max(2, Math.floor(w / 1.35));
+    const f: THREE.BufferGeometry[] = [], gl: THREE.BufferGeometry[] = [], tr: THREE.BufferGeometry[] = [];
+    for (let r = 0; r < rows; r++) {
+      const cy = GF + r * FH + FH * 0.52;
+      tr.push(bx(w + 0.06, 0.1, 0.14, 0, GF + r * FH, 0.07));
+      for (let c = 0; c < cols; c++) {
+        const cx = -w / 2 + (w / cols) * (c + 0.5), t = 0.08;
+        f.push(bx(ww + t * 2, t, 0.12, cx, cy + wh / 2 + t / 2, 0.06), bx(ww + t * 2, t, 0.12, cx, cy - wh / 2 - t / 2, 0.06),
+          bx(t, wh, 0.12, cx - ww / 2 - t / 2, cy, 0.06), bx(t, wh, 0.12, cx + ww / 2 + t / 2, cy, 0.06), bx(0.04, wh, 0.05, cx, cy, 0.03));
+        if (variant !== 1) f.push(bx(ww, 0.04, 0.05, cx, cy + wh * 0.15, 0.03));
+        gl.push(bx(ww, wh, 0.02, cx, cy, -0.01));
+        tr.push(bx(ww + 0.3, 0.07, 0.2, cx, cy - wh / 2 - 0.12, 0.1));
+        if (variant === 1) tr.push(bx(ww + 0.24, 0.12, 0.12, cx, cy + wh / 2 + 0.16, 0.06));
+      }
+    }
+    tr.push(bx(w + 0.35, 0.3, 0.4, 0, h - 0.05, 0.2), bx(w + 0.1, 0.38, 0.22, 0, h + 0.28, 0.0));
+    f.push(bx(w * 0.84, 0.1, 0.12, 0, 1.72, 0.06), bx(0.1, 1.5, 0.12, -w * 0.42, 0.95, 0.06), bx(0.1, 1.5, 0.12, w * 0.42, 0.95, 0.06), bx(0.1, 1.5, 0.12, w * 0.12, 0.95, 0.06));
+    gl.push(bx(w * 0.84, 1.5, 0.02, 0, 0.95, -0.01));
+    return { frame: mergeGeometries(f)!, glass: mergeGeometries(gl)!, trim: mergeGeometries(tr)! };
+  }, [w, h, variant]);
+  const bt = useMemo(() => brick ? rep(brickTex("#b5523b"), 2, 3) : undefined, [brick]);
+  const at = useMemo(() => rep(stripeTex(a1, a2, 8, true), w / 1.6, 1), [a1, a2, w]);
+  const sign = labelTex(shop, shopC, "#ffffff", 1024, 192, "900 118px 'Nunito','Arial Black',Arial,sans-serif");
+  const fx = x - side * d / 2;
+  return <group>
+    <mesh position={[x + side * 0.1, h / 2, z]} castShadow receiveShadow><boxGeometry args={[d - 0.2, h, w]} /><M c={brick ? "#ffffff" : col} map={bt} /></mesh>
+    <group position={[fx + side * 0.2, 0, z]} rotation={[0, -side * Math.PI / 2, 0]}>
+      <mesh geometry={trim} castShadow receiveShadow><M c={brick ? "#f2ece2" : "#ffffff"} /></mesh>
+      <mesh geometry={frame} castShadow><M c="#ffffff" rough={0.5} /></mesh>
+      <mesh geometry={glass}><M c="#7cc6f2" rough={0.12} emissive="#bfe6ff" ei={0.25} /></mesh>
+      <mesh position={[0, 2.02, 0.1]}><boxGeometry args={[w * 0.8, 0.46, 0.12]} /><M c={shopC} /></mesh>
+      <mesh position={[0, 2.02, 0.165]}><planeGeometry args={[w * 0.78, 0.44]} /><M map={sign} /></mesh>
+      <group position={[0, 1.78, 0.5]}><mesh rotation={[-1.0, 0, 0]} castShadow><planeGeometry args={[w * 0.86, 0.9]} /><M map={at} side={THREE.DoubleSide} /></mesh></group>
+    </group>
+  </group>;
+};
+const glassTex = (c1: string, c2: string) => ctex(`wz-glass${c1}${c2}`, 256, 256, (g) => {
+  const gr = g.createLinearGradient(0, 0, 256, 256); gr.addColorStop(0, c2); gr.addColorStop(0.55, c1); gr.addColorStop(1, c2);
+  g.fillStyle = gr; g.fillRect(0, 0, 256, 256);
+  g.fillStyle = "rgba(255,255,255,0.85)"; for (let k = 0; k < 4; k++) { g.fillRect(k * 64, 0, 5, 256); g.fillRect(0, k * 64, 256, 4); }
+  g.fillStyle = "rgba(255,255,255,0.18)"; g.beginPath(); g.moveTo(0, 256); g.lineTo(90, 0); g.lineTo(140, 0); g.lineTo(50, 256); g.fill();
+});
+/** wieżowiec z błękitnego szkła, z uskokami */
+const Tower: React.FC<{ p: V3; w: number; h: number; c: string; i: number }> = ({ p, w, h, i }) => {
+  const tiers: [number, number, number][] = [[w, 0, h * 0.68], [w * 0.8, h * 0.68, h * 0.9], [w * 0.58, h * 0.9, h]];
+  const pal = [["#3d9bef", "#a8dcff"], ["#2f86e0", "#9fd2ff"], ["#55b0f5", "#c4e8ff"]][i % 3];
+  const t = useMemo(() => tiers.map(([tw, y0, y1]) => rep(glassTex(pal[0], pal[1]), tw / 2.2, (y1 - y0) / 2.2)), [w, h, i]);
   return <group position={p}>
-    <mesh position={[0, h / 2, 0]} castShadow receiveShadow><boxGeometry args={[w, h, w]} /><M map={t} rough={0.25} metal={0.1} /></mesh>
-    <Box p={[0, h + 0.4, 0]} s={[w * 0.7, 0.8, w * 0.7]} c="#e8f4ff" />
+    {tiers.map(([tw, y0, y1], k) => <group key={k}>
+      <mesh position={[0, (y0 + y1) / 2, 0]} castShadow receiveShadow><boxGeometry args={[tw, y1 - y0, tw]} /><M map={t[k]} rough={0.12} emissive="#7cc4ff" ei={0.12} /></mesh>
+      <Box p={[0, y1 + 0.2, 0]} s={[tw + 0.3, 0.4, tw + 0.3]} c="#eef6ff" />
+    </group>)}
+    <Cyl p={[0, h + 1.6, 0]} r={0.08} h={2.8} c="#dfe8f2" />
   </group>;
 };
 const Fountain: React.FC<{ p: V3; t: number }> = ({ p, t }) =>
@@ -205,7 +288,10 @@ const Avenue: React.FC<{ t: number }> = ({ t }) => {
       <Tree p={[5.3, 0.14, 4 - k * 9.5]} s={0.95} /><Tree p={[-5.3, 0.14, -0.5 - k * 9.5]} s={0.95} />
       <Lamp p={[4.6, 0.14, -0.8 - k * 9.5]} side={1} /><Lamp p={[-4.6, 0.14, 3.6 - k * 9.5]} side={-1} />
     </React.Fragment>)}
-    <Car p={[1.7, 0, -14]} c="#ff5a5a" /><Car p={[-1.7, 0, -27]} c="#3aa0ff" ry={Math.PI} /><Car p={[1.7, 0, -41]} c="#ffd23a" /><Car p={[-1.7, 0, -52]} c="#ffffff" ry={Math.PI} /><Car p={[1.7, 0, -66]} c="#7a5cff" />
+    {Array.from({ length: 13 }, (_, k) => <React.Fragment key={"pl" + k}><Planter p={[6.15, 0.14, -4 - k * 7]} k={k} /><Planter p={[-6.15, 0.14, 1 - k * 7]} k={k + 2} /></React.Fragment>)}
+    {[-22, -58].map((zz) => <React.Fragment key={zz}><TrafficLight p={[3.85, 0.14, zz + 1.6]} ry={-Math.PI / 2} on={zz === -22 ? 2 : 0} /><TrafficLight p={[-3.85, 0.14, zz - 1.6]} ry={Math.PI / 2} on={zz === -22 ? 2 : 0} /></React.Fragment>)}
+    <SchoolBus p={[-1.75, 0, -35]} ry={Math.PI} />
+    <Car p={[1.7, 0, -14]} c="#ff5a5a" /><Car p={[-1.7, 0, -25.5]} c="#3aa0ff" ry={Math.PI} /><Car p={[1.7, 0, -41]} c="#ffd23a" /><Car p={[-1.7, 0, -52]} c="#ffffff" ry={Math.PI} /><Car p={[1.7, 0, -66]} c="#7a5cff" />
     {/* plac */}
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, -100]} receiveShadow><circleGeometry args={[16, 48]} /><M map={rep(checkTex("#f4ede0", "#e6dccb", 8), 6, 6)} /></mesh>
     <Fountain p={[0, 0, -100]} t={t} />
@@ -264,8 +350,7 @@ const NeonHall: React.FC<{ t: number }> = ({ t }) => {
   const gw = useMemo(() => rep(gridTex("#3a2490", "#ff4fd8"), 12, 3), []);
   return <>
     <SkyBg top="#6a4cff" mid="#9b7bff" hor="#e6dcff" /><BrightLights sun={[0, 14, 10]} sunI={1.4} hemi={1.4} sky="#efe8ff" ground="#c6b4ff" box={14} />
-    <RoomBox w={20} d={20} h={8} wall={gw} floor={g} wallRep={[12, 4]} floorRep={[10, 10]} ceil="#2a1a70" />
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}><planeGeometry args={[20, 20]} /><M map={g} emissive="#5fe8ff" ei={0.25 + 0.05 * Math.sin(t * 4)} opacity={0.25} /></mesh>
+    <RoomBox w={20} d={20} h={8} wall={gw} floor={g} wallRep={[12, 4]} floorRep={[10, 10]} ceil="#2a1a70" floorEm="#2a6a9a" floorEi={0.3 + 0.05 * Math.sin(t * 4)} />
     {[-6, 0, 6].map((x) => <Box key={x} p={[x, 0.5, -6]} s={[2, 1, 2]} c="#ff4fd8" emissive="#ff4fd8" ei={0.35} r={0.1} />)}
   </>;
 };

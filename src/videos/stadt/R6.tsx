@@ -6,7 +6,7 @@ import * as THREE from "three";
 import { RoundedBox } from "@react-three/drei";
 
 export type Face = "smile" | "grin" | "sad" | "evil" | "shock" | "angry" | "smug" | "wink" | "happy" | "cry";
-export type Hat = "none" | "cap" | "capBack" | "tophat" | "hair" | "bun" | "beanie" | "postcap" | "party" | "chef" | "longhair" | "spiky" | "sidepart" | "curly" | "ponytail" | "bob" | "fade";
+export type Hat = "none" | "cap" | "capBack" | "tophat" | "hair" | "bun" | "beanie" | "postcap" | "party" | "chef" | "longhair" | "spiky" | "sidepart" | "curly" | "ponytail" | "bob" | "fade" | "police";
 export type Cloth = "tee" | "hoodie" | "suit" | "apron" | "uniform" | "stripes" | "cardigan" | "blouse" | "tank";
 export type Acc = "glasses" | "bag" | "headphones" | "chain" | "medal" | "pearls" | "watch";
 export type R6Look = {
@@ -48,7 +48,34 @@ const canvasTex = (key0: string, w: number, h: number, draw: (g: CanvasRendering
   t.minFilter = THREE.LinearMipmapLinearFilter; t.generateMipmaps = true; texCache.set(key, t); return t;
 };
 
+/** naklejka-twarz klasycznego klocka (styl wzoru): oczy-kropki, prosty uśmiech, „o” — rysowana w kwadracie x 256..768 */
+function blockFaceTexture(face: Face) {
+  return canvasTex("faceB:" + face, 1024, 512, (g) => {
+    const cx = 512, K = "#141414"; g.fillStyle = K; g.strokeStyle = K; g.lineCap = "round"; g.lineJoin = "round";
+    const EY = 215, EX = 78;
+    const eye = (x: number, y = EY, rx = 21, ry = 40) => { g.fillStyle = K; g.beginPath(); g.ellipse(cx + x, y, rx, ry, 0, 0, Math.PI * 2); g.fill();
+      g.fillStyle = "#fff"; g.beginPath(); g.ellipse(cx + x - 6, y - 17, 6, 9, 0, 0, Math.PI * 2); g.fill(); g.fillStyle = K; };
+    const eyes = (y = EY, rx = 21, ry = 40) => { eye(-EX, y, rx, ry); eye(EX, y, rx, ry); };
+    const smile = (r = 112, y = 250, a0 = 0.22, a1 = 0.78, lw = 20) => { g.lineWidth = lw; g.beginPath(); g.arc(cx, y, r, a0 * Math.PI, a1 * Math.PI); g.stroke(); };
+    const frown = (y = 420) => { g.lineWidth = 20; g.beginPath(); g.arc(cx, y, 80, 1.22 * Math.PI, 1.78 * Math.PI); g.stroke(); };
+    const brow = (x1: number, y1: number, x2: number, y2: number) => { g.lineWidth = 18; g.beginPath(); g.moveTo(cx + x1, y1); g.lineTo(cx + x2, y2); g.stroke(); };
+    const dMouth = (y = 300, w = 120, h = 85) => { g.fillStyle = K; g.beginPath(); g.moveTo(cx - w, y); g.quadraticCurveTo(cx, y + h * 2, cx + w, y); g.closePath(); g.fill();
+      g.save(); g.clip(); g.fillStyle = "#fff"; g.fillRect(cx - w, y, w * 2, 22); g.fillStyle = "#e8505b"; g.beginPath(); g.ellipse(cx, y + h * 1.15, w * 0.5, h * 0.4, 0, 0, Math.PI * 2); g.fill(); g.restore(); g.fillStyle = K; };
+    switch (face) {
+      case "shock": eyes(EY - 6, 24, 46); g.beginPath(); g.ellipse(cx, 365, 40, 52, 0, 0, Math.PI * 2); g.fill(); break;
+      case "happy": case "grin": eyes(); dMouth(); break;
+      case "wink": eye(-EX); g.lineWidth = 18; g.beginPath(); g.moveTo(cx + EX - 30, EY); g.quadraticCurveTo(cx + EX, EY - 26, cx + EX + 30, EY); g.stroke(); smile(); break;
+      case "sad": eyes(); frown(); break;
+      case "cry": eyes(); frown(); g.fillStyle = "#49a8ff"; for (const x of [-EX, EX]) { g.beginPath(); g.ellipse(cx + x, 300, 14, 36, 0, 0, Math.PI * 2); g.fill(); } break;
+      case "angry": case "evil": brow(-120, 140, -40, 172); brow(120, 140, 40, 172); eyes(EY + 12, 20, 32); face === "evil" ? smile(100, 270) : frown(430); break;
+      case "smug": eyes(EY + 6, 21, 30); g.lineWidth = 20; g.beginPath(); g.moveTo(cx - 80, 335); g.quadraticCurveTo(cx + 20, 370, cx + 100, 300); g.stroke(); break;
+      default: eyes(); smile();
+    }
+  });
+}
+
 function faceTexture(face: Face) {
+  if (smoothNow) return blockFaceTexture(face);
   // 1024×512: twarz zajmuje środek (decal owinięty na ~150° walca głowy)
   return canvasTex("face2:" + face, 1024, 512, (g) => {
     const cx = 512, k = 1.55; // skala rysunku
@@ -108,7 +135,7 @@ function clothTexture(cloth: Cloth, base: string, accent: string, print?: string
         g.strokeStyle = accent; g.lineWidth = 11; for (const x of [212, 300]) { g.beginPath(); g.moveTo(x, 55); g.bezierCurveTo(x - 6, 120, x + 8, 150, x, 190); g.stroke();
           g.fillStyle = "#d9d9d9"; g.fillRect(x - 8, 186, 16, 26); } // sznurki z końcówkami
         printText(282, 66);
-        if (base !== "#1e1e22") { g.fillStyle = accent; } if (base !== "#1e1e22") for (let i = 0; i < 16; i++) { const x = 40 + ((i * 97) % 430), y = 230 + ((i * 53) % 110); star(g, x, y, 6); }
+        if (base !== "#1e1e22" && !smoothNow) { g.fillStyle = accent; } if (base !== "#1e1e22" && !smoothNow) for (let i = 0; i < 16; i++) { const x = 40 + ((i * 97) % 430), y = 230 + ((i * 53) % 110); star(g, x, y, 6); }
         g.fillStyle = shade(base, 0.6); g.fillRect(0, 488, 512, 24); // ściągacz
         break;
       }
@@ -252,6 +279,24 @@ const Block: React.FC<{ size: [number, number, number]; color: string; front?: T
     </group>
   );
 
+/** włosy-mesh klasycznego klocka: płaskie bryły dopasowane do głowy-kostki (bez kul) */
+const BLOCK_HAIR = ["hair", "sidepart", "fade", "spiky", "curly", "bob", "longhair", "ponytail"];
+const BlockHair: React.FC<{ hat: string; color: string }> = ({ hat, color }) => {
+  const W = BH_W, T = HEAD_H / 2, long = hat === "longhair" || hat === "ponytail" || hat === "bob";
+  const m = <Mat color={color} rough={0.8} />;
+  const backH = long ? HEAD_H * 1.05 : HEAD_H * 0.62;
+  return <group>
+    <RoundedBox args={[W * 1.12, S * 0.2, W * 1.12]} radius={S * 0.05} smoothness={3} position={[0, T + S * 0.06, -S * 0.01]} castShadow>{m}</RoundedBox>
+    <RoundedBox args={[W * 1.12, backH, S * 0.13]} radius={S * 0.04} smoothness={3} position={[0, T - backH / 2 + S * 0.08, -W / 2 - S * 0.02]} castShadow>{m}</RoundedBox>
+    {[-1, 1].map((sx) => <RoundedBox key={sx} args={[S * 0.1, long ? HEAD_H * 0.8 : HEAD_H * 0.42, W * 0.86]} radius={S * 0.03} smoothness={3} position={[sx * (W / 2 + S * 0.03), T - (long ? HEAD_H * 0.36 : HEAD_H * 0.17), -W * 0.08]} castShadow>{m}</RoundedBox>)}
+    {hat === "sidepart"
+      ? <RoundedBox args={[W * 0.78, S * 0.17, S * 0.12]} radius={S * 0.04} smoothness={3} position={[-W * 0.17, T - S * 0.02, W / 2 + S * 0.02]} rotation={[0, 0, -0.16]} castShadow>{m}</RoundedBox>
+      : hat === "spiky"
+        ? [-0.3, 0, 0.3].map((x) => <mesh key={x} position={[x * W, T + S * 0.2, 0]} rotation={[0, 0, -x]} castShadow><boxGeometry args={[S * 0.12, S * 0.24, W * 0.9]} />{m}</mesh>)
+        : <RoundedBox args={[W * 1.06, S * 0.13, S * 0.11]} radius={S * 0.04} smoothness={3} position={[0, T - S * 0.0, W / 2 + S * 0.015]} castShadow>{m}</RoundedBox>}
+  </group>;
+};
+
 const Hat: React.FC<{ hat: Hat; color: string; accent: string }> = ({ hat, color, accent }) => {
   const r = HEAD_R, top = HEAD_H / 2;
   switch (hat) {
@@ -279,6 +324,11 @@ const Hat: React.FC<{ hat: Hat; color: string; accent: string }> = ({ hat, color
       <mesh castShadow><cylinderGeometry args={[r * 1.5, r * 1.5, S * 0.05, 40]} /><Mat color={color} rough={0.35} /></mesh>
       <mesh castShadow position={[0, S * 0.42, 0]}><cylinderGeometry args={[r * 0.95, r * 0.9, S * 0.8, 40]} /><Mat color={color} rough={0.35} /></mesh>
       <mesh position={[0, S * 0.12, 0]}><cylinderGeometry args={[r * 0.915, r * 0.915, S * 0.14, 40]} /><Mat color={accent} /></mesh></group>;
+    case "police": return <group position={[0, top + S * 0.02, 0]}>
+      <mesh castShadow position={[0, -S * 0.04, 0]}><cylinderGeometry args={[r * 1.12, r * 1.12, S * 0.14, 40]} /><Mat color="#151a2e" /></mesh>
+      <mesh castShadow position={[0, S * 0.1, -S * 0.01]} scale={[1, 1, 1.05]}><cylinderGeometry args={[r * 1.32, r * 1.1, S * 0.18, 40]} /><Mat color={color} /></mesh>
+      <mesh castShadow position={[0, -S * 0.1, r * 1.0]} rotation={[0.32, 0, 0]}><cylinderGeometry args={[r * 0.82, r * 0.82, S * 0.035, 32, 1, false, -Math.PI / 2, Math.PI]} /><Mat color="#0c0c10" rough={0.3} /></mesh>
+      <mesh position={[0, S * 0.07, r * 1.2]} rotation={[-0.1, 0, 0]}><planeGeometry args={[S * 0.24, S * 0.24]} /><meshStandardMaterial map={starTex("#f2c230")} transparent /></mesh></group>;
     case "hair": return <group position={[0, top - S * 0.3, -S * 0.02]}>
       <mesh castShadow scale={[1, 0.75, 1]}><sphereGeometry args={[r * 1.1, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} /><Mat color={color} rough={0.75} /></mesh>
       <mesh castShadow position={[0, S * 0.02, 0]}><cylinderGeometry args={[r * 1.1, r * 1.1, S * 0.12, 32, 1, false, Math.PI * 0.25, Math.PI * 1.5]} /><Mat color={color} rough={0.75} /></mesh>
@@ -358,7 +408,7 @@ export const R6: React.FC<{ look: R6Look; pose?: R6Pose; t: number; position?: [
   const accent = look.accent ?? look.detailColor ?? "#ffd23f";
   const acc = look.acc ?? (look.shirtDetail === "bag" ? ["bag" as Acc] : []);
   const block = !!look.block; smoothNow = block;
-  const faceTex = useMemo(() => faceTexture(look.face ?? "smile"), [look.face]);
+  const faceTex = useMemo(() => faceTexture(look.face ?? "smile"), [look.face, block]);
   const torsoTex = useMemo(() => clothTexture(cloth, look.shirt, accent, look.print, look.jacket), [cloth, look.shirt, accent, look.print, look.jacket]);
   const backTex = useMemo(() => backTexture(look.jacket ?? look.shirt, cloth === "hoodie"), [look.jacket, look.shirt, cloth]);
   const sleeve = look.jacket ?? look.shirt, shortSleeve = !!look.bareArms && !look.jacket && ["tee", "stripes", "uniform", "blouse"].includes(cloth);
@@ -443,8 +493,9 @@ export const R6: React.FC<{ look: R6Look; pose?: R6Pose; t: number; position?: [
             <mesh castShadow position={[0, -HEAD_H / 2 + S * 0.13, 0]}><cylinderGeometry args={[HEAD_R * 1.03, HEAD_R * 1.0, S * 0.2, 40, 1, false, -Math.PI * 0.42, Math.PI * 0.84]} /><Mat color={look.beard} rough={0.95} /></mesh>
             {[-1, 1].map((sx) => <mesh key={sx} castShadow position={[sx * HEAD_R * 0.9, -S * 0.12, HEAD_R * 0.42]} rotation={[0, sx * 1.1, 0]}><boxGeometry args={[S * 0.16, S * 0.42, S * 0.05]} /><Mat color={look.beard} rough={0.95} /></mesh>)}</group>}
           <group scale={block ? [1.13, 1, 1.13] : [1, 1, 1]}>
+          {block && BLOCK_HAIR.includes(look.hat ?? "none") ? <BlockHair hat={look.hat!} color={look.hatColor ?? "#3a2416"} /> : null}
           {look.hair && ["cap", "capBack", "beanie", "postcap", "party", "chef", "tophat"].includes(look.hat ?? "none") && <HairUnder color={look.hair} />}
-          <Hat hat={look.hat ?? "none"} color={look.hatColor ?? "#333"} accent={look.hatAccent ?? accent} />
+          {!(block && BLOCK_HAIR.includes(look.hat ?? "none")) && <Hat hat={look.hat ?? "none"} color={look.hatColor ?? "#333"} accent={look.hatAccent ?? accent} />}
           {acc.filter((a) => a === "glasses" || a === "headphones").map((a) => <Accessory key={a} a={a} color={accent} />)}
           </group>
         </group>
@@ -471,6 +522,8 @@ export const CAST: Record<string, R6Look> = {
 /** Obsada w stylu wzoru (Roblox story): te same postacie, głowa-kostka + gładkie kolory. Nowe odcinki używają BLOCK_CAST. */
 export const BLOCK_CAST: Record<string, R6Look> = Object.fromEntries(Object.entries(CAST).map(([k, v]) => [k, { ...v, block: true }]));
 // dodatkowe proste typy jak we wzorze (własne projekty): uczeń w bluzie, nauczyciel, babcia
-BLOCK_CAST.schueler = { block: true, skin: "#f3cba4", shirt: "#2f6fe0", pants: "#3a4a66", shoes: "#f2f2f2", face: "smile", hat: "sidepart", hatColor: "#6b4226", cloth: "hoodie", accent: "#fff" };
+BLOCK_CAST.schueler = { block: true, skin: "#f3cba4", shirt: "#2f6fe0", pants: "#262c3a", shoes: "#f2f2f2", face: "smile", hat: "sidepart", hatColor: "#6b4226", cloth: "hoodie", accent: "#fff" };
 BLOCK_CAST.lehrer = { block: true, skin: "#e9b98f", shirt: "#43c2a8", pants: "#2c3550", shoes: "#3a2a1a", face: "smug", hat: "fade", hatColor: "#3a2416", cloth: "tee", accent: "#fff", belt: "#2a1f18" };
+BLOCK_CAST.kumpel = { block: true, skin: "#e3a77c", shirt: "#3cae4a", pants: "#2b3346", shoes: "#f4f4f4", sole: "#d8d8d8", face: "grin", hat: "hair", hatColor: "#24170f", cloth: "hoodie", accent: "#fff" };
+BLOCK_CAST.polizist = { block: true, skin: "#f0c9a0", shirt: "#1f2f5c", pants: "#1a2240", shoes: "#141414", face: "angry", hat: "police", hatColor: "#1f2f5c", cloth: "uniform", accent: "#f2c230", print: "POLIZEI", belt: "#111" };
 BLOCK_CAST.babcia = { block: true, skin: "#f5dcc0", shirt: "#e05aa8", pants: "#b04a8c", shoes: "#6a3b5b", face: "happy", hat: "bun", hatColor: "#f2f2f6", cloth: "cardigan", accent: "#ffe7f3", acc: ["glasses", "pearls"] };

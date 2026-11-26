@@ -16,7 +16,7 @@ on:
         default: "0"
         required: false
   push:
-    branches: [main]
+    branches: [main, wyglad-wzor]
     paths: [render.json]
 
 env:

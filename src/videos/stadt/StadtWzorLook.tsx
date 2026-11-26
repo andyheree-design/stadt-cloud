@@ -16,17 +16,23 @@ type Shot = { loc: string; cam: keyof typeof LOCATIONS["avenue"]["cams"] | LocCa
   props?: (t: number) => React.ReactNode; words: string };
 const SHOTS: Shot[] = [
   { loc: "avenue", cam: "wide", d: 150, l2: [0, 3, -34], words: "In dieser Stadt passiert jeden Tag etwas Verrücktes" },
-  { loc: "avenue", cam: "close", d: 90, acts: [{ c: "schueler", x: -0.75, r: 0.25, face: "shock", pose: { armsUp: 1 } }, { c: "babcia", x: 0, face: "happy", pose: { wave: 1 } }, { c: "lehrer", x: 0.75, r: -0.25, face: "smug", pose: { cross: 1 } }],
+  { loc: "avenue", cam: "close", d: 90, acts: [{ c: "schueler", x: -0.75, r: 0.25, face: "shock", pose: { armsUp: 1 } }, { c: "babcia", x: 0, face: "happy", pose: { wave: 1 } }, { c: "polizist", x: 0.75, r: -0.25, face: "angry", pose: { point: 1 } }],
     props: (t) => <Giant p={[0.3, 0, -24]} t={t} s={1.5} ry={-0.1} />, words: "Heute kam ein RIESE in die Stadt" },
   { loc: "classroom", cam: "side", d: 90, acts: [{ c: "schueler", x: -0.8, r: 0.6, face: "sad", pose: { headScratch: 1 } }, { c: "lehrer", x: 0.9, z: -2.9, r: -0.5, face: "angry", pose: { point: 1, talk: 1 } }],
     words: "Der Lehrer sagt NEIN" },
-  { loc: "omaRoom", cam: "top", d: 90, acts: [{ c: "babcia", x: 0, face: "smug", pose: { dance: 1 } }, { c: "schueler", x: -1.0, r: 0.5, face: "grin", pose: { dance: 1 } }, { c: "lehrer", x: 1.0, r: -0.5, face: "shock", pose: { armsUp: 1 } }],
+  { loc: "bathroom", cam: "close", d: 80, acts: [{ c: "kumpel", x: 0, face: "grin", pose: { dance: 1, talk: 1 } }],
+    words: "Kevin singt im BAD" },
+  { loc: "kitchen", cam: { p: [-0.55, 1.2, 1.75], l: [-1.65, 0.8, -0.35], fov: 40 }, d: 90, acts: [{ c: "babcia", x: -1.9, z: -0.25, r: 0.5, face: "happy", pose: { phone: 1 } }],
+    words: "Beim Frühstück nur am HANDY" },
+  { loc: "omaRoom", cam: "top", d: 80, acts: [{ c: "babcia", x: 0, face: "smug", pose: { dance: 1 } }, { c: "schueler", x: -1.0, r: 0.5, face: "grin", pose: { dance: 1 } }, { c: "kumpel", x: 1.0, r: -0.5, face: "shock", pose: { armsUp: 1 } }],
     words: "Oma tanzt einfach weiter" },
-  { loc: "kitchen", cam: { p: [0.5, 1.45, 2.7], l: [0, 0.95, -0.7], fov: 48 }, d: 90, acts: [{ c: "babcia", x: -0.2, z: -1.1, r: 0.15, face: "happy", pose: { phone: 1 } }],
-    props: () => <Phone p={[0.55, 0.8, 0.25]} text="HUSS" s={0.4} rx={-1.2} ry={-0.3} />, words: "Beim Frühstück nur am HANDY" },
-  { loc: "neonHall", cam: { p: [0, 2.6, 5.5], l: [0, 0.8, 0], fov: 50 }, d: 90, acts: [{ c: "schueler", x: -1, face: "shock", pose: { jump: 1 } }, { c: "lehrer", x: 1, face: "cry", pose: { armsUp: 1 } }],
+  { loc: "academy", cam: { p: [0.15, 1.35, -5.5], l: [0, 1.05, -9], fov: 42 }, d: 80, acts: [{ c: "polizist", x: -0.45, r: 0.3, face: "angry", pose: { point: 1, talk: 1 } }, { c: "kumpel", x: 0.5, r: -0.3, face: "shock", pose: { armsUp: 1 } }],
+    words: "Die POLIZEI ist auch da" },
+  { loc: "neonHall", cam: { p: [0, 2.6, 5.5], l: [0, 0.8, 0], fov: 50 }, d: 80, acts: [{ c: "schueler", x: -1, face: "shock", pose: { jump: 1 } }, { c: "lehrer", x: 1, face: "cry", pose: { armsUp: 1 } }],
     props: (t) => <LavaFloor t={t} />, words: "Plötzlich ist der Boden LAVA" },
-  { loc: "showroom", cam: { p: [0, 2.2, 4.5], l: [0.3, 1.2, -1.5], fov: 50 }, d: 90, acts: [{ c: "babcia", x: -1.2, face: "grin", pose: { point: 1 } }],
+  { loc: "bedroom", cam: "side", d: 80, acts: [{ c: "schueler", x: 0, r: -0.4, face: "angry", pose: { pushup: 1 } }],
+    words: "Nachts noch LIEGESTÜTZE" },
+  { loc: "showroom", cam: { p: [-0.1, 1.5, 2.3], l: [0.35, 1.0, -1.6], fov: 52 }, d: 90, acts: [{ c: "babcia", x: -0.3, z: -0.2, r: 0.4, face: "grin", pose: { point: 1 } }],
     props: (t) => <Mammoth p={[1.6, 0.5, -3]} t={t} s={0.8} ry={-0.5} />, words: "Und Oma kauft ein MAMMUT" },
 ];
 const STARTS = SHOTS.reduce<number[]>((a, s, i) => [...a, i ? a[i - 1] + SHOTS[i - 1].d : 0], []);
@@ -34,7 +40,7 @@ export const STADT_WZOR_LOOK_FRAMES = STARTS[STARTS.length - 1] + SHOTS[SHOTS.le
 // napisy: jedno słowo naraz, równo rozłożone w ujęciu
 const WORDS: Word[] = SHOTS.flatMap((s, i) => { const w = s.words.split(" "), step = (s.d - 6) / w.length;
   return w.map((t, k) => ({ t, s: STARTS[i] + 3 + Math.round(k * step), e: STARTS[i] + 3 + Math.round((k + 1) * step) })); });
-const HL = /^(RIESE|NEIN|LAVA|MAMMUT|HANDY|Verrücktes|tanzt)$/;
+const HL = /^(RIESE|NEIN|LAVA|MAMMUT|HANDY|BAD|POLIZEI|LIEGESTÜTZE|Verrücktes|tanzt)$/;
 
 const CamRig: React.FC<{ c: LocCam; u: number; l2?: V3 }> = ({ c, u, l2 }) => {
   const cam = useThree((s) => s.camera) as THREE.PerspectiveCamera, gl = useThree((s) => s.gl);
