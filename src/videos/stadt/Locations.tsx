@@ -149,7 +149,7 @@ const Building: React.FC<{ x: number; z: number; w: number; h: number; d: number
     {/* markiza w paski */}
     <group position={[fx - side * 0.45, 1.85, z]} rotation={[0, -side * Math.PI / 2, 0]}><mesh rotation={[-1.0, 0, 0]} castShadow><planeGeometry args={[w * 0.9, 1.0]} /><M map={at} side={THREE.DoubleSide} /></mesh></group>
     {/* gzyms */}
-    <Box p={[x - side * 0.1, h + 0.12, z]} s={[d + 0.3, 0.24, w + 0.2]} c="#ffffff" />
+    <Box p={[fx + side * 0.15, h + 0.12, z]} s={[0.5, 0.24, w + 0.1]} c="#ffffff" />
   </group>;
 };
 const Tower: React.FC<{ p: V3; w: number; h: number; c: string; i: number }> = ({ p, w, h, c, i }) => {
@@ -377,8 +377,8 @@ const room = (w: number, d: number, spot: V3 = [0, 0, -0.6]): Loc["cams"] => ({
 });
 export const LOCATIONS: Record<string, Loc> = {
   avenue: { C: Avenue, spot: [0, 0, -8], cams: {
-    wide: { p: [0, 38, 26], l: [0, 4, -80], fov: 50, mv: [0, -29, -20] },   // przelot nad osią jezdni, z góry w dół
-    close: { p: [0.4, 1.2, -4.8], l: [0, 1.0, -8], fov: 36 },
+    wide: { p: [0, 24, 22], l: [0, 6, -70], fov: 55, mv: [0, -17, -18] },   // przelot nad osią jezdni, z góry w dół
+    close: { p: [0.3, 1.35, -4.6], l: [0, 1.25, -8], fov: 52 },
     top: { p: [0.01, 16, -7], l: [0, 0, -8], fov: 45 },
     side: { p: [3.0, 1.3, -8.5], l: [-1, 1.0, -8], fov: 48 } } },          // x=3.0 < 4.6 (latarnie) → nic nie zasłania
   bathroom: { C: Bathroom, spot: [0, 0, -0.6], cams: room(7, 6) },
