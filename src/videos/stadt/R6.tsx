@@ -14,6 +14,7 @@ export type R6Look = {
   cloth?: Cloth; accent?: string; print?: string; acc?: Acc[]; bareArms?: boolean;
   /** v3: otwarta kurtka (kolor), pasek (kolor | false = brak), zarost (kolor), podeszwa butów */
   jacket?: string; belt?: string | false; beard?: string; sole?: string;
+  /** styl „wzór” (Roblox story): głowa-kostka, płaska twarz, gładkie tekstury bez szumu */ block?: boolean;
   /** zgodność wstecz */ shirtDetail?: "none" | "tie" | "apron" | "bag" | "stripes"; detailColor?: string;
 };
 export type R6Pose = {
@@ -37,7 +38,10 @@ const texCache = new Map<string, THREE.CanvasTexture>();
 let seed = 1;
 const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
 const hashKey = (k: string) => { let h = 2166136261; for (let i = 0; i < k.length; i++) h = Math.imul(h ^ k.charCodeAt(i), 16777619); return (h >>> 0) % 2147483646 + 1; };
-const canvasTex = (key: string, w: number, h: number, draw: (g: CanvasRenderingContext2D) => void) => {
+// styl gładki (block): ustawiany synchronicznie w renderze R6 na czas tworzenia tekstur → osobny klucz cache, bez szumu/winiety
+let smoothNow = false;
+const canvasTex = (key0: string, w: number, h: number, draw: (g: CanvasRenderingContext2D) => void) => {
+  const key = (smoothNow ? "s:" : "") + key0;
   const hit = texCache.get(key); if (hit) return hit;
   const c = document.createElement("canvas"); c.width = w; c.height = h; const g = c.getContext("2d")!;
   seed = hashKey(key); draw(g); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 16;
@@ -89,8 +93,8 @@ function clothTexture(cloth: Cloth, base: string, accent: string, print?: string
     g.fillStyle = base; g.fillRect(0, 0, 512, 512);
     // delikatna tkanina: winieta + szum
     const gr = g.createRadialGradient(256, 220, 60, 256, 256, 380); gr.addColorStop(0, "rgba(255,255,255,0.06)"); gr.addColorStop(1, "rgba(0,0,0,0.16)");
-    g.fillStyle = gr; g.fillRect(0, 0, 512, 512);
-    for (let i = 0; i < 1400; i++) { g.fillStyle = `rgba(${rnd() < 0.5 ? "0,0,0" : "255,255,255"},0.035)`; g.fillRect(rnd() * 512, rnd() * 512, 2, 2); }
+    if (!smoothNow) g.fillStyle = gr; g.fillRect(0, 0, 512, 512);
+    if (!smoothNow) for (let i = 0; i < 1400; i++) { g.fillStyle = `rgba(${rnd() < 0.5 ? "0,0,0" : "255,255,255"},0.035)`; g.fillRect(rnd() * 512, rnd() * 512, 2, 2); }
     const dark = shade(base, 0.72);
     const printText = (y: number, size: number, col = accent) => {
       if (!print) return; g.save(); g.font = `900 ${size}px 'Cooper Black','Arial Rounded MT Bold','Arial Black',sans-serif`; g.textAlign = "center"; g.textBaseline = "middle";
@@ -168,7 +172,7 @@ function clothTexture(cloth: Cloth, base: string, accent: string, print?: string
 const backTexture = (base: string, hood: boolean) => canvasTex(`back:${base}:${hood}`, 256, 256, (g) => {
   g.fillStyle = base; g.fillRect(0, 0, 256, 256);
   const gr = g.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, "rgba(255,255,255,0.05)"); gr.addColorStop(1, "rgba(0,0,0,0.16)"); g.fillStyle = gr; g.fillRect(0, 0, 256, 256);
-  for (let i = 0; i < 700; i++) { g.fillStyle = `rgba(${rnd() < 0.5 ? "0,0,0" : "255,255,255"},0.04)`; g.fillRect(rnd() * 256, rnd() * 256, 2, 2); }
+  if (!smoothNow) for (let i = 0; i < 700; i++) { g.fillStyle = `rgba(${rnd() < 0.5 ? "0,0,0" : "255,255,255"},0.04)`; g.fillRect(rnd() * 256, rnd() * 256, 2, 2); }
   g.strokeStyle = "rgba(0,0,0,0.15)"; g.lineWidth = 3; g.beginPath(); g.moveTo(0, 48); g.quadraticCurveTo(128, 66, 256, 48); g.stroke();
   if (hood) { g.fillStyle = shade(base, 0.8); g.fillRect(0, 236, 256, 20); }
 });
@@ -178,7 +182,7 @@ function star(g: CanvasRenderingContext2D, x: number, y: number, r: number) {
 const legTexture = (pants: string, shoes: string) => canvasTex(`leg2:${pants}:${shoes}`, 128, 256, (g) => {
   g.fillStyle = pants; g.fillRect(0, 0, 128, 256);
   const gr = g.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, "rgba(255,255,255,0.05)"); gr.addColorStop(1, "rgba(0,0,0,0.14)"); g.fillStyle = gr; g.fillRect(0, 0, 128, 256);
-  for (let i = 0; i < 500; i++) { g.fillStyle = `rgba(${rnd() < 0.5 ? "0,0,0" : "255,255,255"},0.05)`; g.fillRect(rnd() * 128, rnd() * 256, 2, 2); }
+  if (!smoothNow) for (let i = 0; i < 500; i++) { g.fillStyle = `rgba(${rnd() < 0.5 ? "0,0,0" : "255,255,255"},0.05)`; g.fillRect(rnd() * 128, rnd() * 256, 2, 2); }
   g.strokeStyle = "rgba(0,0,0,0.22)"; g.lineWidth = 3; g.beginPath(); g.moveTo(64, 0); g.lineTo(64, 206); g.stroke();
   g.strokeStyle = "rgba(255,230,160,0.35)"; g.lineWidth = 2; g.setLineDash([5, 4]); g.beginPath(); g.moveTo(57, 0); g.lineTo(57, 206); g.stroke(); g.setLineDash([]);
   g.strokeStyle = "rgba(0,0,0,0.22)"; g.lineWidth = 4; g.beginPath(); g.moveTo(10, 8); g.quadraticCurveTo(24, 40, 50, 46); g.stroke();
@@ -189,7 +193,7 @@ const legTexture = (pants: string, shoes: string) => canvasTex(`leg2:${pants}:${
 const sleeveTexture = (shirt: string, skin: string, bare: boolean, short: boolean) => canvasTex(`arm2:${shirt}:${skin}:${bare}:${short}`, 128, 256, (g) => {
   g.fillStyle = bare ? skin : shirt; g.fillRect(0, 0, 128, 256);
   if (bare) return;
-  for (let i = 0; i < 300; i++) { g.fillStyle = `rgba(${rnd() < 0.5 ? "0,0,0" : "255,255,255"},0.05)`; g.fillRect(rnd() * 128, rnd() * 256, 2, 2); }
+  if (!smoothNow) for (let i = 0; i < 300; i++) { g.fillStyle = `rgba(${rnd() < 0.5 ? "0,0,0" : "255,255,255"},0.05)`; g.fillRect(rnd() * 128, rnd() * 256, 2, 2); }
   if (short) { g.fillStyle = shade(shirt, 0.82); g.fillRect(0, 74, 128, 12); g.fillStyle = skin; g.fillRect(0, 86, 128, 170); return; }
   g.strokeStyle = "rgba(0,0,0,0.12)"; g.lineWidth = 4; for (const y of [108, 126]) { g.beginPath(); g.moveTo(16, y); g.quadraticCurveTo(64, y + 12, 112, y); g.stroke(); }
   g.strokeStyle = "rgba(0,0,0,0.13)"; g.lineWidth = 3; g.beginPath(); g.moveTo(64, 0); g.lineTo(64, 188); g.stroke();
@@ -216,6 +220,20 @@ const getHead = () => {
     faceGeo = new THREE.CylinderGeometry(HEAD_R * 1.004, HEAD_R * 1.004, HEAD_H - HEAD_C * 1.6, 48, 1, true, -Math.PI / 2, Math.PI);
   }
   return { headGeo, faceGeo: faceGeo! };
+};
+
+// głowa-kostka (styl wzoru): szerokość ≈ średnica walca, twarz = płaski decal ze środka tej samej tekstury 1024×512
+const BH_W = HEAD_R * 2;
+let blockFaceGeo: THREE.PlaneGeometry | null = null;
+const getBlockFace = () => {
+  if (!blockFaceGeo) {
+    blockFaceGeo = new THREE.PlaneGeometry(BH_W * 0.9, HEAD_H * 0.9);
+    const uv = blockFaceGeo.attributes.uv as THREE.BufferAttribute;
+    // u: środkowe ~50% tekstury (twarz rysowana w x≈512±260 z 1024), v: pełna wysokość
+    for (let i = 0; i < uv.count; i++) uv.setX(i, 0.5 + (uv.getX(i) - 0.5) * 0.5);
+    uv.needsUpdate = true;
+  }
+  return blockFaceGeo;
 };
 
 const Mat: React.FC<{ color?: string; map?: THREE.Texture; rough?: number; emissive?: string }> = ({ color = "#fff", map, rough = 0.5, emissive }) =>
@@ -339,6 +357,7 @@ export const R6: React.FC<{ look: R6Look; pose?: R6Pose; t: number; position?: [
   const cloth: Cloth = look.cloth ?? (look.shirtDetail === "tie" ? "suit" : look.shirtDetail === "apron" ? "apron" : look.shirtDetail === "stripes" ? "stripes" : look.shirtDetail === "bag" ? "uniform" : "tee");
   const accent = look.accent ?? look.detailColor ?? "#ffd23f";
   const acc = look.acc ?? (look.shirtDetail === "bag" ? ["bag" as Acc] : []);
+  const block = !!look.block; smoothNow = block;
   const faceTex = useMemo(() => faceTexture(look.face ?? "smile"), [look.face]);
   const torsoTex = useMemo(() => clothTexture(cloth, look.shirt, accent, look.print, look.jacket), [cloth, look.shirt, accent, look.print, look.jacket]);
   const backTex = useMemo(() => backTexture(look.jacket ?? look.shirt, cloth === "hoodie"), [look.jacket, look.shirt, cloth]);
@@ -347,6 +366,7 @@ export const R6: React.FC<{ look: R6Look; pose?: R6Pose; t: number; position?: [
   const shoes = look.shoes ?? "#2b2b2b";
   const legTex = useMemo(() => legTexture(look.pants, look.shoes ?? "#2b2b2b"), [look.pants, look.shoes]);
   const armTex = useMemo(() => sleeveTexture(sleeve, skin, (!!look.bareArms && !shortSleeve && !look.jacket) || (cloth === "tank" && !look.jacket), shortSleeve), [sleeve, skin, look.bareArms, cloth, shortSleeve, look.jacket]);
+  smoothNow = false;
   const { headGeo, faceGeo } = getHead();
 
   const w = pose.walk ?? 0, ws = pose.walkSpeed ?? 1.8, ph = t * ws * Math.PI * 2;
@@ -412,15 +432,21 @@ export const R6: React.FC<{ look: R6Look; pose?: R6Pose; t: number; position?: [
             <mesh position={[0, 0, S * 0.52]} rotation={[Math.PI / 2, 0, 0]}><cylinderGeometry args={[S * 0.17, S * 0.17, S * 0.05, 20]} /><meshStandardMaterial color="#d9d9d9" metalness={0.9} roughness={0.25} /></mesh></group>}
         </group>
         <group position={[0, S * 4.62, 0]} rotation={[talk, talk * 0.6, 0]}>
+          {block ? <>
+            <RoundedBox args={[BH_W, HEAD_H, BH_W]} radius={S * 0.17} smoothness={4} castShadow receiveShadow><Mat color={skin} rough={0.6} /></RoundedBox>
+            <mesh geometry={getBlockFace()} position={[0, 0, BH_W / 2 + 0.0012]}><meshStandardMaterial map={faceTex} transparent roughness={0.6} depthWrite={false} polygonOffset polygonOffsetFactor={-2} /></mesh>
+          </> : <>
           <mesh geometry={headGeo} castShadow receiveShadow><Mat color={skin} rough={0.45} /></mesh>
-          <mesh geometry={faceGeo}><meshStandardMaterial map={faceTex} transparent roughness={0.5} depthWrite={false} polygonOffset polygonOffsetFactor={-2} /></mesh>
+          <mesh geometry={faceGeo}><meshStandardMaterial map={faceTex} transparent roughness={0.5} depthWrite={false} polygonOffset polygonOffsetFactor={-2} /></mesh></>}
           <mesh position={[0, -HEAD_H / 2 - S * 0.04, 0]}><cylinderGeometry args={[S * 0.3, S * 0.3, S * 0.12, 16]} /><Mat color={skin} /></mesh>
           {look.beard && <group>
             <mesh castShadow position={[0, -HEAD_H / 2 + S * 0.13, 0]}><cylinderGeometry args={[HEAD_R * 1.03, HEAD_R * 1.0, S * 0.2, 40, 1, false, -Math.PI * 0.42, Math.PI * 0.84]} /><Mat color={look.beard} rough={0.95} /></mesh>
             {[-1, 1].map((sx) => <mesh key={sx} castShadow position={[sx * HEAD_R * 0.9, -S * 0.12, HEAD_R * 0.42]} rotation={[0, sx * 1.1, 0]}><boxGeometry args={[S * 0.16, S * 0.42, S * 0.05]} /><Mat color={look.beard} rough={0.95} /></mesh>)}</group>}
+          <group scale={block ? [1.13, 1, 1.13] : [1, 1, 1]}>
           {look.hair && ["cap", "capBack", "beanie", "postcap", "party", "chef", "tophat"].includes(look.hat ?? "none") && <HairUnder color={look.hair} />}
           <Hat hat={look.hat ?? "none"} color={look.hatColor ?? "#333"} accent={look.hatAccent ?? accent} />
           {acc.filter((a) => a === "glasses" || a === "headphones").map((a) => <Accessory key={a} a={a} color={accent} />)}
+          </group>
         </group>
       </group>
     </group>
@@ -441,3 +467,10 @@ export const CAST: Record<string, R6Look> = {
   extra2: { skin: "#f1c6a0", hair: "#7a4a24", shirt: "#7cc3f5", pants: "#444",    face: "angry", hat: "cap", hatColor: "#222", cloth: "hoodie", accent: "#fff" },
   extra3: { skin: "#e0b48a", shirt: "#f5a623", pants: "#2e5e3a", face: "angry", hat: "fade", hatColor: "#2a1a10", beard: "#2a1a10", cloth: "tank", accent: "#222", bareArms: true, shoes: "#3a3a3a", acc: ["watch"] },
 };
+
+/** Obsada w stylu wzoru (Roblox story): te same postacie, głowa-kostka + gładkie kolory. Nowe odcinki używają BLOCK_CAST. */
+export const BLOCK_CAST: Record<string, R6Look> = Object.fromEntries(Object.entries(CAST).map(([k, v]) => [k, { ...v, block: true }]));
+// dodatkowe proste typy jak we wzorze (własne projekty): uczeń w bluzie, nauczyciel, babcia
+BLOCK_CAST.schueler = { block: true, skin: "#f3cba4", shirt: "#2f6fe0", pants: "#3a4a66", shoes: "#f2f2f2", face: "smile", hat: "sidepart", hatColor: "#6b4226", cloth: "hoodie", accent: "#fff" };
+BLOCK_CAST.lehrer = { block: true, skin: "#e9b98f", shirt: "#43c2a8", pants: "#2c3550", shoes: "#3a2a1a", face: "smug", hat: "fade", hatColor: "#3a2416", cloth: "tee", accent: "#fff", belt: "#2a1f18" };
+BLOCK_CAST.babcia = { block: true, skin: "#f5dcc0", shirt: "#e05aa8", pants: "#b04a8c", shoes: "#6a3b5b", face: "happy", hat: "bun", hatColor: "#f2f2f6", cloth: "cardigan", accent: "#ffe7f3", acc: ["glasses", "pearls"] };

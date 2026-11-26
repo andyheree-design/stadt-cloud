@@ -3,7 +3,7 @@ import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 
 export type Word = { t: string; s: number; e: number; c?: string };
-export const Caption: React.FC<{ words: Word[]; y?: number; size?: number; color?: string; font?: string; stroke?: number; big?: RegExp }> = ({ words, y = 0.58, size = 64, color = "#fff", font = "'Arial Black', 'Helvetica Neue', Arial, sans-serif", stroke = 5, big }) => {
+export const Caption: React.FC<{ words: Word[]; y?: number; size?: number; color?: string; font?: string; stroke?: number; big?: RegExp; hl?: RegExp; hlColor?: string; shadow?: string; spacing?: number }> = ({ words, y = 0.58, size = 64, color = "#fff", font = "'Arial Black', 'Helvetica Neue', Arial, sans-serif", stroke = 5, big, hl, hlColor = "#e2fd00", shadow = "0 3px 0 rgba(0,0,0,.35)", spacing = 0.5 }) => {
   const f = useCurrentFrame();
   const w = words.find((x) => f >= x.s && f < Math.max(x.e, x.s + 6));
   if (!w) return null;
@@ -16,9 +16,16 @@ export const Caption: React.FC<{ words: Word[]; y?: number; size?: number; color
     <AbsoluteFill style={{ pointerEvents: "none" }}>
       <div style={{
         position: "absolute", top: `${y * 100}%`, left: 0, right: 0, textAlign: "center", transform: `translateY(-50%) scale(${k})`,
-        fontFamily: font, fontWeight: 900, fontSize: size * fit * (big && big.test(txt) ? 1.35 : 1), color: w.c ?? color, letterSpacing: 0.5,
-        WebkitTextStroke: `${stroke}px #000`, paintOrder: "stroke fill", textShadow: "0 3px 0 rgba(0,0,0,.35)", lineHeight: 1.0,
+        fontFamily: font, fontWeight: 900, fontSize: size * fit * (big && big.test(txt) ? 1.35 : 1), color: w.c ?? (hl && hl.test(txt) ? hlColor : color), letterSpacing: spacing,
+        WebkitTextStroke: `${stroke}px #000`, paintOrder: "stroke fill", textShadow: shadow, lineHeight: 1.0,
       }}>{parts.map((q, i) => <div key={i}>{q}</div>)}</div>
     </AbsoluteFill>
   );
 };
+
+// ---- styl wzoru (Roblox story, pomiar klatki 0:02 wzoru 1080×1920): środek napisu y≈0.73 H, słowo „watching” ≈457 px szer.,
+// wys. liter ≈85 px (font ≈112 px), kontur czarny ≈9–10 px widoczny, słowa-klucze limonkowe #e2fd00, reszta biała.
+import { loadFont as loadNunito } from "@remotion/google-fonts/Nunito";
+const nunito = loadNunito("normal", { weights: ["900"] }).fontFamily;
+export const CaptionWzor: React.FC<{ words: Word[]; hl?: RegExp }> = ({ words, hl }) =>
+  <Caption words={words} y={0.73} size={112} color="#fff" font={nunito} stroke={20} hl={hl} hlColor="#e2fd00" spacing={0} shadow="0 7px 0 rgba(0,0,0,.55), 0 10px 18px rgba(0,0,0,.35)" />;
