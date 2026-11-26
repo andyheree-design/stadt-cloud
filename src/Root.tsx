@@ -6,6 +6,7 @@ import React from "react";
 import { Composition } from "remotion";
 import { BridgeShort, BRIDGE_FRAMES } from "./videos/bridge/Bridge";
 import { StadtLook, STADT_LOOK_FRAMES } from "./videos/stadt/StadtLook";
+import { StadtWzorLook, STADT_WZOR_LOOK_FRAMES } from "./videos/stadt/StadtWzorLook";
 import { StadtE01, STADT_E01_FRAMES } from "./videos/stadt/StadtE01";
 import { StadtE01v3, STADT_E01V3_FRAMES } from "./videos/stadt/StadtE01v3";
 import { StadtE02, STADT_E02_FRAMES } from "./videos/stadt/StadtE02";
@@ -26,6 +27,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="EhreE01V5" component={EhreE01V5} durationInFrames={1188} fps={30} width={1080} height={1920} />
     <Composition id="EhrePerformanceLab" component={EhrePerformanceLab} durationInFrames={360} fps={30} width={1080} height={1920} />
     <Composition id="StadtLook" component={StadtLook} durationInFrames={STADT_LOOK_FRAMES} fps={60} width={1080} height={1920} />
+    <Composition id="StadtWzorLook" component={StadtWzorLook} durationInFrames={STADT_WZOR_LOOK_FRAMES} fps={60} width={1080} height={1920} />
     <Composition id="StadtE01" component={StadtE01} durationInFrames={STADT_E01_FRAMES} fps={60} width={1080} height={1920} />
     <Composition id="StadtE01v3" component={StadtE01v3} durationInFrames={STADT_E01V3_FRAMES} fps={60} width={1080} height={1920} />
     <Composition id="StadtE02" component={StadtE02} durationInFrames={STADT_E02_FRAMES} fps={60} width={1080} height={1920} />
