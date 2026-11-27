@@ -47,9 +47,9 @@ const boardTex = (text: string) => ctex(`wz-board${text}`, 512, 256, (g) => {
   g.textAlign = "center"; g.fillText(text, 256, 120); g.fillRect(120, 160, 272, 5); g.font = "600 34px Arial"; g.fillText("2 + 2 = 4", 256, 220);
 });
 const lavaTex = () => ctex("wz-lava", 256, 256, (g, r) => {
-  const gr = g.createLinearGradient(0, 0, 256, 256); gr.addColorStop(0, "#ff3a00"); gr.addColorStop(0.5, "#ff8a00"); gr.addColorStop(1, "#ff3a00");
+  const gr = g.createLinearGradient(0, 0, 256, 256); gr.addColorStop(0, "#f2825c"); gr.addColorStop(0.5, "#f7ab72"); gr.addColorStop(1, "#f2825c");
   g.fillStyle = gr; g.fillRect(0, 0, 256, 256);
-  for (let i = 0; i < 26; i++) { g.fillStyle = r() < 0.5 ? "#ffd23a" : "#c81e00"; g.beginPath(); g.ellipse(r() * 256, r() * 256, 10 + r() * 26, 6 + r() * 14, r() * 3, 0, 7); g.fill(); }
+  for (let i = 0; i < 26; i++) { g.fillStyle = r() < 0.5 ? "#ffe3a0" : "#e0694a"; g.beginPath(); g.ellipse(r() * 256, r() * 256, 10 + r() * 26, 6 + r() * 14, r() * 3, 0, 7); g.fill(); }
 });
 const screenTex = (bg: string, txt: string) => ctex(`wz-scr${bg}${txt}`, 256, 512, (g) => {
   g.fillStyle = bg; g.fillRect(0, 0, 256, 512); g.fillStyle = "#fff"; g.font = "900 54px Arial"; g.textAlign = "center"; g.fillText(txt, 128, 250);
@@ -306,7 +306,7 @@ const Avenue: React.FC<{ t: number }> = ({ t }) => {
 // ---------- 2. ŁAZIENKA: turkusowe kafle ----------
 const Bathroom: React.FC<{ t: number }> = () => <>
   <SkyBg /><BrightLights sun={[3, 10, 12]} sunI={1.6} hemi={1.9} box={8} />
-  <RoomBox w={7} d={6} h={3.2} wall={tileTex("#5fd3c8", "#e8fffb", 4)} floor={checkTex("#ffffff", "#bfeee8", 4)} wallRep={[7, 3]} floorRep={[3, 3]}>
+  <RoomBox w={7} d={6} h={3.2} wall={tileTex("#7cd3cc", "#effffc", 4)} floor={checkTex("#ffffff", "#d3f1ed", 4)} wallRep={[7, 3]} floorRep={[3, 3]}>
     <Box p={[-2.2, 0.35, -2.2]} s={[2.4, 0.7, 1.2]} c="#ffffff" r={0.2} rough={0.2} /><Box p={[-2.2, 0.66, -2.2]} s={[2.1, 0.06, 0.9]} c="#9fe6ff" rough={0.1} />
     <Box p={[1.6, 0.8, -2.75]} s={[1.0, 0.12, 0.5]} c="#ffffff" r={0.05} /><Cyl p={[1.6, 0.4, -2.75]} r={0.12} h={0.8} c="#ffffff" />
     <Box p={[1.6, 1.8, -2.98]} s={[0.9, 1.1, 0.04]} c="#dff6ff" rough={0.05} />
@@ -347,26 +347,26 @@ const OmaRoom: React.FC<{ t: number }> = () => <>
 // ---------- 5. HALA NEONOWA: siatka świecących linii ----------
 const NeonHall: React.FC<{ t: number }> = ({ t }) => {
   const g = useMemo(() => rep(gridTex("#4a2fa8", "#39f3ff"), 10, 10), []);
-  const gw = useMemo(() => rep(gridTex("#3a2490", "#ff4fd8"), 12, 3), []);
+  const gw = useMemo(() => rep(gridTex("#8f7ae6", "#ffb0ee"), 12, 3), []);
   return <>
     <SkyBg top="#6a4cff" mid="#9b7bff" hor="#e6dcff" /><BrightLights sun={[0, 14, 10]} sunI={1.4} hemi={1.4} sky="#efe8ff" ground="#c6b4ff" box={14} />
-    <RoomBox w={20} d={20} h={8} wall={gw} floor={g} wallRep={[12, 4]} floorRep={[10, 10]} ceil="#2a1a70" floorEm="#2a6a9a" floorEi={0.3 + 0.05 * Math.sin(t * 4)} />
+    <RoomBox w={20} d={20} h={8} wall={gw} floor={g} wallRep={[12, 4]} floorRep={[10, 10]} ceil="#7a68d0" floorEm="#2a6a9a" floorEi={0.3 + 0.05 * Math.sin(t * 4)} />
     {[-6, 0, 6].map((x) => <Box key={x} p={[x, 0.5, -6]} s={[2, 1, 2]} c="#ff4fd8" emissive="#ff4fd8" ei={0.35} r={0.1} />)}
   </>;
 };
 
 // ---------- 6. AKADEMIA: szklana fasada, schody, plac ----------
 const Academy: React.FC<{ t: number }> = () => {
-  const glass = useMemo(() => rep(winTex("#e9f4ff", "#ffffff", "#7cc8ff"), 8, 4), []);
+  const glass = useMemo(() => rep(winTex("#b9dcff", "#e6f3ff", "#3d9cff"), 8, 4), []);
   return <>
     <SkyBg fog={[60, 200]} /><BrightLights sun={[16, 30, 22]} box={30} target={[0, 0, -8]} />
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, -10]} receiveShadow><planeGeometry args={[120, 120]} /><M c="#9be38a" /></mesh>
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, -6]} receiveShadow><planeGeometry args={[22, 18]} /><M map={rep(tileTex("#f4ede0", "#e0d5c2", 4), 6, 5)} /></mesh>
-    <mesh position={[0, 6, -16]} castShadow receiveShadow><boxGeometry args={[24, 12, 6]} /><M c="#ffffff" /></mesh>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, -6]} receiveShadow><planeGeometry args={[22, 18]} /><M map={rep(tileTex("#f7d9a8", "#e8b77a", 4), 6, 5)} /></mesh>
+    <mesh position={[0, 6, -16]} castShadow receiveShadow><boxGeometry args={[24, 12, 6]} /><M c="#ffd29a" /></mesh>
     <mesh position={[0, 6, -12.98]}><planeGeometry args={[22, 10]} /><M map={glass} rough={0.2} /></mesh>
     <Box p={[0, 12.4, -15.6]} s={[25, 0.8, 7]} c="#2f6fe0" />
     <mesh position={[0, 10.4, -12.9]}><planeGeometry args={[9, 1.6]} /><M map={labelTex("AKADEMIE", "#2f6fe0", "#ffffff", 1024, 192, "900 130px 'Nunito', Arial, sans-serif")} /></mesh>
-    {[0, 1, 2].map((k) => <Box key={k} p={[0, 0.15 + k * 0.3, -12.2 + k * -0.0 + (2 - k) * 0.6]} s={[10 - k, 0.3, 1.2]} c="#f2efe8" />)}
+    {[0, 1, 2].map((k) => <Box key={k} p={[0, 0.15 + k * 0.3, -12.2 + k * -0.0 + (2 - k) * 0.6]} s={[10 - k, 0.3, 1.2]} c="#f6c98a" />)}
     <Tree p={[-8, 0, -9]} s={1.3} /><Tree p={[8, 0, -9]} s={1.3} /><Tree p={[-11, 0, -3]} s={1.1} /><Tree p={[11, 0, -3]} s={1.1} />
   </>;
 };
@@ -404,9 +404,9 @@ const Bedroom: React.FC<{ t: number }> = ({ t }) => <>
 
 // ---------- 9. SALON WYSTAWOWY (biały) ----------
 const Showroom: React.FC<{ t: number }> = () => <>
-  <SkyBg /><BrightLights sun={[6, 14, 12]} sunI={1.6} hemi={2.0} box={12} />
-  <RoomBox w={16} d={12} h={5} wall="#ffffff" floor="#f4f6fa" ceil="#ffffff">
-    {[-4.5, 0, 4.5].map((x) => <Cyl key={x} p={[x, 0.25, -3]} r={1.4} h={0.5} c="#e9edf5" seg={32} />)}
+  <SkyBg /><BrightLights sun={[6, 14, 12]} sunI={1.5} hemi={1.6} box={12} />
+  <RoomBox w={16} d={12} h={5} wall="#9fd4ff" floor={checkTex("#ffe6b0", "#ffc27a", 8)} floorRep={[4, 3]} ceil="#ffffff">
+    {[-4.5, 0, 4.5].map((x) => <Cyl key={x} p={[x, 0.25, -3]} r={1.4} h={0.5} c={x < 0 ? "#ff8fb8" : x > 0 ? "#7fe0a0" : "#ffd84a"} seg={32} />)}
     <Window p={[-7.98, 2.5, 0]} w={5} h={3} ry={Math.PI / 2} /><Window p={[7.98, 2.5, 0]} w={5} h={3} ry={-Math.PI / 2} />
   </RoomBox>
 </>;
@@ -416,7 +416,7 @@ const Showroom: React.FC<{ t: number }> = () => <>
 export const LavaFloor: React.FC<{ t: number; w?: number; d?: number; p?: V3 }> = ({ t, w = 20, d = 20, p = [0, 0.03, 0] }) => {
   const tx = useMemo(() => rep(lavaTex(), w / 4, d / 4), [w, d]);
   tx.offset.set(t * 0.05, t * 0.12);
-  return <mesh rotation={[-Math.PI / 2, 0, 0]} position={p}><planeGeometry args={[w, d]} /><M map={tx} emissive="#ff5a00" ei={0.7} rough={0.4} /></mesh>;
+  return <mesh rotation={[-Math.PI / 2, 0, 0]} position={p}><planeGeometry args={[w, d]} /><M map={tx} emissive="#ff9a6a" ei={0.25} rough={0.4} /></mesh>;
 };
 /** olbrzym (fioletowy, blokowy, własny projekt); s = skala (1 ≈ 6 j. wysokości) */
 export const Giant: React.FC<{ p: V3; t: number; s?: number; ry?: number; c?: string }> = ({ p, t, s = 1, ry = 0, c = "#8a4fff" }) => {

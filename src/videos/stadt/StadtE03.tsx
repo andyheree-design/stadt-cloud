@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { AbsoluteFill, Audio, continueRender, delayRender, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { ThreeCanvas } from "@remotion/three";
 import { useThree } from "@react-three/fiber";
-import { loadFont } from "@remotion/google-fonts/Fredoka";
+import { fredoka } from "./fonts";
 import { R6, CAST, R6Look } from "./R6";
 import { Town, TownKit, loadTown } from "./Town";
 import { Room } from "./Room";
@@ -15,7 +15,7 @@ import { SHOTS_E03, ActE03 } from "./e03Shots";
 import { PovHands, PartyOutside } from "./PropsV3";
 import TL from "../../../public/stadt/e03/timeline.json";
 
-const { fontFamily } = loadFont("normal", { weights: ["700"] });
+const fontFamily = fredoka;
 export const STADT_E03_FRAMES = TL.frames;
 // v4: napisy od pierwszej klatki (także w locie z góry)
 const WORDS: Word[] = TL.lines.flatMap((l: any) => l.words.map((w: any) => ({ t: w.t, s: w.s, e: w.e })));

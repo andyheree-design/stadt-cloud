@@ -25,10 +25,7 @@ export const Caption: React.FC<{ words: Word[]; y?: number; size?: number; color
 
 // ---- styl wzoru (Roblox story, pomiar klatki 0:02 wzoru 1080×1920): środek napisu y≈0.73 H, słowo „watching” ≈457 px szer.,
 // wys. liter ≈85 px (font ≈112 px), kontur czarny ≈9–10 px widoczny, słowa-klucze limonkowe #e2fd00, reszta biała.
-import { loadFont as loadNunito } from "@remotion/google-fonts/Nunito";
-const nunito = loadNunito("normal", { weights: ["900"] }).fontFamily;
-import { loadFont as loadPoppins } from "@remotion/google-fonts/Poppins";
-const poppins = loadPoppins("normal", { weights: ["800"] }).fontFamily;
+import { nunito, poppins } from "./fonts"; // lokalne public/fonts, bez Google przy renderze
 /** napisy wzoru. Domyślnie „yellow” = jak klipy 7711764636965588257 / 7712451364546252065: małe litery, geometryczny gruby krój (Poppins 800),
  *  żółty #FFE500 z czarnym konturem, środek y≈0.735 H, słowo 7–10 liter ≈ 450 px szer. „white” = poprzedni wariant (biały + limonkowe słowa-klucze). */
 export const CaptionWzor: React.FC<{ words: Word[]; hl?: RegExp; variant?: "yellow" | "white" }> = ({ words, hl, variant = "yellow" }) => variant === "yellow"

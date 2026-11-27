@@ -4,13 +4,13 @@ import * as THREE from "three";
 import { AbsoluteFill, continueRender, delayRender } from "remotion";
 import { ThreeCanvas } from "@remotion/three";
 import { useThree } from "@react-three/fiber";
-import { loadFont } from "@remotion/google-fonts/Fredoka";
+import { fredoka } from "./fonts";
 import { R6, CAST, R6Look } from "./R6";
 import { Town, TownKit, loadTown } from "./Town";
 import { Fx } from "./Fx";
 import { FX, SW } from "./e01Shots";
 
-const { fontFamily } = loadFont();
+const fontFamily = fredoka;
 const CamB: React.FC = () => {
   const cam = useThree((s) => s.camera) as THREE.PerspectiveCamera;
   cam.position.set(0.2, 1.12, 4.2); cam.fov = 40; cam.updateProjectionMatrix(); cam.lookAt(-1.4, 0.98, -6); cam.updateMatrixWorld();

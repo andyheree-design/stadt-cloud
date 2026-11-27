@@ -6,7 +6,7 @@ import * as THREE from "three";
 import { AbsoluteFill, continueRender, delayRender, useCurrentFrame, useVideoConfig } from "remotion";
 import { ThreeCanvas } from "@remotion/three";
 import { useThree } from "@react-three/fiber";
-import { R6, BLOCK_CAST, R6Pose } from "./R6";
+import { R6, BLOCK_CAST, R6Pose, R6Look } from "./R6";
 import { Fx, FX_WZOR } from "./Fx";
 import { CaptionWzor, Word } from "./Caption";
 import { LOCATIONS, LocCam, V3, LavaFloor, Giant, Mammoth, Phone } from "./Locations";
@@ -18,7 +18,7 @@ const SHOTS: Shot[] = [
   { loc: "avenue", cam: "wide", d: 150, l2: [0, 3, -34], words: "In dieser Stadt passiert jeden Tag etwas Verrücktes" },
   { loc: "avenue", cam: "close", d: 90, acts: [{ c: "schueler", x: -0.75, r: 0.25, face: "shock", pose: { armsUp: 1 } }, { c: "babcia", x: 0, face: "happy", pose: { wave: 1 } }, { c: "polizist", x: 0.75, r: -0.25, face: "angry", pose: { point: 1 } }],
     props: (t) => <Giant p={[0.3, 0, -24]} t={t} s={1.5} ry={-0.1} />, words: "Heute kam ein RIESE in die Stadt" },
-  { loc: "classroom", cam: { p: [0.35, 1.35, 0.6], l: [0.05, 0.95, -2.4], fov: 50 }, d: 90, acts: [{ c: "schueler", x: -0.45, r: 0.5, face: "sad", pose: { headScratch: 1 } }, { c: "lehrer", x: 0.5, z: -2.6, r: -0.5, face: "angry", pose: { point: 1, talk: 1 } }],
+  { loc: "classroom", cam: { p: [0.35, 2.0, 0.7], l: [0.05, 0.85, -2.4], fov: 50 }, d: 90, acts: [{ c: "schueler", x: -0.45, r: 0.5, face: "sad", pose: { headScratch: 1 } }, { c: "lehrer", x: 0.5, z: -2.6, r: -0.5, face: "angry", pose: { point: 1, talk: 1 } }],
     words: "Der Lehrer sagt NEIN" },
   { loc: "bathroom", cam: "close", d: 80, acts: [{ c: "kumpel", x: 0, face: "grin", pose: { dance: 1, talk: 1 } }],
     words: "Kevin singt im BAD" },
@@ -35,6 +35,28 @@ const SHOTS: Shot[] = [
   { loc: "showroom", cam: { p: [-0.1, 1.5, 2.3], l: [0.35, 1.0, -1.6], fov: 52 }, d: 90, acts: [{ c: "babcia", x: -0.3, z: -0.2, r: 0.4, face: "grin", pose: { point: 1 } }],
     props: (t) => <Mammoth p={[1.6, 0.5, -3]} t={t} s={0.8} ry={-0.5} />, words: "Und Oma kauft ein MAMMUT" },
 ];
+
+// Tłum przechodniów alei: 24 postaci BLOCK_CAST w różnych kolorach, cykl chodu (R6 walk = wymach rąk/nóg sin), skok na „Huss”.
+const SHIRTS = ["#ff4d6d", "#ffd23a", "#2f6fe0", "#3cae4a", "#b06cff", "#ff8a3d", "#21c7d9", "#ffffff", "#e05aa8", "#1f2f5c"];
+const PANTS = ["#262c3a", "#2b3346", "#4a5a8a", "#6b4226", "#1a2240", "#3d3d3d"];
+const HAIRS = ["#24170f", "#6b4226", "#e8c15a", "#3a2416", "#c0392b", "#111111"];
+const BASES = ["schueler", "lehrer", "kumpel", "babcia", "polizist"];
+const rnd = (k: number) => { const x = Math.sin(k * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const CROWD = Array.from({ length: 24 }, (_, k) => {
+  const side = k % 2 ? 1 : -1, dir = rnd(k + 9) > 0.5 ? 1 : -1;
+  const base = BLOCK_CAST[BASES[k % BASES.length]];
+  const look: R6Look = { ...base, shirt: SHIRTS[Math.floor(rnd(k + 1) * SHIRTS.length)], pants: PANTS[Math.floor(rnd(k + 2) * PANTS.length)],
+    hatColor: base.hat === "police" ? base.hatColor : HAIRS[Math.floor(rnd(k + 3) * HAIRS.length)], print: undefined, acc: [] };
+  return { look, x: side * (2.2 + rnd(k + 4) * 4.2), z0: -11 - rnd(k + 5) * 36, dir, sp: 1.1 + rnd(k + 6) * 0.6, ph: rnd(k + 7) * 3 };
+});
+/** hussFrom: czas (s) od którego tłum staje i skacze w rytm „Huss Huss Huss” (2,4 Hz). */
+const Crowd: React.FC<{ t: number; hussFrom?: number }> = ({ t, hussFrom = 1e9 }) => <>{CROWD.map((c, k) => {
+  const huss = t >= hussFrom, tt = huss ? hussFrom : t;
+  let z = c.z0 + c.dir * c.sp * tt; z = -11 - ((((-11 - z) % 36) + 36) % 36);
+  const jy = huss ? Math.abs(Math.sin((t - hussFrom) * Math.PI * 2.4 + k * 0.15)) * 0.45 : 0;
+  return <R6 key={k} look={c.look} t={t + c.ph} pose={huss ? { armsUp: 1 } : { walk: 1, walkSpeed: c.sp * 1.3 }}
+    position={[c.x, jy, z]} rotY={huss ? (c.x > 0 ? -0.6 : 0.6) : c.dir > 0 ? Math.PI : 0} />;
+})}</>;
 const STARTS = SHOTS.reduce<number[]>((a, s, i) => [...a, i ? a[i - 1] + SHOTS[i - 1].d : 0], []);
 export const STADT_WZOR_LOOK_FRAMES = STARTS[STARTS.length - 1] + SHOTS[SHOTS.length - 1].d;
 // napisy: jedno słowo naraz, równo rozłożone w ujęciu
@@ -70,6 +92,7 @@ export const StadtWzorLook: React.FC = () => {
         <L.C t={t} />
         {(S.acts ?? []).map((a, k) => <R6 key={k} look={{ ...BLOCK_CAST[a.c], ...(a.face ? { face: a.face } : {}) }} t={t + k * 0.37} pose={a.pose ?? {}}
           position={[L.spot[0] + a.x, L.spot[1], a.z ?? L.spot[2]]} rotY={a.r ?? 0} />)}
+        {S.loc === "avenue" && <Crowd t={t} hussFrom={STARTS[1] / fps + 0.5} />}
         {S.props?.(t)}
         <Fx focus={null} bokeh={0} {...FX_WZOR} />
       </ThreeCanvas>}
