@@ -18,13 +18,13 @@ const SHOTS: Shot[] = [
   { loc: "avenue", cam: "wide", d: 150, l2: [0, 3, -34], words: "In dieser Stadt passiert jeden Tag etwas Verrücktes" },
   { loc: "avenue", cam: "close", d: 90, acts: [{ c: "schueler", x: -0.75, r: 0.25, face: "shock", pose: { armsUp: 1 } }, { c: "babcia", x: 0, face: "happy", pose: { wave: 1 } }, { c: "polizist", x: 0.75, r: -0.25, face: "angry", pose: { point: 1 } }],
     props: (t) => <Giant p={[0.3, 0, -24]} t={t} s={1.5} ry={-0.1} />, words: "Heute kam ein RIESE in die Stadt" },
-  { loc: "classroom", cam: "side", d: 90, acts: [{ c: "schueler", x: -0.8, r: 0.6, face: "sad", pose: { headScratch: 1 } }, { c: "lehrer", x: 0.9, z: -2.9, r: -0.5, face: "angry", pose: { point: 1, talk: 1 } }],
+  { loc: "classroom", cam: { p: [0.35, 1.35, 0.6], l: [0.05, 0.95, -2.4], fov: 50 }, d: 90, acts: [{ c: "schueler", x: -0.45, r: 0.5, face: "sad", pose: { headScratch: 1 } }, { c: "lehrer", x: 0.5, z: -2.6, r: -0.5, face: "angry", pose: { point: 1, talk: 1 } }],
     words: "Der Lehrer sagt NEIN" },
   { loc: "bathroom", cam: "close", d: 80, acts: [{ c: "kumpel", x: 0, face: "grin", pose: { dance: 1, talk: 1 } }],
     words: "Kevin singt im BAD" },
   { loc: "kitchen", cam: { p: [-0.55, 1.2, 1.75], l: [-1.65, 0.8, -0.35], fov: 40 }, d: 90, acts: [{ c: "babcia", x: -1.9, z: -0.25, r: 0.5, face: "happy", pose: { phone: 1 } }],
     words: "Beim Frühstück nur am HANDY" },
-  { loc: "omaRoom", cam: "top", d: 80, acts: [{ c: "babcia", x: 0, face: "smug", pose: { dance: 1 } }, { c: "schueler", x: -1.0, r: 0.5, face: "grin", pose: { dance: 1 } }, { c: "kumpel", x: 1.0, r: -0.5, face: "shock", pose: { armsUp: 1 } }],
+  { loc: "omaRoom", cam: "wide", d: 80, acts: [{ c: "babcia", x: 0, face: "smug", pose: { dance: 1 } }, { c: "schueler", x: -1.0, r: 0.5, face: "grin", pose: { dance: 1 } }, { c: "kumpel", x: 1.0, r: -0.5, face: "shock", pose: { armsUp: 1 } }],
     words: "Oma tanzt einfach weiter" },
   { loc: "academy", cam: { p: [0.15, 1.35, -5.5], l: [0, 1.05, -9], fov: 42 }, d: 80, acts: [{ c: "polizist", x: -0.45, r: 0.3, face: "angry", pose: { point: 1, talk: 1 } }, { c: "kumpel", x: 0.5, r: -0.3, face: "shock", pose: { armsUp: 1 } }],
     words: "Die POLIZEI ist auch da" },
@@ -45,7 +45,9 @@ const HL = /^(RIESE|NEIN|LAVA|MAMMUT|HANDY|BAD|POLIZEI|LIEGESTÜTZE|Verrücktes|
 const CamRig: React.FC<{ c: LocCam; u: number; l2?: V3 }> = ({ c, u, l2 }) => {
   const cam = useThree((s) => s.camera) as THREE.PerspectiveCamera, gl = useThree((s) => s.gl);
   gl.toneMapping = THREE.NeutralToneMapping; gl.toneMappingExposure = 1.05;
-  const e = ease(u), m = c.mv ?? [0, 0, 0], L = l2 ?? c.l;
+  const e = ease(u), L = l2 ?? c.l;
+  // bez własnego ruchu: łagodny najazd 18% w stronę celu + lekki dryf w bok (jak szybujaca kamera wzoru)
+  const m = c.mv ?? [(c.l[0] - c.p[0]) * 0.18 + 0.12, (c.l[1] - c.p[1]) * 0.18, (c.l[2] - c.p[2]) * 0.18];
   cam.position.set(c.p[0] + m[0] * e, c.p[1] + m[1] * e, c.p[2] + m[2] * e);
   cam.fov = c.fov; cam.updateProjectionMatrix();
   cam.lookAt(c.l[0] + (L[0] - c.l[0]) * e, c.l[1] + (L[1] - c.l[1]) * e, c.l[2] + (L[2] - c.l[2]) * e); cam.updateMatrixWorld();
