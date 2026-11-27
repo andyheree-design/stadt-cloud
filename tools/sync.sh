@@ -27,6 +27,7 @@ done < <(find src -type f -print0)
 # G3 dla public (tylko pliki istniejące po obu stronach)
 while IFS= read -r -d '' f; do
   [ -f "$SRC/$f" ] || continue
+  case "$f" in *.wav|*.mp3|*.flac|*.m4a|*.ogg|*.mp4|*.mov) continue;; esac   # audio/wideo nie jest synchronizowane (placeholdery)
   if ! cmp -s "$f" "$SRC/$f" && [ "$f" -nt "$SRC/$f" ]; then echo "STOP G3: $f nowszy w stadt-cloud"; fail=1; fi
 done < <(find public/stadt public/fonts -type f -print0 2>/dev/null)
 [ "$fail" = 1 ] && [ "${FORCE:-0}" != 1 ] && { echo "Najpierw przenieś te pliki do $SRC (albo FORCE=1)."; exit 2; }
@@ -39,7 +40,7 @@ rm -rf src && mkdir -p src
 echo src >> "$COPIED"
 
 # 2) public/stadt/ + public/fonts/ ADDYTYWNIE, bez audio, takes, vo, kenney, sfx, plików >40 MB
-( cd "$SRC" && find public/stadt public/fonts     \( -type d \( -name 'takes*' -o -name 'mix_raw*' -o -name 'vo' -o -name 'vo_*' -o -name 'vo[0-9]*' -o -name 'kenney' -o -name 'sfx' -o -name 'stems' \) -prune \) -o     \( -type f ! -iname '*.wav' ! -iname '*.mp3' ! -iname '*.flac' ! -iname '*.m4a' ! -iname '*.ogg' ! -iname '*.mp4' ! -iname '*.mov' ! -size +40M -print0 \) 2>/dev/null ) |
+( cd "$SRC" && find public/stadt public/fonts     \( -type d \( -name 'takes*' -o -name 'mix_raw*' -o -name 'vo' -o -name 'vo_*' -o -name 'vo[0-9]*' -o -name 'kenney' -o -name 'sfx' -o -name 'stems' \) -prune \) -o     \( -type f ! -name '*.bak*' ! -iname '*.wav' ! -iname '*.mp3' ! -iname '*.flac' ! -iname '*.m4a' ! -iname '*.ogg' ! -iname '*.mp4' ! -iname '*.mov' ! -size +40M -print0 \) 2>/dev/null ) |
   while IFS= read -r -d '' f; do
     if ! cmp -s "$SRC/$f" "$f"; then mkdir -p "$(dirname "$f")"; cp -p "$SRC/$f" "$f"; echo "$f" >> "$COPIED"; fi
   done
@@ -90,7 +91,7 @@ cp "$SRC/package.json" "$SRC/package-lock.json" .
 printf "cloud\npackage.json\npackage-lock.json\n" >> "$COPIED"
 
 # 6) kontrola rozmiaru
-big=$(find . -path ./.git -prune -o -path ./node_modules -prune -o -type f -size +50M -print)
+big=$(sort -u "$COPIED" | while IFS= read -r p; do [ -e "$p" ] && find "$p" -type f -size +50M -print; done)   # tylko to, co idzie do commita
 [ -n "$big" ] && { echo "BŁĄD: pliki >50 MB: $big"; exit 1; }
 du -sh --exclude=.git --exclude=node_modules . || true
 
