@@ -23,7 +23,7 @@ const SHOTS: Shot[] = [
     words: "Der Lehrer sagt NEIN" },
   { loc: "bathroom", cam: "close", d: 80, acts: [{ c: "kumpel", x: 0, face: "grin", pose: { dance: 1, talk: 1 } }],
     words: "Kevin singt im BAD" },
-  { loc: "kitchen", cam: { p: [-0.55, 1.2, 1.75], l: [-1.65, 0.8, -0.35], fov: 40 }, d: 90, acts: [{ c: "babcia", x: -1.9, z: -0.25, r: 0.5, face: "happy", pose: { phone: 1 } }],
+  { loc: "kitchen", cam: { p: [-1.0, 1.3, 1.7], l: [-1.9, 0.9, -0.3], fov: 42 }, d: 90, acts: [{ c: "babcia", x: -1.9, z: -0.25, r: 0.5, face: "happy", pose: { phone: 1 } }],
     words: "Beim Frühstück nur am HANDY" },
   { loc: "omaRoom", cam: "wide", d: 80, acts: [{ c: "babcia", x: 0, face: "smug", pose: { dance: 1 } }, { c: "schueler", x: -1.0, r: 0.5, face: "grin", pose: { dance: 1 } }, { c: "kumpel", x: 1.0, r: -0.5, face: "shock", pose: { armsUp: 1 } }],
     words: "Oma tanzt einfach weiter" },
@@ -33,7 +33,7 @@ const SHOTS: Shot[] = [
     props: (t) => <LavaFloor t={t} />, words: "Plötzlich ist der Boden LAVA" },
   { loc: "bedroom", cam: "side", d: 80, acts: [{ c: "schueler", x: 0, r: -0.4, face: "angry", pose: { pushup: 1 } }],
     words: "Nachts noch LIEGESTÜTZE" },
-  { loc: "showroom", cam: { p: [-0.1, 1.5, 2.3], l: [0.35, 1.0, -1.6], fov: 52 }, d: 90, acts: [{ c: "babcia", x: -0.3, z: -0.2, r: 0.4, face: "grin", pose: { point: 1 } }],
+  { loc: "showroom", cam: { p: [-0.2, 1.8, 3.4], l: [0.5, 1.35, -1.8], fov: 54 }, d: 90, acts: [{ c: "babcia", x: -0.3, z: -0.2, r: 0.4, face: "grin", pose: { point: 1 } }],
     props: (t) => <Mammoth p={[1.6, 0.5, -3]} t={t} s={0.8} ry={-0.5} />, words: "Und Oma kauft ein MAMMUT" },
 ];
 
