@@ -9,6 +9,7 @@ import { useThree } from "@react-three/fiber";
 import { R6, BLOCK_CAST, R6Pose, R6Look } from "./R6";
 import { Fx, FX_WZOR } from "./Fx";
 import { CaptionWzor, Word } from "./Caption";
+import { fontsReady } from "./fonts";
 import { LOCATIONS, LocCam, V3, LavaFloor, Giant, Mammoth, Phone } from "./Locations";
 
 const ease = (u: number) => u * u * (3 - 2 * u);
@@ -80,7 +81,7 @@ export const StadtWzorLook: React.FC = () => {
   const f = useCurrentFrame(), { fps } = useVideoConfig(), t = f / fps;
   const [ready, setReady] = useState(false);
   const [h] = useState(() => delayRender("fonty wzoru"));
-  useEffect(() => { (document.fonts?.ready ?? Promise.resolve()).then(() => setReady(true)); }, []);
+  useEffect(() => { fontsReady().then(() => document.fonts?.ready).then(() => setReady(true)); }, []);
   useEffect(() => { if (ready) continueRender(h); }, [ready, h]);
   let i = SHOTS.length - 1; while (i > 0 && f < STARTS[i]) i--;
   const S = SHOTS[i], L = LOCATIONS[S.loc], u = Math.min(1, (f - STARTS[i]) / S.d);
