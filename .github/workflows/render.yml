@@ -16,7 +16,7 @@ on:
         default: "0"
         required: false
   push:
-    branches: [main, wyglad-wzor]
+    branches: [main]   # TYLKO main: gałęzie robocze nie palą minut GHA (render = zmiana render.json na main)
     paths: [render.json]
 
 env:
